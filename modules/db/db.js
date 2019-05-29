@@ -15,6 +15,14 @@ const ticketSchema =
         }
     })
 
-const Ticket = mongoose.model('Ticket',ticketSchema)
+// const userSchema;
+// const assetSchema;
 
-module.exports.Ticket = Ticket
+const TicketModel = mongoose.model('Ticket',ticketSchema)
+
+function getTicketInstance(obj){
+        return new TicketModel(obj)
+}
+
+module.exports.getTicketInstance = getTicketInstance
+module.exports.TicketModel = TicketModel
