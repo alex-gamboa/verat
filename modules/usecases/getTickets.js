@@ -1,10 +1,8 @@
 const mongoAdapter = require('../db/mongo_db_adapter')
 
-async function execute(ticket){
+async function execute(){
     const result =
-        await
-            mongoAdapter
-                .insertTicket(ticket)
+        await mongoAdapter.getTickets()
 
     return result
 }
