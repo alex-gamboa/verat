@@ -20,5 +20,30 @@ async function getTickets() {
     return result
 }
 
+async function insertAsset(asset) {
+    let assetInstance = db.getAssetInstance(asset)
+
+    const result =
+        await assetInstance
+            .validate()
+            .then(_ => assetInstance.save())
+
+    return result
+}
+
+async function insertAssetCategory(category) {
+    let categoryInstance = db.getAssetCategoryInstance(category)
+
+    const result =
+        await categoryInstance
+            .validate()
+            .then(_ => categoryInstance.save())
+
+    return result
+}
+
 module.exports.insertTicket = insertTicket
 module.exports.getTickets = getTickets
+
+module.exports.insertAsset = insertAsset
+module.exports.insertAssetCategory = insertAssetCategory

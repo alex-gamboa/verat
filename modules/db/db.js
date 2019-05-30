@@ -22,6 +22,7 @@ const assetCategorySchema =
 
 const assetSchema =
     new mongoose.Schema({
+        controlNumber: String,
         dateOfCreation: { type: Date, default: Date.now},
         category: {
             type: mongoose.Schema.Types.ObjectId,
