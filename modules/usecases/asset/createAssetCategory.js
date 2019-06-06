@@ -1,9 +1,9 @@
-const mongoAdapter = require('../db/mongo_db_adapter')
+const assetRepo = require('../../db/assetRepo')
 
 async function execute(asset){
     const result =
         await
-            mongoAdapter
+            assetRepo
                 .insertAssetCategory(asset)
 
     return result
