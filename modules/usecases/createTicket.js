@@ -1,4 +1,4 @@
-const mongoAdapter = require('../db/mongo_db_adapter')
+const mongoAdapter = require('../db/assetRepo')
 
 async function execute(ticket){
     const result =

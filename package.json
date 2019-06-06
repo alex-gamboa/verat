@@ -9,9 +9,11 @@
     "express": "^4.17.1",
     "mongoose": "^5.5.11"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^24.8.0"
+  },
   "scripts": {
-    "test": "test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
