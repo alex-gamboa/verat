@@ -12,11 +12,22 @@ const addUser = require('../modules/usecases/user/addUser')
 const getUsers = require('../modules/usecases/user/getUsers')
 
 const fs = require('fs')
+const cors = require('cors')
 
 const app = express()
+app.use(cors())
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+//     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+//     next();
+// });
 
 app.use(express.json())
 app.use(express.static('./public'));
+
+
 
 app.get('/api/tickets', async (req, res) => {
     const error = null;
@@ -31,10 +42,21 @@ app.get('/api/tickets', async (req, res) => {
     else res.send(result)
 })
 
-app.get('/api/assets/:controlNumber', async (req, res) => {
+app.get('/api/assets', async (req, res) => {
     const error = null;
 
-    console.error(req.params.controlNumber);
+    const result =
+       await
+            getAsset
+                .execute()
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.get('/api/assets/:controlNumber', async (req, res) => {
+    const error = null;
 
     const result =
        await
