@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
 
+const dbServer = process.env.MONGO_SERVER_PATH || "localhost:3000/verat"
+
+console.log(dbServer);
+
+
 mongoose
-    .connect('mongodb://localhost/verat')
-    .then(() => console.log('Connected to MongoDB...'))
+    .connect('mongodb://' + dbServer + '/verat')
+    .then(() => console.log('Connected to ' + dbServer))
     .catch(err => console.log('Couldn\'t connect to MongoDB.'))
 
 const ticketSchema =
@@ -13,7 +18,7 @@ const ticketSchema =
             required: true,
             minlength: 10
         }
-    })
+    }, { collection: 'Ticket'})
 
 const userSchema =
     new mongoose.Schema({
@@ -21,12 +26,12 @@ const userSchema =
         password: String,
         fullName: String,
         canLogin: Boolean
-    })
+    }, { collection: 'User'})
 
 const assetCategorySchema =
     new mongoose.Schema({
         name: String
-    })
+    }, { collection: 'AssetCategory'})
 
 const assetBrandSchema =
     new mongoose.Schema({
@@ -34,7 +39,7 @@ const assetBrandSchema =
             type: String,
             required: true
         }
-    })
+    }, { collection: 'AssetBrand'})
 
 const assetKindSchema =
     new mongoose.Schema({
@@ -46,7 +51,7 @@ const assetKindSchema =
             type: mongoose.Schema.Types.ObjectId,
             ref: 'AssetCategory'
         }
-    })
+    }, { collection: 'AssetKind'})
 
 const assetAreaSchema =
     new mongoose.Schema({
@@ -54,7 +59,7 @@ const assetAreaSchema =
             type: String,
             required: true
         }
-    })
+    }, { collection: 'AssetArea'})
 
 const assetSchema =
     new mongoose.Schema({
@@ -84,7 +89,7 @@ const assetSchema =
         barcode: String,
         quantity: Number,
         lastCount: Date
-    })
+    }, { collection: 'Asset'})
 
 const TicketModel = mongoose.model('Ticket', ticketSchema)
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container" style="height:100%">
         <div>
             <!-- <v-form v-model="valid">
                 <v-container>
@@ -50,21 +50,13 @@
                 :headers="headers"
                 :items="assets"
                 :loading="true"
+                :pagination.sync="pagination"
                 select-all
-                item-key="id"
+                item-key="controlNumber"
                 class="elevation-1"
             >
                 <template slot="headers" slot-scope="props">
                     <tr>
-                        <th>
-                            <v-checkbox
-                                :input-value="props.all"
-                                :indeterminate="props.indeterminate"
-                                primary
-                                hide-details
-                                @click.stop="toggleAll"
-                            ></v-checkbox>
-                        </th>
                         <th
                             v-for="header in props.headers"
                             :key="header.text"
@@ -80,17 +72,29 @@
                 <v-progress-linear v-show="showProgress" slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="items" slot-scope="props">
-                    <tr :active="props.selected" @click="props.selected = !props.selected">
-                        <td>
-                            <v-checkbox
-                                :input-value="props.selected"
-                                primary
-                                hide-details
-                            ></v-checkbox>
-                        </td>
+                    <tr @click="loadItemInfo(props.item)">
                         <td>{{ props.item.controlNumber }}</td>
+                        <td class="text-xs-left">{{ props.item.category }}</td>
                         <td class="text-xs-left">{{ props.item.kind }}</td>
                         <td class="text-xs-left">{{ props.item.model }}</td>
+                        <td class="text-xs-left">{{ props.item.user }}</td>
+                        <td class="text-xs-left">{{ props.item.area }}</td>
+                        <td class="text-xs-left">{{ props.item.status }}</td>
+                        <td class="justify-center layout px-0">
+                            <v-icon
+                                small
+                                class="mr-2"
+                                @click="editItem(props.item)"
+                            >
+                                edit
+                            </v-icon>
+                            <v-icon
+                                small
+                                @click="deleteItem(props.item)"
+                            >
+                                delete
+                            </v-icon>
+                        </td>
                     </tr>
                 </template>
             </v-data-table>
@@ -111,17 +115,22 @@ export default {
         self = this
         return {
             pagination: {
-                sortBy: 'kind'
+                sortBy: 'kind',
+                rowsPerPage: 20
             },
             headers: [
             {
                 text: 'Numero de Control',
                 align: 'left',
-                sortable: true,
-                value: 'id'
+                value: 'controlNumber'
             },
+            { text: 'Categoria', value: 'category' },
             { text: 'Tipo', value: 'kind' },
-            { text: 'Modelo', value: 'model' }
+            { text: 'Modelo', value: 'model' },
+            { text: 'Usuario', value: 'user' },
+            { text: 'Área', value: 'area' },
+            { text: 'Status', value: 'status' },
+            { text: 'Acciones', value: '', sortable: false },
             ],
             assets: [],
             selected: [],
@@ -143,17 +152,13 @@ export default {
     methods: {
         getAssets() {
             axios
-                .get('localhost:3000/api/assets')
+                .get('http://localhost:3000/api/assets')
                 .then(response => {
                     self.assets = response.data
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-        },
-        toggleAll () {
-            if (this.selected.length) this.selected = []
-            else this.selected = this.users.slice()
         },
         changeSort (column) {
             if (this.pagination.sortBy === column) {
@@ -162,6 +167,18 @@ export default {
                 this.pagination.sortBy = column
                 this.pagination.descending = false
             }
+        },
+        editItem (item) {
+            this.editedIndex = this.desserts.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialog = true
+        },
+        deleteItem (item) {
+            const index = this.desserts.indexOf(item)
+            confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+        },
+        loadItemInfo (item) {
+            alert(item.controlNumber)
         }
     },
     mounted: function () {
