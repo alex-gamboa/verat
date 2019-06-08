@@ -103,6 +103,7 @@ btnSubmit.addEventListener('click', (e) => {
         })
         .then(function (response) {
             showMessage(`activo ${ txtControlNumber.value } agregado.`)
+            cleanView()
         })
         .catch(function (error) {
             console.log(error);

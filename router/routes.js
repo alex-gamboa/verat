@@ -168,6 +168,66 @@ app.get('/api/processAssetsFile', async (req, res) => {
                         }
                 })
         })
+
+        fs.readFile('activos.csv','utf-8', function(err, data) {
+            data
+                .split(/\r?\n/)
+                .forEach(line => {
+                    let parts = line.split(',')
+
+                    console.log(line);
+                    console.log(parts);
+
+                    if(parts.length == 5){
+                        let asset = {
+                            controlNumber: parts[4],
+                            category: null,
+                            kind: parts[0],
+                            brand: parts[1],
+                            model: parts[2],
+                            isWithoutControlNumber: null,
+                            barcode: null,
+                            serialNumber: parts[3].trim(),
+                            user: null,
+                            area: null,
+                            status: "Disponible",
+                            quantity: null
+                        }
+
+                        createAsset.execute(asset)
+                    }
+                })
+        })
+
+        fs.readFile('celulares.csv','utf-8', function(err, data) {
+            data
+                .split(/\r?\n/)
+                .forEach(line => {
+                    let parts = line.split(',')
+
+                    console.log(line);
+                    console.log(parts);
+
+                    if(parts.length == 3){
+                            let asset = {
+                                controlNumber: parts[2],
+                                category: null,
+                                kind: "TABLET",
+                                brand: parts[0],
+                                model: parts[1],
+                                isWithoutControlNumber: null,
+                                barcode: null,
+                                serialNumber: null,
+                                user: null,
+                                area: null,
+                                status: null,
+                                quantity: null
+                            }
+
+                            createAsset.execute(asset)
+                        }
+                })
+        })
     } catch (error) {
         console.log('Error reading file')
     }
@@ -178,7 +238,16 @@ app.get('/api/processAssetsFile', async (req, res) => {
 app.get('/api/processEmployeesFiles', async (req, res) => {
 
     try {
-        fs.readFile('itstaff.txt','utf16le', function(err, data) {
+        // fs.readFile('itstaff.txt','utf16le', function(err, data) {
+        //     data
+        //         .split(/\r?\n/)
+        //         .forEach(line => {
+        //             if(line.trim())
+        //                 addUser.execute(line.trim())
+        //         })
+        // })
+
+        fs.readFile('itnext.txt','utf16le', function(err, data) {
             data
                 .split(/\r?\n/)
                 .forEach(line => {
