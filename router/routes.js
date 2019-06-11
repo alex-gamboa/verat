@@ -10,6 +10,10 @@ const updateAsset = require('../modules/usecases/asset/updateAsset')
 const getAssetAreas = require('../modules/usecases/asset/getAssetAreas')
 const addUser = require('../modules/usecases/user/addUser')
 const getUsers = require('../modules/usecases/user/getUsers')
+const countAsset = require('../modules/usecases/asset/countAsset')
+const getAssetBrands = require('../modules/usecases/asset/getAssetBrands')
+const createAssetLog = require('../modules/usecases/asset/createLogEvent')
+const getLogs = require('../modules/usecases/asset/getLogs')
 
 const fs = require('fs')
 const cors = require('cors')
@@ -37,6 +41,19 @@ app.get('/api/tickets', async (req, res) => {
        await
             getTickets
                 .execute()
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.get('/api/logs/:controlNumber', async (req, res) => {
+    const error = null;
+
+    const result =
+       await
+            getLogs
+                .execute(req.params['controlNumber'])
                 .catch(e => error = e)
 
     if (error) res.send(error)
@@ -95,6 +112,24 @@ app.get('/api/assetKinds', async (req, res) => {
     else res.send(result)
 })
 
+app.get('/api/assetBrands', async (req, res) => {
+    const error = null;
+
+    const result = await getAssetBrands
+                .execute()
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.get('/api/assetStates', async (req, res) => {
+
+    let error = null
+    if (error) res.send(error)
+    else res.send(['Disponible','Asignado','Reparación', 'Scrap', 'Baja'])
+})
+
 app.get('/api/assetAreas', async (req, res) => {
     const error = null;
 
@@ -126,28 +161,6 @@ app.get('/api/processAssetsFile', async (req, res) => {
                 .forEach(line => {
                     let parts = line.split(',')
 
-                    console.log(line);
-                    console.log(parts);
-
-                    // if(parts.length == 5){
-                    //     let asset = {
-                    //         controlNumber: parts[4],
-                    //         category: null,
-                    //         kind: parts[0],
-                    //         brand: parts[1],
-                    //         model: parts[2],
-                    //         isWithoutControlNumber: null,
-                    //         barcode: null,
-                    //         serialNumber: parts[3].trim(),
-                    //         user: null,
-                    //         area: null,
-                    //         status: "Disponible",
-                    //         quantity: null
-                    //     }
-
-                    //     createAsset.execute(asset)
-                    // }
-
                     if(parts.length == 3){
                             let asset = {
                                 controlNumber: parts[2],
@@ -175,9 +188,6 @@ app.get('/api/processAssetsFile', async (req, res) => {
                 .forEach(line => {
                     let parts = line.split(',')
 
-                    console.log(line);
-                    console.log(parts);
-
                     if(parts.length == 5){
                         let asset = {
                             controlNumber: parts[4],
@@ -204,9 +214,6 @@ app.get('/api/processAssetsFile', async (req, res) => {
                 .split(/\r?\n/)
                 .forEach(line => {
                     let parts = line.split(',')
-
-                    console.log(line);
-                    console.log(parts);
 
                     if(parts.length == 3){
                             let asset = {
@@ -295,11 +302,9 @@ app.post('/api/tickets', async (req, res) => {
 app.post('/api/assets/contabilizar', async (req, res) => {
     const error = null;
 
-    const result =
-       await
-            updateAsset
-                .execute(req.body.asset)
-                .catch(e => error = e)
+    const result = await countAsset
+        .execute(req.body.asset)
+        .catch(e => error = e)
 
     if (error) res.send(error)
     else res.send(result)
@@ -322,6 +327,18 @@ app.post('/api/assetCategories', async (req, res) => {
     else res.send(result)
 })
 
+app.post('/api/logs', async (req, res) => {
+    const error = null
+
+    const result =
+        await createAssetLog
+            .execute(req.body)
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
 app.post('/api/assets', async (req, res) => {
     const error = null;
 
@@ -337,13 +354,27 @@ app.post('/api/assets', async (req, res) => {
         user: (req.body.user) ? req.body.user : null,
         area: req.body.area,
         status: "Disponible",
-        quantity: req.body.quantity
+        quantity: req.body.quantity,
+        categoryName: req.body.categoryName
     }
 
     let result =
        await
             createAsset
                 .execute(asset)
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.put('/api/assets', async (req, res) => {
+    const error = null;
+
+    const result =
+       await
+            updateAsset
+                .execute(req.body)
                 .catch(e => error = e)
 
     if (error) res.send(error)

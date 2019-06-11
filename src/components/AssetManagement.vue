@@ -72,12 +72,12 @@
                 <v-progress-linear v-show="showProgress" slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="items" slot-scope="props">
-                    <tr @click="loadItemInfo(props.item)">
+                    <tr>
                         <td>{{ props.item.controlNumber }}</td>
-                        <td class="text-xs-left">{{ props.item.category }}</td>
+                        <td class="text-xs-left">{{ props.item.categoryName }}</td>
                         <td class="text-xs-left">{{ props.item.kind }}</td>
                         <td class="text-xs-left">{{ props.item.model }}</td>
-                        <td class="text-xs-left">{{ props.item.user }}</td>
+                        <td class="text-xs-left">{{ props.item.userName }}</td>
                         <td class="text-xs-left">{{ props.item.area }}</td>
                         <td class="text-xs-left">{{ props.item.status }}</td>
                         <td class="text-xs-left">{{ props.item.lastCount }}</td>
@@ -91,9 +91,9 @@
                             </v-icon>
                             <v-icon
                                 small
-                                @click="deleteItem(props.item)"
-                            >
-                                delete
+                                class="mr-2"
+                                @click="showLog(props.item)"                            >
+                                assignment
                             </v-icon>
                         </td>
                     </tr>
@@ -103,93 +103,39 @@
 
         <br>
 
-        <div id="container-edit">
-            <v-card
-                class="mx-auto"
+        <!-- <edit-asset v-show="editing" :asset="selectedAsset" @asset-saved="onAssetSaved" @cancel="editing = false">
+        </edit-asset> -->
 
-                max-width="100%"
+        <v-snackbar
+            v-model="showTopMessage"
+            :timeout="4000"
+            :top="true"
+            :color="topMessageColor"
             >
-                <v-card-title>
-                <v-icon
-                    large
-                    left
-                >
-                    mdi-twitter
-                </v-icon>
-                <span class="title font-weight-light">{{ selectedControlNumber }}</span>
-                </v-card-title>
+            {{ topMessage }}
+        </v-snackbar>
 
-                <v-card-text class="headline font-weight-bold">
-                    <v-container grid-list-xl>
-                        <v-layout
-                        wrap
-                        justify-space-between
-                        >
-                        <v-flex
-                            xs12
-                            md4
-                        >
-                            <v-form ref="form">
-                            <v-text-field
-                                v-model="model"
-                                :counter="max"
-                                :rules="rules"
-                                label="First name"
-                            ></v-text-field>
-                            </v-form>
-                        </v-flex>
-
-                        <v-flex
-                            xs12
-                            md6
-                        >
-                            <v-slider
-                            v-model="max"
-                            label="Max characters"
-                            >
-                            </v-slider>
-
-                            <v-checkbox
-                            v-model="allowSpaces"
-                            label="Allow spaces"
-                            ></v-checkbox>
-
-                            <v-text-field
-                            v-model="match"
-                            label="Value must match"
-                            ></v-text-field>
-                        </v-flex>
-                        </v-layout>
-                    </v-container>
-                </v-card-text>
-
+        <v-dialog v-model="dialog" persistent max-width="500">
+            <v-card>
+                <v-card-title class="headline error" primary-title>Confirmación de eliminación</v-card-title>
+                <v-card-text>¿Esta seguro que desea eliminar el activo "{{assetToDelete}}" ?</v-card-text>
                 <v-card-actions>
-                <v-list-tile class="grow">
-                    <v-list-tile-avatar color="grey darken-3">
-                    <v-img
-                        class="elevation-6"
-                        src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                    ></v-img>
-                    </v-list-tile-avatar>
-
-                    <v-list-tile-content>
-                    <v-list-tile-title>Evan You</v-list-tile-title>
-                    </v-list-tile-content>
-
-                    <v-layout
-                    align-center
-                    justify-end
-                    >
-                    <v-icon class="mr-1">mdi-heart</v-icon>
-                    <span class="subheading mr-2">256</span>
-                    <span class="mr-1">·</span>
-                    <v-icon class="mr-1">mdi-share-variant</v-icon>
-                    <span class="subheading">45</span>
-                    </v-layout>
-                </v-list-tile>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click="dialog = false">Aceptar</v-btn>
+                <v-btn color="blue darken-1" flat @click="dialog = false">Cancelar</v-btn>
                 </v-card-actions>
             </v-card>
-        </div>
+        </v-dialog>
+
+        <v-dialog v-model="editDialog" persistent max-width="900px">
+            <edit-asset :asset="selectedAsset" @asset-saved="onAssetSaved" @cancel="editDialog = false">
+            </edit-asset>
+        </v-dialog>
+
+        <v-dialog v-model="assetLogDialog" persistent max-width="1100px">
+            <asset-log :assetControlNumber="selectedAsset.controlNumber" @close="closeLogDialog">
+            </asset-log>
+        </v-dialog>
     </div>
 
 
@@ -198,6 +144,8 @@
 <script>
 
 import axios from 'axios'
+import EditAsset from './EditAsset'
+import AssetLog from './AssetLog'
 
 let self
 
@@ -207,7 +155,7 @@ export default {
         return {
             pagination: {
                 sortBy: 'kind',
-                rowsPerPage: 7
+                rowsPerPage: 10
             },
             headers: [
             {
@@ -215,7 +163,7 @@ export default {
                 align: 'left',
                 value: 'controlNumber'
             },
-            { text: 'Categoria', value: 'category' },
+            { text: 'Categoria', value: 'categoryName' },
             { text: 'Tipo', value: 'kind' },
             { text: 'Modelo', value: 'model' },
             { text: 'Usuario', value: 'user' },
@@ -226,16 +174,25 @@ export default {
             ],
             assets: [],
             selected: [],
+            editing: false,
             showProgress:true,
             valid: false,
-            selectedControlNumber:null,
-            // name: '',
-            // username: '',
-            // password: '',
+            selectedAsset: {},
+            showTopMessage: false,
+            topMessage: '',
+            topMessageColor: 'info',
+            dialog: false,
+            editDialog: false,
+            assetToDelete: '',
+            assetLogDialog: false
             // nameRules: [
             //     v => !!v || 'Name is required'
             // ],
         }
+    },
+    components: {
+        'EditAsset': EditAsset,
+        'AssetLog': AssetLog
     },
     watch: {
         assets() {
@@ -244,10 +201,12 @@ export default {
     },
     methods: {
         getAssets() {
+            this.editing = false
+
             axios
                 .get('http://localhost:3000/api/assets')
                 .then(response => {
-                    self.assets = response.data
+                    this.assets = response.data
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -262,26 +221,43 @@ export default {
             }
         },
         editItem (item) {
-            this.editedIndex = this.desserts.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialog = true
+            this.selectedAsset = Object.assign({}, item)
+            this.editDialog = true;
+        },
+        showDeleteDialog(item) {
+            this.assetToDelete = item.controlNumber
+            this.dialog = true;
+        },
+        showLog(item) {
+
+            this.selectedAsset = { controlNumber: "dontExists" }
+            this.selectedAsset = Object.assign({}, item)
+            this.assetLogDialog = true
         },
         deleteItem (item) {
-            const index = this.desserts.indexOf(item)
-            confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
         },
-        loadItemInfo (item) {
-            this.selectedControlNumber = item.controlNumber
+        onAssetSaved() {
+            this.editDialog = false
+            this.topMessageColor = 'success'
+            this.topMessage = "Los cambios al activo fueron guardados."
+            this.showTopMessage = true
+
+            this.getAssets()
+        },
+        closeLogDialog() {
+            this.assetLogDialog = false
         }
     },
     mounted: function () {
         this.$nextTick(function () {
             this.getAssets()
         })
-        }
+    }
   }
 </script>
 
 <style>
-
+    tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, .05);
+    }
 </style>

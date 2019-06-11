@@ -11,6 +11,19 @@ async function  getAssetAreas(){
     return result
 }
 
+async function  getAssetBrands(){
+
+    const result = await db.AssetBrandModel.find().sort('name')
+
+    return result
+}
+
+async function getLogs(controlNumber) {
+    const result = await db.AssetLogModel.find().where('asset',controlNumber).sort('date')
+
+    return result
+}
+
 
 async function getAssets() {
 
@@ -26,11 +39,23 @@ function getUsers() {
     return result
 }
 
+async function getUser(id) {
+    const result = await db.UserModel.find().where('_id', id)
+
+    return result
+}
+
 async function getAsset(controlNumber) {
 
     const result = await db.AssetModel.find().where('controlNumber', controlNumber);
 
     if (!result) result = await db.AssetModel.find().where('barcode', controlNumber)
+
+    return result
+}
+
+async function getCategoryById(id) {
+    let result = await db.AssetCategoryModel.find().where('_id', id)
 
     return result
 }
@@ -61,12 +86,7 @@ function getKindsForCategory(id) {
 
 async function insertUser(user) {
 
-    console.log(user);
-
     let dbUser = db.getUserInstance(user)
-
-    console.log(dbUser);
-
 
     const result =
         await dbUser
@@ -94,6 +114,18 @@ async function insertAsset(asset) {
     return result
 }
 
+async function insertAssetLog(log) {
+    const dbAssetLog = db.getAssetLogInstance(log)
+
+    const result =
+        await dbAssetLog
+            .validate()
+            .then(_ => dbAssetLog.save())
+
+    return result
+
+}
+
 async function insertAssetCategory(category) {
     let dbAssetCategory = db.getAssetCategoryInstance(category)
 
@@ -116,11 +148,9 @@ async function deleteAsset(id) {
 
 async function updateAsset(asset) {
 
-    console.log(asset)
-
     const result =
         await db.AssetModel
-            .updateOne({ _id: asset.id }, asset)
+            .updateOne({ _id: asset._id }, asset)
 
     return result
 }
@@ -138,5 +168,10 @@ module.exports = {
     insertAssetCategory: insertAssetCategory,
     getKindsForCategory: getKindsForCategory,
     insertUser: insertUser,
-    getUsers: getUsers
+    getUser: getUser,
+    getUsers: getUsers,
+    getCategoryById: getCategoryById,
+    getAssetBrands: getAssetBrands,
+    insertAssetLog: insertAssetLog,
+    getLogs: getLogs
 }

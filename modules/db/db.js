@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const dbServer = process.env.MONGO_SERVER_PATH || "localhost:3000/verat"
+const dbServer = process.env.MONGO_SERVER_PATH || "localhost:27017"
 
 console.log(dbServer);
 
@@ -61,6 +61,18 @@ const assetAreaSchema =
         }
     }, { collection: 'AssetArea'})
 
+const assetLogSchema =
+    new mongoose.Schema({
+        date: Date,
+        user: String,
+        asset: String,
+        documentId: mongoose.Schema.Types.ObjectId,
+        event: String,
+        oldValue: String,
+        newValue: String,
+        reason: String
+    })
+
 const assetSchema =
     new mongoose.Schema({
         controlNumber: String,
@@ -69,6 +81,7 @@ const assetSchema =
             type: mongoose.Schema.Types.ObjectId,
             ref: 'AssetCategory'
         },
+        categoryName: String,
         isWithoutControlNumber: Boolean,
         brand: String,
         model: String,
@@ -80,7 +93,8 @@ const assetSchema =
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-        }, //obtenerlo de nomipaq
+        },
+        userName: String,
         area: String,
         status: {
             type: String,
@@ -88,7 +102,8 @@ const assetSchema =
         },
         barcode: String,
         quantity: Number,
-        lastCount: Date
+        lastCount: Date,
+        comments: String
     }, { collection: 'Asset'})
 
 const TicketModel = mongoose.model('Ticket', ticketSchema)
@@ -98,6 +113,7 @@ const UserModel = mongoose.model('User', userSchema)
 const AssetAreaModel = mongoose.model('AssetArea', assetAreaSchema)
 const AssetBrandModel = mongoose.model('AssetBrand', assetBrandSchema)
 const AssetKindModel = mongoose.model('AssetKind', assetKindSchema)
+const AssetLogModel = mongoose.model('AssetLog', assetLogSchema)
 
 
 function getTicketInstance(obj){ return new TicketModel(obj) }
@@ -114,6 +130,8 @@ function getAssetCategoryInstance(obj) { return new AssetCategoryModel(obj) }
 
 function getAssetInstance(obj) { return new AssetModel(obj) }
 
+function getAssetLogInstance(obj) { return new AssetLogModel(obj) }
+
 module.exports = {
     getTicketInstance: getTicketInstance,
     getAssetCategoryInstance: getAssetCategoryInstance,
@@ -122,11 +140,13 @@ module.exports = {
     getAssetBrandInstance: getAssetBrandInstance,
     getAssetKindInstance: getAssetKindInstance,
     getUserInstance: getUserInstance,
+    getAssetLogInstance: getAssetLogInstance,
     TicketModel: TicketModel,
     AssetCategoryModel:AssetCategoryModel,
     AssetModel: AssetModel,
     AssetAreaModel: AssetAreaModel,
     AssetBrandModel: AssetBrandModel,
     AssetKindModel: AssetKindModel,
-    UserModel: UserModel
+    UserModel: UserModel,
+    AssetLogModel: AssetLogModel
 }

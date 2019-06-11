@@ -1,8 +1,8 @@
 const assetRepo = require('../../db/assetRepo')
 
-async function execute(asset){
+async function execute(){
 
-    const result = await assetRepo.updateAsset(asset)
+    let result = await assetRepo.getAssetBrands()
 
     return result
 }
