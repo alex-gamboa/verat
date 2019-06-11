@@ -44,11 +44,28 @@
                 </v-container>
             </v-form> -->
         </div>
-        <div>
+        <v-card>
+            <v-card-title>
+                <v-icon
+                    large
+                    left
+                >
+                    dvr
+                </v-icon>
+                <v-spacer></v-spacer>
+                <v-text-field
+                    v-model="search"
+                    append-icon="search"
+                    label="Search"
+                    single-line
+                    hide-details
+                ></v-text-field>
+            </v-card-title>
             <v-data-table
                 v-model="selected"
                 :headers="headers"
                 :items="assets"
+                :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
                 select-all
@@ -99,7 +116,7 @@
                     </tr>
                 </template>
             </v-data-table>
-        </div>
+        </v-card>
 
         <br>
 
@@ -133,7 +150,7 @@
         </v-dialog>
 
         <v-dialog v-model="assetLogDialog" persistent max-width="1100px">
-            <asset-log :assetControlNumber="selectedAsset.controlNumber" @close="closeLogDialog">
+            <asset-log @close="closeLogDialog">
             </asset-log>
         </v-dialog>
     </div>
@@ -144,6 +161,9 @@
 <script>
 
 import axios from 'axios'
+import moment from "moment";
+import bus from "../bus";
+
 import EditAsset from './EditAsset'
 import AssetLog from './AssetLog'
 
@@ -157,6 +177,7 @@ export default {
                 sortBy: 'kind',
                 rowsPerPage: 10
             },
+            search: '',
             headers: [
             {
                 text: 'Numero de Control',
@@ -166,7 +187,7 @@ export default {
             { text: 'Categoria', value: 'categoryName' },
             { text: 'Tipo', value: 'kind' },
             { text: 'Modelo', value: 'model' },
-            { text: 'Usuario', value: 'user' },
+            { text: 'Usuario', value: 'userName' },
             { text: 'Área', value: 'area' },
             { text: 'Status', value: 'status' },
             { text: 'Ultimo Conteo', value: 'lastCount' },
@@ -184,7 +205,8 @@ export default {
             dialog: false,
             editDialog: false,
             assetToDelete: '',
-            assetLogDialog: false
+            assetLogDialog: false,
+            assetDialogKey: 0
             // nameRules: [
             //     v => !!v || 'Name is required'
             // ],
@@ -206,6 +228,9 @@ export default {
             axios
                 .get('http://localhost:3000/api/assets')
                 .then(response => {
+                    for (const asset of response.data)
+                        asset.lastCount = moment(asset.lastCount).format('YYYY-MM-DD hh:mm')
+
                     this.assets = response.data
                 })
                 .catch(function (error) {
@@ -229,9 +254,11 @@ export default {
             this.dialog = true;
         },
         showLog(item) {
-
-            this.selectedAsset = { controlNumber: "dontExists" }
-            this.selectedAsset = Object.assign({}, item)
+            bus.$emit('loadLogsRequest', {
+                id: item._id,
+                description: `${item.controlNumber}: ${item.kind} ${item.brand} ${item.model}`,
+            })
+            // this.$refs.assetLogView.getLogs()  <--  this works too but whitout the eventBus
             this.assetLogDialog = true
         },
         deleteItem (item) {

@@ -2,9 +2,6 @@ const mongoose = require('mongoose')
 
 const dbServer = process.env.MONGO_SERVER_PATH || "localhost:27017"
 
-console.log(dbServer);
-
-
 mongoose
     .connect('mongodb://' + dbServer + '/verat')
     .then(() => console.log('Connected to ' + dbServer))
@@ -66,6 +63,7 @@ const assetLogSchema =
         date: Date,
         user: String,
         asset: String,
+        assetControlNumber: String,
         documentId: mongoose.Schema.Types.ObjectId,
         event: String,
         oldValue: String,

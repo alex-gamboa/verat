@@ -1,11 +1,9 @@
+const moment = require('moment')
 const assetRepo = require('../../db/assetRepo')
 
-async function execute(controlNumber){
+async function execute(assetId){
 
-    let result = await assetRepo.getLogs(controlNumber)
-
-    console.log(result);
-
+    let result = await assetRepo.getLogs(assetId)
 
     return result
 }

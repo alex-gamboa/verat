@@ -47,13 +47,13 @@ app.get('/api/tickets', async (req, res) => {
     else res.send(result)
 })
 
-app.get('/api/logs/:controlNumber', async (req, res) => {
+app.get('/api/logs/:id', async (req, res) => {
     const error = null;
 
     const result =
        await
             getLogs
-                .execute(req.params['controlNumber'])
+                .execute(req.params['id'])
                 .catch(e => error = e)
 
     if (error) res.send(error)

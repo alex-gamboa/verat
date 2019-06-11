@@ -18,8 +18,8 @@ async function  getAssetBrands(){
     return result
 }
 
-async function getLogs(controlNumber) {
-    const result = await db.AssetLogModel.find().where('asset',controlNumber).sort('date')
+async function getLogs(assetId) {
+    const result = await db.AssetLogModel.find().where('asset',assetId).sort('date')
 
     return result
 }
