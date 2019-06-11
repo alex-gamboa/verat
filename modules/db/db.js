@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
 
+const dbServer = process.env.MONGO_SERVER_PATH || "localhost:27017"
+
 mongoose
-    .connect('mongodb://localhost/verat')
-    .then(() => console.log('Connected to MongoDB...'))
+    .connect('mongodb://' + dbServer + '/verat')
+    .then(() => console.log('Connected to ' + dbServer))
     .catch(err => console.log('Couldn\'t connect to MongoDB.'))
 
 const ticketSchema =
@@ -13,7 +15,7 @@ const ticketSchema =
             required: true,
             minlength: 10
         }
-    })
+    }, { collection: 'Ticket'})
 
 const userSchema =
     new mongoose.Schema({
@@ -21,12 +23,12 @@ const userSchema =
         password: String,
         fullName: String,
         canLogin: Boolean
-    })
+    }, { collection: 'User'})
 
 const assetCategorySchema =
     new mongoose.Schema({
         name: String
-    })
+    }, { collection: 'AssetCategory'})
 
 const assetBrandSchema =
     new mongoose.Schema({
@@ -34,7 +36,7 @@ const assetBrandSchema =
             type: String,
             required: true
         }
-    })
+    }, { collection: 'AssetBrand'})
 
 const assetKindSchema =
     new mongoose.Schema({
@@ -46,7 +48,7 @@ const assetKindSchema =
             type: mongoose.Schema.Types.ObjectId,
             ref: 'AssetCategory'
         }
-    })
+    }, { collection: 'AssetKind'})
 
 const assetAreaSchema =
     new mongoose.Schema({
@@ -54,6 +56,19 @@ const assetAreaSchema =
             type: String,
             required: true
         }
+    }, { collection: 'AssetArea'})
+
+const assetLogSchema =
+    new mongoose.Schema({
+        date: Date,
+        user: String,
+        asset: String,
+        assetControlNumber: String,
+        documentId: mongoose.Schema.Types.ObjectId,
+        event: String,
+        oldValue: String,
+        newValue: String,
+        reason: String
     })
 
 const assetSchema =
@@ -64,6 +79,7 @@ const assetSchema =
             type: mongoose.Schema.Types.ObjectId,
             ref: 'AssetCategory'
         },
+        categoryName: String,
         isWithoutControlNumber: Boolean,
         brand: String,
         model: String,
@@ -75,7 +91,8 @@ const assetSchema =
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-        }, //obtenerlo de nomipaq
+        },
+        userName: String,
         area: String,
         status: {
             type: String,
@@ -83,8 +100,9 @@ const assetSchema =
         },
         barcode: String,
         quantity: Number,
-        lastCount: Date
-    })
+        lastCount: Date,
+        comments: String
+    }, { collection: 'Asset'})
 
 const TicketModel = mongoose.model('Ticket', ticketSchema)
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)
@@ -93,6 +111,7 @@ const UserModel = mongoose.model('User', userSchema)
 const AssetAreaModel = mongoose.model('AssetArea', assetAreaSchema)
 const AssetBrandModel = mongoose.model('AssetBrand', assetBrandSchema)
 const AssetKindModel = mongoose.model('AssetKind', assetKindSchema)
+const AssetLogModel = mongoose.model('AssetLog', assetLogSchema)
 
 
 function getTicketInstance(obj){ return new TicketModel(obj) }
@@ -109,6 +128,8 @@ function getAssetCategoryInstance(obj) { return new AssetCategoryModel(obj) }
 
 function getAssetInstance(obj) { return new AssetModel(obj) }
 
+function getAssetLogInstance(obj) { return new AssetLogModel(obj) }
+
 module.exports = {
     getTicketInstance: getTicketInstance,
     getAssetCategoryInstance: getAssetCategoryInstance,
@@ -117,11 +138,13 @@ module.exports = {
     getAssetBrandInstance: getAssetBrandInstance,
     getAssetKindInstance: getAssetKindInstance,
     getUserInstance: getUserInstance,
+    getAssetLogInstance: getAssetLogInstance,
     TicketModel: TicketModel,
     AssetCategoryModel:AssetCategoryModel,
     AssetModel: AssetModel,
     AssetAreaModel: AssetAreaModel,
     AssetBrandModel: AssetBrandModel,
     AssetKindModel: AssetKindModel,
-    UserModel: UserModel
+    UserModel: UserModel,
+    AssetLogModel: AssetLogModel
 }
