@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const dbServer = process.env.MONGO_SERVER_PATH || "localhost:27017"
+const dbServer = "localhost:27017" //process.env.MONGO_SERVER_PATH || "localhost:27017"
 
 mongoose
     .connect('mongodb://' + dbServer + '/verat')

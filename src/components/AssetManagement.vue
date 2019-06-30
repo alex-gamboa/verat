@@ -145,7 +145,7 @@
         </v-dialog>
 
         <v-dialog v-model="editDialog" persistent max-width="900px">
-            <edit-asset :asset="selectedAsset" @asset-saved="onAssetSaved" @cancel="editDialog = false">
+            <edit-asset :asset="selectedAsset" @asset-saved="onAssetSaved" @cancel="editDialog = false" :blockControlNumber="!editing">
             </edit-asset>
         </v-dialog>
 
@@ -195,7 +195,6 @@ export default {
             ],
             assets: [],
             selected: [],
-            editing: false,
             showProgress:true,
             valid: false,
             selectedAsset: {},
@@ -204,6 +203,7 @@ export default {
             topMessageColor: 'info',
             dialog: false,
             editDialog: false,
+            editing:false,
             assetToDelete: '',
             assetLogDialog: false,
             assetDialogKey: 0
@@ -248,6 +248,7 @@ export default {
         editItem (item) {
             this.selectedAsset = Object.assign({}, item)
             this.editDialog = true;
+            this.editing = true;
         },
         showDeleteDialog(item) {
             this.assetToDelete = item.controlNumber

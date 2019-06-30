@@ -13,7 +13,7 @@
                             <v-text-field
                                 v-model="asset.controlNumber"
                                 label="Numero de control"
-                                :readonly="!editing"
+                                :readonly="blockControlNumber"
                             ></v-text-field>
                             <v-combobox
                                 v-model="asset.categoryName"
@@ -84,7 +84,7 @@
                         ></v-text-field>
                         <v-checkbox
                             v-model="asset.isWithoutControlNumber"
-                            label="Sin numero de control"
+                            label="Sin UID"
                         ></v-checkbox>
                         <v-textarea
                             v-model="reason"
@@ -113,12 +113,12 @@ let self
 
 export default {
     props: {
-        asset: {}
+        asset: {},
+        blockControlNumber: false
     },
     data () {
         self = this
         return {
-            editing: false,
             areas:[],
             states: [],
             brands: [],
@@ -126,7 +126,9 @@ export default {
             kinds: [],
             users: [],
             reason: "",
-            showReason: false
+            showReason: false,
+            editing: false,
+            isStatusChanged: false,
         }
     },
     watch: {
@@ -134,6 +136,9 @@ export default {
             if (newValue === 'Reparación' || newValue === 'Scrap' || newValue === 'Baja') {
                 self.showReason = true
             }
+
+            if(newValue !== old)
+                self.isStatusChanged = true;
         }
     },
     methods: {
@@ -148,8 +153,10 @@ export default {
 
             axios.put('http://localhost:3000/api/assets', this.asset)
             .then(response => {
-                this.saveLog()
+                if(this.isStatusChanged) this.saveLog()
+
                 this.asset = {}
+                this.isStatusChanged = false
                 this.$emit('asset-saved', response)
             })
             .catch(function (error) {
