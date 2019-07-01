@@ -7,6 +7,7 @@ import Home from './views/Home'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     { path: '/', name: 'home', component: Home },
     { path: '/assetmgmt', component: AssetManagement }

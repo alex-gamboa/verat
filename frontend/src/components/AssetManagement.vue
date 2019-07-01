@@ -226,7 +226,7 @@ export default {
             this.editing = false
 
             axios
-                .get('http://localhost:3000/api/assets')
+                .get('/api/assets')
                 .then(response => {
                     for (const asset of response.data)
                         asset.lastCount = moment(asset.lastCount).format('YYYY-MM-DD hh:mm')

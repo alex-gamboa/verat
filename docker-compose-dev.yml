@@ -1,0 +1,42 @@
+version: '3'
+services:
+  mongodb:
+    image: 'mongo'
+    ports: 
+      - "27017:27017"  
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    ports:
+      - "4890:4890"
+    depends_on:
+      - "mongodb"
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+    environment:
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - DB_NAME=verat
+      - DEVELOPMENT=true
+  frontend:
+    build:
+      dockerfile: Dockerfile3.dev
+      context: ./frontend
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    ports: 
+      - "80:80"
+    depends_on: 
+      - "api"
+  # nginx:
+  #   restart: always
+  #   build:
+  #     dockerfile: Dockerfile.dev
+  #     context: ./nginx
+  #   ports:
+  #     - "3050:80"
+  
+ 

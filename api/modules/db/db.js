@@ -1,9 +1,10 @@
+const config = require('../../config')
 const mongoose = require('mongoose')
 
-const dbServer = "localhost:27017" //process.env.MONGO_SERVER_PATH || "localhost:27017"
+const dbServer = 'mongodb://' + config.mongoHost + ":" + config.mongoPort + '/' + config.mongoDBName
 
 mongoose
-    .connect('mongodb://' + dbServer + '/verat')
+    .connect(dbServer)
     .then(() => console.log('Connected to ' + dbServer))
     .catch(err => console.log('Couldn\'t connect to MongoDB.'))
 

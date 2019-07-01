@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    ports:
+      - "4890:4890"
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+    environment:
+      - MONGO_HOST=realDbIP
+      - MONGO_PORT=realDbPort
+      - DB_NAME=verat
+      - DEVELOPMENT=false
+  frontend:
+    build:
+      dockerfile: Dockerfile3.dev
+      context: ./frontend
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    ports: 
+      - "80:80"
+    depends_on: 
+      - "api"

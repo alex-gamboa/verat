@@ -1,4 +1,6 @@
-const express = require('express')
+const config = require('../config')
+
+//Use cases
 const createTicket = require('../modules/usecases/createTicket')
 const createAssetCategory = require('../modules/usecases/asset/createAssetCategory')
 const createAsset = require('../modules/usecases/asset/createAsset')
@@ -15,24 +17,102 @@ const getAssetBrands = require('../modules/usecases/asset/getAssetBrands')
 const createAssetLog = require('../modules/usecases/asset/createLogEvent')
 const getLogs = require('../modules/usecases/asset/getLogs')
 
-const fs = require('fs')
+
+
+
+//Express Setup
+const express = require('express')
+const bodyParser = require('body-parser')
 const cors = require('cors')
 
-const app = express()// app.use(cors())
+const app = express()
+// app.use(cors)
+app.use(bodyParser.json())
 
+//Other requires
+const fs = require('fs')
 
-app.use(express.json())
-app.use(express.static('./public'));
+// app.use(express.static('./public'));
 
 app.use((req, res, next) => {
+
+    const origin = req.get('origin')
+
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', true)
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
 });
 
+app.get('/api', (req, res) => {
+    res.send('API Running.')
+})
 
+app.get('/api/init', async (req, res) => {
+    
+    if(config.dev){
+        const error = null
+
+        let result = await
+            createAssetCategory
+            .execute({
+                name: 'COMPUTO'
+            })
+            .catch(e => error = e)
+
+        result = await
+            createAssetCategory
+            .execute({
+                name: 'REDES'
+            })
+            .catch(e => error = e)
+
+        const category = Object.assign({}, result)
+
+        result = await
+            createAssetCategory
+            .execute({
+                name: 'TELEFONIA'
+            })
+            .catch(e => error = e)
+        
+        result = await addUser.execute("Alejandro")
+
+        const user = Object.assign({}, result)
+
+        result = await addUser.execute("Ricardo")
+
+        
+
+        let asset = {
+            controlNumber: "CUU000001",
+            category: category.id,
+            kind: "CPU",
+            brand: "DELL",
+            model: "DELL-25858",
+            isWithoutControlNumber: false,
+            barcode: "3477d6d6677",
+            serialNumber: "9938d8d77dd7d",
+            user: user.id,
+            area: "SISTEMAS",
+            status: "Disponible",
+            quantity: 1,
+            categoryName: category.name
+        }
+
+        result =
+            await
+                    createAsset
+                        .execute(asset)
+                        .catch(e => error = e)
+        
+
+        res.send("done.");        
+    }
+
+})
 
 app.get('/api/tickets', async (req, res) => {
     const error = null;
@@ -60,8 +140,10 @@ app.get('/api/logs/:id', async (req, res) => {
     else res.send(result)
 })
 
-app.get('/api/assets', cors(), async (req, res) => {
+app.get('/api/assets', async (req, res) => {
     const error = null;
+
+    console.log('New request to get assets')
 
     const result =
        await
@@ -381,5 +463,5 @@ app.put('/api/assets', async (req, res) => {
     else res.send(result)
 })
 
-const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`Listening on port ${port}`))
+const port = 4890
+app.listen(4890, () => console.log(`Listening on port ${port}`))

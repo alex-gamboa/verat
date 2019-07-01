@@ -1,4 +1,3 @@
-const moment = require('moment')
 const assetRepo = require('../../db/assetRepo')
 
 async function execute(assetId){
