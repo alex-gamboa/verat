@@ -98,7 +98,7 @@
                         <td class="text-xs-left">{{ props.item.area }}</td>
                         <td class="text-xs-left">{{ props.item.status }}</td>
                         <td class="text-xs-left">{{ props.item.lastCount }}</td>
-                        <td class="justify-center layout px-0">
+                        <td class="justify-center">
                             <v-icon
                                 small
                                 class="mr-2"
@@ -287,5 +287,9 @@ export default {
 <style>
     tbody tr:nth-of-type(odd) {
         background-color: rgba(0, 0, 0, .05);
+    }
+
+    .material-icons {
+      vertical-align: middle;
     }
 </style>

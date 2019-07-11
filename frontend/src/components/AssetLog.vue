@@ -93,7 +93,7 @@ export default {
             this.$emit('close')
         },
         getLogs() {
-            axios.get('http://localhost:3000/api/logs/'+ this.assetId)
+            axios.get('api/logs/'+ this.assetId)
             .then(response => {
 
                 for (const log of response.data) {
