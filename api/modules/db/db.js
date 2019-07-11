@@ -3,10 +3,11 @@ const mongoose = require('mongoose')
 
 const dbServer = 'mongodb://' + config.mongoHost + ":" + config.mongoPort + '/' + config.mongoDBName
 
+
 mongoose
     .connect(dbServer)
     .then(() => console.log('Connected to ' + dbServer))
-    .catch(err => console.log('Couldn\'t connect to MongoDB.'))
+    .catch(err => console.log(`Couldn\'t connect to ${dbServer}.`))
 
 const ticketSchema =
     new mongoose.Schema({
