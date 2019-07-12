@@ -26,7 +26,7 @@
                 app
                 clipped-right>
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                <v-toolbar-title>Toolbar</v-toolbar-title>
+                <v-toolbar-title></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-side-icon @click.stop="drawerRight = !drawerRight"></v-toolbar-side-icon>
             </v-toolbar>
@@ -38,7 +38,6 @@
                 </v-toolbar>
 
                 <v-list dense>
-
                     <v-list-tile
                         v-for="item in items"
                         :key="item.title"
@@ -82,7 +81,14 @@ export default {
       right: null,
       left: null,
       items: [
-          { title: 'Administración de Activos', icon: 'dvr', route: '/assetmgmt' },
+          { title: 'Activos', icon: 'dvr', route: '/assetmgmt' },
+          { title: 'Usuarios', icon: 'supervisor_account', route: '/users' },
+          { title: 'Tickets', icon: 'bug_report', route: '/tickets' },
+          { title: 'Consumibles', icon: 'print', route: '/consumables' },
+          { title: 'Contratos', icon: 'description', route: '/contracts' },
+          { title: 'Servicios Internos', icon: 'memory', route: '/services' },
+          { title: 'Tareas Programadas', icon: 'alarm', route: '/cronjobs' },
+          { title: 'Documentos', icon: 'folder', route: '/docs' },
         //   { title: 'App Configuration', icon: 'settings', route: '/' },
         //   { title: 'Access Management', icon: 'fingerprint', route: '/accessmgmt' },
         //   { title: 'Generate Drill Plan', icon: 'play_circle_outline', route: '/' },

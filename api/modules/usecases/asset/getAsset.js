@@ -1,8 +1,5 @@
 const assetRepo = require('../../db/assetRepo')
 
-function getName(asset) {
-
-}
 async function execute(controlNumber){
 
     let assets

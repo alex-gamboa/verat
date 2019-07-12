@@ -106,6 +106,20 @@ const assetSchema =
         comments: String
     }, { collection: 'Asset'})
 
+const consumableSchema =
+    new mongoose.Schema({
+        dateOfCreation: { type: Date, default: Date.now},
+        brand: String,
+        model: String,
+        kind: {
+            type: String,
+            required: true
+        },
+        barcode: String,
+        quantity: Number,
+        comments: String
+    }, { collection: 'Consumable'})
+
 const TicketModel = mongoose.model('Ticket', ticketSchema)
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)
 const AssetModel = mongoose.model('Asset', assetSchema)
@@ -114,6 +128,8 @@ const AssetAreaModel = mongoose.model('AssetArea', assetAreaSchema)
 const AssetBrandModel = mongoose.model('AssetBrand', assetBrandSchema)
 const AssetKindModel = mongoose.model('AssetKind', assetKindSchema)
 const AssetLogModel = mongoose.model('AssetLog', assetLogSchema)
+
+const ConsumableModel = mongoose.model('Consumable', consumableSchema)
 
 
 function getTicketInstance(obj){ return new TicketModel(obj) }
@@ -132,6 +148,8 @@ function getAssetInstance(obj) { return new AssetModel(obj) }
 
 function getAssetLogInstance(obj) { return new AssetLogModel(obj) }
 
+function getConsumableInstance(obj) { return new ConsumableModel(obj) }
+
 module.exports = {
     getTicketInstance: getTicketInstance,
     getAssetCategoryInstance: getAssetCategoryInstance,
@@ -141,9 +159,11 @@ module.exports = {
     getAssetKindInstance: getAssetKindInstance,
     getUserInstance: getUserInstance,
     getAssetLogInstance: getAssetLogInstance,
+    getConsumableInstance: getConsumableInstance,
     TicketModel: TicketModel,
     AssetCategoryModel:AssetCategoryModel,
     AssetModel: AssetModel,
+    ConsumableModel: ConsumableModel,
     AssetAreaModel: AssetAreaModel,
     AssetBrandModel: AssetBrandModel,
     AssetKindModel: AssetKindModel,

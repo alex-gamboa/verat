@@ -45,6 +45,12 @@ async function getUser(id) {
     return result
 }
 
+async function getUserByName(name) {
+    const result = await db.UserModel.find().where('fullName', name)
+
+    return result
+}
+
 async function getAsset(controlNumber) {
 
     const result = await db.AssetModel.find().where('controlNumber', controlNumber);
@@ -169,6 +175,7 @@ module.exports = {
     getKindsForCategory: getKindsForCategory,
     insertUser: insertUser,
     getUser: getUser,
+    getUserByName: getUserByName,
     getUsers: getUsers,
     getCategoryById: getCategoryById,
     getAssetBrands: getAssetBrands,

@@ -17,8 +17,9 @@ const getAssetBrands = require('../modules/usecases/asset/getAssetBrands')
 const createAssetLog = require('../modules/usecases/asset/createLogEvent')
 const getLogs = require('../modules/usecases/asset/getLogs')
 
-
-
+const createConsumable = require('../modules/usecases/consumable/createConsumable')
+const getConsumables = require('../modules/usecases/consumable/getConsumables')
+const updateConsumable = require('../modules/usecases/consumable/updateConsumable')
 
 //Express Setup
 const express = require('express')
@@ -51,7 +52,7 @@ app.get('/api', (req, res) => {
 })
 
 app.get('/api/init', async (req, res) => {
-    
+
     if(config.dev){
         const error = null
 
@@ -77,14 +78,14 @@ app.get('/api/init', async (req, res) => {
                 name: 'TELEFONIA'
             })
             .catch(e => error = e)
-        
+
         result = await addUser.execute("Alejandro")
 
         const user = Object.assign({}, result)
 
         result = await addUser.execute("Ricardo")
 
-        
+
 
         let asset = {
             controlNumber: "CUU000001",
@@ -107,9 +108,9 @@ app.get('/api/init', async (req, res) => {
                     createAsset
                         .execute(asset)
                         .catch(e => error = e)
-        
 
-        res.send("done.");        
+
+        res.send("done.");
     }
 
 })
@@ -143,11 +144,22 @@ app.get('/api/logs/:id', async (req, res) => {
 app.get('/api/assets', async (req, res) => {
     const error = null;
 
-    console.log('New request to get assets')
-
     const result =
        await
             getAsset
+                .execute()
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.get('/api/consumables', async (req, res) => {
+    const error = null;
+
+    const result =
+       await
+            getConsumables
                 .execute()
                 .catch(e => error = e)
 
@@ -422,29 +434,23 @@ app.post('/api/logs', async (req, res) => {
 })
 
 app.post('/api/assets', async (req, res) => {
-    const error = null;
+    let error
+    let result
 
-    let asset = {
-        controlNumber: req.body.controlNumber,
-        category: req.body.category,
-        kind: req.body.kind,
-        brand: req.body.brand,
-        model: req.body.model,
-        isWithoutControlNumber: req.body.isWithoutControlNumber,
-        barcode: req.body.barcode,
-        serialNumber: req.body.serialNumber,
-        user: (req.body.user) ? req.body.user : null,
-        area: req.body.area,
-        status: "Disponible",
-        quantity: req.body.quantity,
-        categoryName: req.body.categoryName
+    if(req.body._id) {
+        result =
+            await
+                updateAsset
+                    .execute(req.body)
+                    .catch(e => error = e)
     }
-
-    let result =
-       await
-            createAsset
-                .execute(asset)
-                .catch(e => error = e)
+    else {
+        result =
+            await
+                createAsset
+                    .execute(req.body)
+                    .catch(e => error = e)
+    }
 
     if (error) res.send(error)
     else res.send(result)
@@ -458,6 +464,29 @@ app.put('/api/assets', async (req, res) => {
             updateAsset
                 .execute(req.body)
                 .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.post('/api/consumables', async (req, res) => {
+    const error = null;
+    let result
+
+    if(req.body._id) {
+        result =
+            await
+                updateConsumable
+                .execute(req.body)
+                .catch(e => error = e)
+    }
+    else {
+        result =
+            await
+                createConsumable
+                .execute(req.body)
+                .catch(e => error = e)
+    }
 
     if (error) res.send(error)
     else res.send(result)

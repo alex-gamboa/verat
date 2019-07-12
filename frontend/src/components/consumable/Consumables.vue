@@ -1,56 +1,12 @@
 <template>
     <div class="container" style="height:100%">
-        <div>
-            <!-- <v-form v-model="valid">
-                <v-container>
-                    <v-layout>
-                        <v-flex
-                        xs12
-                        md4
-                        >
-                        <v-text-field
-                            v-model="name"
-                            :rules="nameRules"
-                            label="Name"
-                            required
-                        ></v-text-field>
-                        </v-flex>
-
-                        <v-flex
-                        xs12
-                        md4
-                        >
-                        <v-text-field
-                            v-model="username"
-                            :rules="nameRules"
-                            label="Username"
-                            required
-                        ></v-text-field>
-                        </v-flex>
-
-                        <v-flex
-                        xs12
-                        md4
-                        >
-                        <v-text-field
-                            v-model="password"
-                            :type="password"
-                            :rules="nameRules"
-                            label="Password"
-                            required
-                        ></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            </v-form> -->
-        </div>
         <v-card>
             <v-card-title>
                 <v-icon
                     large
                     left
                 >
-                    dvr
+                    print
                 </v-icon>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -64,12 +20,12 @@
             <v-data-table
                 v-model="selected"
                 :headers="headers"
-                :items="assets"
+                :items="consumables"
                 :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
                 select-all
-                item-key="controlNumber"
+                item-key="id"
                 class="elevation-1"
             >
                 <template slot="headers" slot-scope="props">
@@ -90,15 +46,11 @@
 
                 <template slot="items" slot-scope="props">
                     <tr>
-                        <td>{{ props.item.controlNumber }}</td>
-                        <td class="text-xs-left">{{ props.item.categoryName }}</td>
+                        <td>{{ props.item._id }}</td>
                         <td class="text-xs-left">{{ props.item.kind }}</td>
                         <td class="text-xs-left">{{ props.item.brand }}</td>
                         <td class="text-xs-left">{{ props.item.model }}</td>
-                        <td class="text-xs-left">{{ props.item.userName }}</td>
-                        <td class="text-xs-left">{{ props.item.area }}</td>
-                        <td class="text-xs-left">{{ props.item.status }}</td>
-                        <td class="text-xs-left">{{ props.item.lastCount }}</td>
+                        <td class="text-xs-left">{{ props.item.quantity }}</td>
                         <td class="justify-center">
                             <v-icon
                                 small
@@ -110,8 +62,8 @@
                             <v-icon
                                 small
                                 class="mr-2"
-                                @click="showLog(props.item)"                            >
-                                assignment
+                                @click="showLog(props.item)">
+                                assignment_ind
                             </v-icon>
                         </td>
                     </tr>
@@ -120,6 +72,10 @@
         </v-card>
 
         <br>
+
+        <!-- <v-btn flat icon color="blue lighten-2">
+            <v-icon large>add_circle</v-icon>
+        </v-btn> -->
 
         <v-btn @click="showAdd" color="primary" dark>Nuevo
             <v-icon dark right>add_circle</v-icon>
@@ -146,14 +102,9 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog v-model="editDialog" persistent max-width="900px">
-            <edit-asset :asset="selectedAsset" @asset-saved="onAssetSaved" @cancel="editDialog = false" :blockControlNumber="!editing">
-            </edit-asset>
-        </v-dialog>
-
-        <v-dialog v-model="assetLogDialog" persistent max-width="1100px">
-            <asset-log @close="closeLogDialog">
-            </asset-log>
+        <v-dialog v-model="editDialog" persistent max-width="700px">
+            <edit-consumable :editing="editing" :consumable="selectedConsumable" @save="onAssetSaved" @cancel="editDialog = false">
+            </edit-consumable>
         </v-dialog>
     </div>
 </template>
@@ -162,10 +113,9 @@
 
 import axios from 'axios'
 import moment from "moment";
-import bus from "../bus";
+import bus from "../../bus";
 
-import EditAsset from './EditAsset'
-import AssetLog from './AssetLog'
+import EditConsumable from './EditConsumable'
 
 let self
 
@@ -180,31 +130,28 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Numero de Control',
+                text: 'ID',
                 align: 'left',
-                value: 'controlNumber'
+                value: '_id'
             },
-            { text: 'Categoria', value: 'categoryName' },
             { text: 'Tipo', value: 'kind' },
             { text: 'Marca', value: 'brand' },
             { text: 'Modelo', value: 'model' },
-            { text: 'Usuario', value: 'userName' },
-            { text: 'Área', value: 'area' },
-            { text: 'Status', value: 'status' },
-            { text: 'Ultimo Conteo', value: 'lastCount' },
+            { text: 'Cantidad', value: 'quantity' },
             { text: 'Acciones', value: '', sortable: false },
             ],
-            assets: [],
+            consumables: [],
             selected: [],
             showProgress:true,
             valid: false,
-            selectedAsset: {},
+            selectedConsumable: {},
             showTopMessage: false,
             topMessage: '',
             topMessageColor: 'info',
             dialog: false,
             editDialog: false,
             editing:false,
+            adding:false,
             assetToDelete: '',
             assetLogDialog: false,
             assetDialogKey: 0
@@ -214,25 +161,21 @@ export default {
         }
     },
     components: {
-        'EditAsset': EditAsset,
-        'AssetLog': AssetLog
+        'EditConsumable': EditConsumable,
     },
     watch: {
-        assets() {
+        consumables() {
             this.showProgress = false
         }
     },
     methods: {
-        getAssets() {
+        getConsumables() {
             this.editing = false
 
             axios
-                .get('/api/assets')
+                .get('/api/consumables')
                 .then(response => {
-                    for (const asset of response.data)
-                        asset.lastCount = moment(asset.lastCount).format('YYYY-MM-DD hh:mm')
-
-                    this.assets = response.data
+                    this.consumables = response.data
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -246,75 +189,49 @@ export default {
                 this.pagination.descending = false
             }
         },
-        showAdd (item) {
-            this.selectedAsset = {
+        showAdd() {
+            this.selectedConsumable = {
                 id: '',
-                category: '',
-                kind: '',
-                brand: '',
-                model: '',
-                comments:'',
-                reason: '',
-                status: '',
-                quantity: '',
-                barcode: '',
-                controlNumber: '',
                 categoryName: '',
-                serialNumber: '',
-                userName: '',
-                area: '',
-                isWithoutControlNumber: false,
-                user: ''
+                brand: '',
+                kind: '',
+                comments: '',
+                barcode: '',
+                quantity: 1
             }
-
-            this.editDialog = true;
-            this.editing = true;//todo change to correct logic
+            this.editDialog = true
+            this.editing = false
+            this.adding = true
         },
         editItem (item) {
-            this.selectedAsset = Object.assign({}, item)
+            this.selectedConsumable = Object.assign({}, item)
             this.editDialog = true;
             this.editing = true;
+            this.adding = false;
         },
         showDeleteDialog(item) {
             this.assetToDelete = item.controlNumber
             this.dialog = true;
         },
-        showLog(item) {
-            bus.$emit('loadLogsRequest', {
-                id: item._id,
-                description: `${item.controlNumber}: ${item.kind} ${item.brand} ${item.model}`,
-            })
-            // this.$refs.assetLogView.getLogs()  <--  this works too but whitout the eventBus
-            this.assetLogDialog = true
-        },
-        deleteItem (item) {
-        },
         onAssetSaved() {
             this.editDialog = false
             this.topMessageColor = 'success'
-            this.topMessage = "Los cambios al activo fueron guardados."
+            this.topMessage = "Los cambios al consumible fueron guardados."
             this.showTopMessage = true
 
-            this.getAssets()
-        },
-        closeLogDialog() {
-            this.assetLogDialog = false
+            this.getConsumables()
         }
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.getAssets()
+            this.getConsumables()
         })
     }
   }
 </script>
 
-<style>
-    tbody tr:nth-of-type(odd) {
-        background-color: rgba(0, 0, 0, .05);
-    }
 
-    .material-icons {
-      vertical-align: middle;
-    }
+
+<style>
+
 </style>

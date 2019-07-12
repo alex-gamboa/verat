@@ -33,7 +33,7 @@
                                 v-model="asset.brand"
                                 :items="brands"
                                 item-text="name"
-                                item-value="name"
+                                item-value="id"
                                 label="Marca"
                             ></v-combobox>
                             <v-text-field
@@ -144,14 +144,22 @@ export default {
     methods: {
         saveItem() {
 
-            this.asset.category = this.asset.categoryName._id
-            this.asset.categoryName = this.asset.categoryName.name
-            this.asset.user = this.asset.userName._id
-            this.asset.userName = this.asset.userName.fullName
-            this.asset.area = this.asset.area.name
-            this.asset.kind = this.asset.kind.name
+            if(typeof this.asset.category === 'object')
+                this.asset.category = this.asset.categoryName._id
+            if(typeof this.asset.categoryName === 'object')
+                this.asset.categoryName = this.asset.categoryName.name
+            if(typeof this.asset.user === 'object')
+                this.asset.user = this.asset.userName._id
+            if(typeof this.asset.userName === 'object')
+                this.asset.userName = this.asset.userName.fullName
+            if(typeof this.asset.area === 'object')
+                this.asset.area = this.asset.area.name
+            if(typeof this.asset.kind === 'object')
+                this.asset.kind = this.asset.kind.name
+            if(typeof this.asset.brand === 'object')
+                this.asset.brand = this.asset.brand.name
 
-            axios.put('api/assets', this.asset)
+            axios.post('api/assets', this.asset)
             .then(response => {
                 if(this.isStatusChanged) this.saveLog()
 
