@@ -155,9 +155,6 @@ export default {
             assetToDelete: '',
             assetLogDialog: false,
             assetDialogKey: 0
-            // nameRules: [
-            //     v => !!v || 'Name is required'
-            // ],
         }
     },
     components: {
