@@ -16,10 +16,13 @@ const countAsset = require('../modules/usecases/asset/countAsset')
 const getAssetBrands = require('../modules/usecases/asset/getAssetBrands')
 const createAssetLog = require('../modules/usecases/asset/createLogEvent')
 const getLogs = require('../modules/usecases/asset/getLogs')
+const getAssetsForKind = require('../modules/usecases/asset/getAssetsForKind')
 
 const createConsumable = require('../modules/usecases/consumable/createConsumable')
 const getConsumables = require('../modules/usecases/consumable/getConsumables')
 const updateConsumable = require('../modules/usecases/consumable/updateConsumable')
+const getConsumableModels = require('../modules/usecases/consumable/getConsumableModels')
+const createConsumableHistory = require('../modules/usecases/consumable/createConsumableHistory')
 
 //Express Setup
 const express = require('express')
@@ -154,6 +157,19 @@ app.get('/api/assets', async (req, res) => {
     else res.send(result)
 })
 
+app.get('/api/assetsForKind/:kindName', async (req, res) => {
+    const error = null;
+
+    const result =
+        await
+            getAssetsForKind
+            .execute(req.params['kindName'])
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
 app.get('/api/consumables', async (req, res) => {
     const error = null;
 
@@ -193,14 +209,27 @@ app.get('/api/assetCategories', async (req, res) => {
     else res.send(result)
 })
 
+app.get('/api/consumableModels', async (req, res) => {
+    const error = null;
+
+    const result =
+        await
+            getConsumableModels
+            .execute()
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
 app.get('/api/assetKinds', async (req, res) => {
     const error = null;
 
     const result =
-       await
-       getAssetKinds
-                .execute()
-                .catch(e => error = e)
+        await
+            getAssetKinds
+            .execute()
+            .catch(e => error = e)
 
     if (error) res.send(error)
     else res.send(result)
@@ -451,6 +480,21 @@ app.post('/api/assets', async (req, res) => {
                     .execute(req.body)
                     .catch(e => error = e)
     }
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+app.post('/api/consumableHistory', async (req, res) => {
+    let error
+    let result
+
+    result =
+        await
+            createConsumableHistory
+            .execute(req.body)
+            .catch(e => error = e)
+
 
     if (error) res.send(error)
     else res.send(result)

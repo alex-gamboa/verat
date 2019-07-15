@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import App from './App.vue'
 import AssetManagement from './components/AssetManagement'
 import UserManagement from './components/UserManagement'
-import Tickets from './components/Tickets';
+import Tickets from './components/ticket/Tickets';
 import Consumables from './components/consumable/Consumables'
 import Home from './views/Home'
 

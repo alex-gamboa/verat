@@ -32,6 +32,13 @@ async function getAssets() {
     return result
 }
 
+async function getAssetsForKind(kindName) {
+
+    const result = await db.AssetModel.find().where('kind', kindName)
+
+    return result
+}
+
 function getUsers() {
 
     const result = db.UserModel.find().sort('fullName')
@@ -180,5 +187,6 @@ module.exports = {
     getCategoryById: getCategoryById,
     getAssetBrands: getAssetBrands,
     insertAssetLog: insertAssetLog,
-    getLogs: getLogs
+    getLogs: getLogs,
+    getAssetsForKind: getAssetsForKind
 }
