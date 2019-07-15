@@ -9,6 +9,13 @@ async function getConsumables() {
     return result
 }
 
+async function getConsumableModels() {
+
+    const result = await db.ConsumableModel.find().select('model -_id')
+
+    return result
+}
+
 async function insertConsumable(consumable) {
 
     let dbConsumable = db.getConsumableInstance(consumable)
@@ -17,6 +24,21 @@ async function insertConsumable(consumable) {
         await dbConsumable
             .validate()
             .then(_ => dbConsumable.save())
+            .catch(e => {
+                console.log(e);
+            })
+
+    return result
+}
+
+async function insertConsumableHistory(history) {
+
+    let dbHistory = db.getConsumableHistoryInstance(history)
+
+    const result =
+        await dbHistory
+            .validate()
+            .then(_ => dbHistory.save())
             .catch(e => {
                 console.log(e);
             })
@@ -36,5 +58,7 @@ async function updateConsumable(consumable) {
 module.exports = {
     getConsumables: getConsumables,
     insertConsumable: insertConsumable,
-    updateConsumable: updateConsumable
+    updateConsumable: updateConsumable,
+    getConsumableModels: getConsumableModels,
+    insertConsumableHistory: insertConsumableHistory
 }

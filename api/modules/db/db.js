@@ -9,16 +9,6 @@ mongoose
     .then(() => console.log('Connected to ' + dbServer))
     .catch(err => console.log(`Couldn\'t connect to ${dbServer}.`))
 
-const ticketSchema =
-    new mongoose.Schema({
-        date: { type: Date, default: Date.now},
-        description: {
-            type: String,
-            required: true,
-            minlength: 10
-        }
-    }, { collection: 'Ticket'})
-
 const userSchema =
     new mongoose.Schema({
         username: String,
@@ -120,6 +110,49 @@ const consumableSchema =
         comments: String
     }, { collection: 'Consumable'})
 
+const consumableHistorySchema =
+    new mongoose.Schema({
+        dateOfCreation: { type: Date, default: Date.now},
+        consumable: {
+            type: mongoose.Schema.Types.ObjectId
+        },
+        itemId: {
+            type: mongoose.Schema.Types.ObjectId
+        },
+        isAsset: Boolean,
+    }, { collection: 'ConsumableHistory'})
+
+const spartPartSchema =
+    new mongoose.Schema({
+        name: String,
+        cost: Number,
+        quantity: Number
+    })
+
+const ticketSchema =
+    new mongoose.Schema({
+        date: { type: Date, default: Date.now},
+        ticketNumber: Number,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        tecnico: String,
+        description: {
+            type: String,
+            required: true,
+            minlength: 10
+        },
+        solution: String,
+        assetId: {
+            type: mongoose.Schema.Types.ObjectId
+        },
+        service: String,
+        type: String,
+        hours: Number,
+        spartParts: [spartPartSchema]
+    }, { collection: 'Ticket'})
+
 const TicketModel = mongoose.model('Ticket', ticketSchema)
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)
 const AssetModel = mongoose.model('Asset', assetSchema)
@@ -130,6 +163,7 @@ const AssetKindModel = mongoose.model('AssetKind', assetKindSchema)
 const AssetLogModel = mongoose.model('AssetLog', assetLogSchema)
 
 const ConsumableModel = mongoose.model('Consumable', consumableSchema)
+const ConsumableHistoryModel = mongoose.model('ConsumableHistory', consumableHistorySchema)
 
 
 function getTicketInstance(obj){ return new TicketModel(obj) }
@@ -150,6 +184,8 @@ function getAssetLogInstance(obj) { return new AssetLogModel(obj) }
 
 function getConsumableInstance(obj) { return new ConsumableModel(obj) }
 
+function getConsumableHistoryInstance(obj) { return new ConsumableHistoryModel(obj) }
+
 module.exports = {
     getTicketInstance: getTicketInstance,
     getAssetCategoryInstance: getAssetCategoryInstance,
@@ -160,6 +196,7 @@ module.exports = {
     getUserInstance: getUserInstance,
     getAssetLogInstance: getAssetLogInstance,
     getConsumableInstance: getConsumableInstance,
+    getConsumableHistoryInstance:getConsumableHistoryInstance,
     TicketModel: TicketModel,
     AssetCategoryModel:AssetCategoryModel,
     AssetModel: AssetModel,
@@ -168,5 +205,6 @@ module.exports = {
     AssetBrandModel: AssetBrandModel,
     AssetKindModel: AssetKindModel,
     UserModel: UserModel,
-    AssetLogModel: AssetLogModel
+    AssetLogModel: AssetLogModel,
+    ConsumableHistoryModel: ConsumableHistoryModel,
 }

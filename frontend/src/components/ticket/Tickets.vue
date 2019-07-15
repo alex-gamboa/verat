@@ -6,7 +6,7 @@
                     large
                     left
                 >
-                    print
+                    bug_report
                 </v-icon>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -20,7 +20,7 @@
             <v-data-table
                 v-model="selected"
                 :headers="headers"
-                :items="consumables"
+                :items="tickets"
                 :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
@@ -91,12 +91,8 @@
         </v-snackbar>
 
         <v-dialog v-model="editDialog" persistent max-width="700px">
-            <edit-consumable :editing="editing" :consumable="selectedConsumable" @save="onAssetSaved" @cancel="editDialog = false">
-            </edit-consumable>
-        </v-dialog>
-        <v-dialog v-model="assignDialog" persistent max-width="900px">
-            <assign-consumable :consumable="selectedConsumable" @save="onAssigned" @cancel="assignDialog = false">
-            </assign-consumable>
+            <edit-ticket :editing="editing" :consumable="selectedConsumable" @save="onAssetSaved" @cancel="editDialog = false">
+            </edit-ticket>
         </v-dialog>
     </div>
 </template>
@@ -107,8 +103,7 @@ import axios from 'axios'
 import moment from "moment";
 import bus from "../../bus";
 
-import EditConsumable from './EditConsumable'
-import AssignConsumable from './AssignConsumable'
+import EditTicket from './EditTicket'
 
 let self
 
@@ -133,7 +128,7 @@ export default {
             { text: 'Cantidad', value: 'quantity' },
             { text: 'Acciones', value: '', sortable: false },
             ],
-            consumables: [],
+            tickets: [],
             selected: [],
             showProgress:true,
             valid: false,
@@ -149,22 +144,18 @@ export default {
         }
     },
     components: {
-        'EditConsumable': EditConsumable,
-        'AssignConsumable': AssignConsumable
-    },
-    watch: {
-        consumables() {
-            this.showProgress = false
-        }
+        'EditTicket': EditTicket,
     },
     methods: {
-        getConsumables() {
+        getTickets() {
             this.editing = false
+            this.showProgress = true
 
             axios
                 .get('/api/consumables')
                 .then(response => {
                     this.consumables = response.data
+                    this.showProgress = false
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -198,10 +189,6 @@ export default {
             this.editing = true;
             this.adding = false;
         },
-        showAssign(item){
-            this.selectedConsumable = Object.assign({}, item)
-            this.assignDialog = true
-        },
         showDeleteDialog(item) {
             this.assetToDelete = item.controlNumber
             this.dialog = true;
@@ -214,16 +201,10 @@ export default {
 
             this.getConsumables()
         },
-        onAssigned() {
-            this.assignDialog = false
-            this.topMessageColor = 'success'
-            this.topMessage = "El consumible fue asignado."
-            this.showTopMessage = true
-        }
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.getConsumables()
+            this.getTickets()
         })
     }
   }
