@@ -46,11 +46,12 @@
 
                 <template slot="items" slot-scope="props">
                     <tr>
-                        <td>{{ props.item._id }}</td>
-                        <td class="text-xs-left">{{ props.item.kind }}</td>
-                        <td class="text-xs-left">{{ props.item.brand }}</td>
-                        <td class="text-xs-left">{{ props.item.model }}</td>
-                        <td class="text-xs-left">{{ props.item.quantity }}</td>
+                        <td>{{ props.item.ticketNumber }}</td>
+                        <td class="text-xs-left">{{ props.item.type }}</td>
+                        <td class="text-xs-left">{{ props.item.status }}</td>
+                        <td class="text-xs-left">{{ props.item.userName }}</td>
+                        <td class="text-xs-left">{{ props.item.agent }}</td>
+                        <td class="text-xs-left">{{ props.item.description }}</td>
                         <td class="justify-center">
                             <v-icon
                                 small
@@ -90,8 +91,8 @@
             {{ topMessage }}
         </v-snackbar>
 
-        <v-dialog v-model="editDialog" persistent max-width="700px">
-            <edit-ticket :editing="editing" :consumable="selectedConsumable" @save="onAssetSaved" @cancel="editDialog = false">
+        <v-dialog v-model="editDialog" persistent max-width="900px">
+            <edit-ticket :editing="editing" :ticket="selectedTicket" @ticket-saved="onTicketSaved" @cancel="editDialog = false">
             </edit-ticket>
         </v-dialog>
     </div>
@@ -118,28 +119,28 @@ export default {
             search: '',
             headers: [
             {
-                text: 'ID',
+                text: 'Folio',
                 align: 'left',
-                value: '_id'
+                value: 'tickerNumber'
             },
-            { text: 'Tipo', value: 'kind' },
-            { text: 'Marca', value: 'brand' },
-            { text: 'Modelo', value: 'model' },
-            { text: 'Cantidad', value: 'quantity' },
+            { text: 'Tipo', value: 'type' },
+            { text: 'Estado', value: 'status' },
+            { text: 'usuario', value: 'user' },
+            { text: 'agente', value: 'agent' },
+            { text: 'descripción', value: 'description' },
             { text: 'Acciones', value: '', sortable: false },
             ],
             tickets: [],
             selected: [],
             showProgress:true,
             valid: false,
-            selectedConsumable: {},
+            selectedTicket: {},
             showTopMessage: false,
             topMessage: '',
             topMessageColor: 'info',
             editDialog: false,
             assignDialog: false,
             editing:false,
-            adding:false,
             assetDialogKey: 0
         }
     },
@@ -152,9 +153,9 @@ export default {
             this.showProgress = true
 
             axios
-                .get('/api/consumables')
+                .get('/api/tickets')
                 .then(response => {
-                    this.consumables = response.data
+                    this.tickets = response.data
                     this.showProgress = false
                 })
                 .catch(function (error) {
@@ -170,36 +171,36 @@ export default {
             }
         },
         showAdd() {
-            this.selectedConsumable = {
+            this.selectedTicket = {
                 id: '',
-                categoryName: '',
-                brand: '',
-                kind: '',
-                comments: '',
-                barcode: '',
-                quantity: 1
+                ticketNumber: '',
+                user: '',
+                agent: '',
+                description: '',
+                solution: '',
+                asset: '',
+                service: '',
+                type: '',
+                hours: '',
+                spareParts: [],
+                status: ''
             }
+
             this.editDialog = true
             this.editing = false
-            this.adding = true
         },
         editItem (item) {
-            this.selectedConsumable = Object.assign({}, item)
+            this.selectedTicket = Object.assign({}, item)
             this.editDialog = true;
             this.editing = true;
-            this.adding = false;
         },
-        showDeleteDialog(item) {
-            this.assetToDelete = item.controlNumber
-            this.dialog = true;
-        },
-        onAssetSaved() {
+        onTicketSaved() {
             this.editDialog = false
             this.topMessageColor = 'success'
-            this.topMessage = "Los cambios al consumible fueron guardados."
+            this.topMessage = "Los cambios al ticket fueron guardados."
             this.showTopMessage = true
 
-            this.getConsumables()
+            this.getTickets()
         },
     },
     mounted: function () {

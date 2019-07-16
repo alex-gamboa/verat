@@ -1,13 +1,17 @@
 const config = require('../../config')
 const mongoose = require('mongoose')
+const autoIncrement = require('mongoose-auto-increment')
 
 const dbServer = 'mongodb://' + config.mongoHost + ":" + config.mongoPort + '/' + config.mongoDBName
 
-
 mongoose
     .connect(dbServer)
-    .then(() => console.log('Connected to ' + dbServer))
-    .catch(err => console.log(`Couldn\'t connect to ${dbServer}.`))
+    // .then(() => {
+    //     console.log('Connected to ' + dbServer)
+    // })
+    // .catch(err => console.log(`Couldn\'t connect to ${dbServer}.`))
+
+autoIncrement.initialize(mongoose.connection)
 
 const userSchema =
     new mongoose.Schema({
@@ -16,6 +20,17 @@ const userSchema =
         fullName: String,
         canLogin: Boolean
     }, { collection: 'User'})
+
+const userDocumentSchema =
+    new mongoose.Schema({
+        name: String,
+        description: String,
+        filePath: String,
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }, { collection: 'UserDocument'})
 
 const assetCategorySchema =
     new mongoose.Schema({
@@ -137,26 +152,32 @@ const ticketSchema =
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        tecnico: String,
+        userName:String,
+        agent: String,
         description: {
             type: String,
             required: true,
-            minlength: 10
+            minlength: 1
         },
         solution: String,
         assetId: {
             type: mongoose.Schema.Types.ObjectId
         },
+        assetControlNumber: String,
         service: String,
         type: String,
         hours: Number,
-        spartParts: [spartPartSchema]
+        spartParts: [spartPartSchema],
+        status: String
     }, { collection: 'Ticket'})
+
+ticketSchema.plugin(autoIncrement.plugin, {model: 'Ticket', field: 'ticketNumber'})
 
 const TicketModel = mongoose.model('Ticket', ticketSchema)
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)
 const AssetModel = mongoose.model('Asset', assetSchema)
 const UserModel = mongoose.model('User', userSchema)
+const UserDocumentModel = mongoose.model('UserDocument',userDocumentSchema)
 const AssetAreaModel = mongoose.model('AssetArea', assetAreaSchema)
 const AssetBrandModel = mongoose.model('AssetBrand', assetBrandSchema)
 const AssetKindModel = mongoose.model('AssetKind', assetKindSchema)
@@ -173,6 +194,8 @@ function getAssetKindInstance(obj) { return new AssetKindModel(obj) }
 function getAssetBrandInstance(obj) { return new AssetBrandModel(obj) }
 
 function getUserInstance(obj) { return new UserModel(obj) }
+
+function getUserDocumentInstance(obj) { return new UserDocumentModel(obj) }
 
 function getAssetAreaInstance(obj) { return new AssetAreaModel(obj) }
 
@@ -194,6 +217,7 @@ module.exports = {
     getAssetBrandInstance: getAssetBrandInstance,
     getAssetKindInstance: getAssetKindInstance,
     getUserInstance: getUserInstance,
+    getUserDocumentInstance: getUserDocumentInstance,
     getAssetLogInstance: getAssetLogInstance,
     getConsumableInstance: getConsumableInstance,
     getConsumableHistoryInstance:getConsumableHistoryInstance,
@@ -207,4 +231,5 @@ module.exports = {
     UserModel: UserModel,
     AssetLogModel: AssetLogModel,
     ConsumableHistoryModel: ConsumableHistoryModel,
+    UserDocumentModel: UserDocumentModel
 }

@@ -3,7 +3,6 @@ const assetRepo = require('../../db/assetRepo')
 async function execute(controlNumber){
 
     let assets
-    let result = []
 
     if(controlNumber)
         assets = await assetRepo.getAsset(controlNumber)
@@ -17,7 +16,6 @@ async function execute(controlNumber){
                 .getCategoryById(asset.category)
                 .then(category => {
                     if(category && category.length > 0) asset.categoryName = category[0].name
-                    // result.push(temp[index])
                 })
 
         await

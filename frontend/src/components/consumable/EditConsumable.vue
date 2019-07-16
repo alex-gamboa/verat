@@ -94,8 +94,8 @@ export default {
         },
         getData() {
             axios.all([
-                axios.get('api/assetBrands'),
-                axios.get('api/assetkinds'),
+                axios.get('api/assets/brand'),
+                axios.get('api/assets/kind'),
             ])
             .then(axios.spread((brands, kinds) => {
                 this.brands = brands.data
