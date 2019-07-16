@@ -1,8 +1,8 @@
 <template>
     <v-card class="mx-auto" max-width="100%">
         <v-card-title>
-            <v-icon large left>print</v-icon>
-            <span class="title font-weight-light">{{ `${consumable.kind} ${consumable.brand} ${consumable.model}` }}</span>
+            <v-icon large left>dvr</v-icon>
+            <span class="title font-weight-light">Search Asset</span>
         </v-card-title>
 
         <v-card-text class="headline font-weight-bold">
@@ -11,21 +11,11 @@
                     <v-flex xs12 md12>
                         <v-form ref="form">
                             <v-combobox
-                                v-model="selectedUser"
-                                :items="users"
-                                item-text="fullName"
-                                item-value="fullName"
-                                label="Usuario"
-                                @change="clearAssetSelection"
-                            ></v-combobox>
-                            <br>
-                            <br>
-                            <v-combobox
                                 v-model="selectedKind"
                                 :items="kinds"
                                 item-text="name"
                                 item-value="name"
-                                label="Activo"
+                                label="Tipo"
                                 @change="getAssets"
                             ></v-combobox>
                             <v-spacer></v-spacer>
@@ -64,7 +54,7 @@
                                 <v-progress-linear v-show="showProgress" slot="progress" color="blue" indeterminate></v-progress-linear>
 
                                 <template slot="items" slot-scope="props">
-                                    <tr>
+                                    <tr @click="emitSelection(props.item)">
                                         <td>
                                             <v-checkbox
                                             v-model="props.selected"
@@ -88,7 +78,6 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="save">Guardar</v-btn>
                 <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
             </v-card-actions>
         </v-card-actions>
@@ -102,12 +91,10 @@ let self
 
 export default {
     props: {
-        consumable: {}
     },
     data () {
         self = this
         return {
-            users: [],
             kinds: [],
             assets: [],
             selected: [],
@@ -131,68 +118,37 @@ export default {
         }
     },
     methods: {
-        save() {
-
-            let history = {
-                isAsset: true,
-                itemId: ''
-            }
-
-            if(this.selectedUser) {
-                history.isAsset = false
-                history.itemId = this.selectedUser._id
-            }
-
-            if(this.selected.length > 0) {
-                history.isAsset = true;
-                history.itemId = this.selected[0]._id
-            }
-
-            axios.post('api/consumables/history', history)
-                .then(response => {
-                    this.consumable = {}
-                    this.$emit('save', response)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
+        emitSelection(item){
+            this.$emit('selected', item)
+            this.selectedKind = ''
+            this.assets = []
+            this.showProgress = false
         },
         getData() {
             axios.all([
                 axios.get('api/assets/brand'),
                 axios.get('api/assets/kind'),
-                axios.get('api/users'),
             ])
-            .then(axios.spread((brands, kinds, users, models) => {
+            .then(axios.spread((brands, kinds) => {
                 this.brands = brands.data
                 this.kinds = kinds.data
-                this.users = users.data
             }));
         },
         cancel() {
-            this.consumable = {}
             this.$emit('cancel')
         },
-        clearAssetSelection(){
-
-            if(this.selectedUser) {
-                this.selectedKind = ''
-                this.assets = []
-                this.selected = []
-            }
-        },
         getAssets(){
+            this.showProgress = true
 
-            if(this.selectedKind) {
-                this.selectedUser = ''
-                this.showProgress = true
-
-                axios.get('api/assets/kind/' + this.selectedKind.name)
-                .then( response => {
-                    this.assets = response.data
-                    this.showProgress = false
-                })
-            }
+            axios.get('api/assets/kind/' + this.selectedKind.name)
+            .then( response => {
+                this.assets = response.data
+                this.showProgress = false
+            })
+            .catch(error => {
+                this.assets = []
+                this.showProgress = false
+            })
         },
         toggleAll () {
         if (this.selected.length) this.selected = []

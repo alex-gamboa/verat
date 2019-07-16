@@ -93,7 +93,7 @@ export default {
             this.$emit('close')
         },
         getLogs() {
-            axios.get('api/logs/'+ this.assetId)
+            axios.get('api/assets/log/'+ this.assetId)
             .then(response => {
 
                 for (const log of response.data) {

@@ -159,7 +159,7 @@ export default {
             if(typeof this.asset.brand === 'object')
                 this.asset.brand = this.asset.brand.name
 
-            axios.post('api/assets', this.asset)
+            axios.post('/api/assets', this.asset)
             .then(response => {
                 if(this.isStatusChanged) this.saveLog()
 
@@ -173,12 +173,12 @@ export default {
         },
         getData() {
             axios.all([
-                axios.get('api/assetCategories'),
-                axios.get('api/assetBrands'),
-                axios.get('api/assetAreas'),
-                axios.get('api/users'),
-                axios.get('api/assetStates'),
-                axios.get('api/assetkinds'),
+                axios.get('/api/assets/category'),
+                axios.get('/api/assets/brand'),
+                axios.get('/api/assets/area'),
+                axios.get('/api/users'),
+                axios.get('/api/assets/state'),
+                axios.get('/api/assets/kind'),
             ])
             .then(axios.spread((categories, brands, areas, users, states, kinds) => {
                 this.categories = categories.data
@@ -197,7 +197,7 @@ export default {
             this.$emit('cancel')
         },
         saveLog() {
-            axios.post('api/logs', {
+            axios.post('/api/assets/log', {
                 date: new Date(),
                 asset: this.asset._id,
                 assetControlNumber: this.asset.controlNumber,
