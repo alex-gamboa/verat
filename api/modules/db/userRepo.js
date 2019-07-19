@@ -29,8 +29,18 @@ async function insertDocument(document) {
     return result
 }
 
+async function updateUser(user) {
+
+    const result =
+        await db.UserModel
+            .updateOne({ _id: user._id }, user)
+
+    return result
+}
+
 module.exports = {
     getUsers: getUsers,
     getUserDocuments: getUserDocuments,
-    insertDocument: insertDocument
+    insertDocument: insertDocument,
+    updateUser: updateUser
 }

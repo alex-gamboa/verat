@@ -18,7 +18,8 @@ const userSchema =
         username: String,
         password: String,
         fullName: String,
-        canLogin: Boolean
+        canLogin: Boolean,
+        type: String
     }, { collection: 'User'})
 
 const userDocumentSchema =
@@ -29,7 +30,8 @@ const userDocumentSchema =
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-        }
+        },
+        date: { type: Date, default: Date.now}
     }, { collection: 'UserDocument'})
 
 const assetCategorySchema =
@@ -137,6 +139,28 @@ const consumableHistorySchema =
         isAsset: Boolean,
     }, { collection: 'ConsumableHistory'})
 
+const contractContactSchema =
+    new mongoose.Schema({
+        name: String,
+        type: String,
+        phone: String,
+        email: String,
+        contract: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Contract'
+        }
+    }, { collection: 'ContractContact'})
+
+const contractSchema =
+    new mongoose.Schema({
+        name: String,
+        details: String,
+        portal: String,
+        portalCredentials: String,
+        billAmount:Number,
+        renovation:String,
+    }, { collection: 'Contract'})
+
 const spartPartSchema =
     new mongoose.Schema({
         name: String,
@@ -171,6 +195,8 @@ const ticketSchema =
         status: String
     }, { collection: 'Ticket'})
 
+
+
 ticketSchema.plugin(autoIncrement.plugin, {model: 'Ticket', field: 'ticketNumber'})
 
 const TicketModel = mongoose.model('Ticket', ticketSchema)
@@ -186,6 +212,13 @@ const AssetLogModel = mongoose.model('AssetLog', assetLogSchema)
 const ConsumableModel = mongoose.model('Consumable', consumableSchema)
 const ConsumableHistoryModel = mongoose.model('ConsumableHistory', consumableHistorySchema)
 
+const ContractModel = mongoose.model('Contract', contractSchema)
+const ContractContactModel = mongoose.model('ContractContact', contractContactSchema)
+
+
+function getContractInstance(obj) { return new ContractModel(obj) }
+
+function getContractContactInstance(obj) { return new ContractContactModel(obj) }
 
 function getTicketInstance(obj){ return new TicketModel(obj) }
 
@@ -231,5 +264,7 @@ module.exports = {
     UserModel: UserModel,
     AssetLogModel: AssetLogModel,
     ConsumableHistoryModel: ConsumableHistoryModel,
-    UserDocumentModel: UserDocumentModel
+    UserDocumentModel: UserDocumentModel,
+    getContractInstance: getContractInstance,
+    getContractContactInstance: getContractContactInstance
 }

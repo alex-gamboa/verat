@@ -1,13 +1,12 @@
-const config = require('./config')
-
 const fs = require('fs')
+const config = require('./config')
 
 const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express()
 
-// app.use(express.static('./public'));
+app.use(express.static(config.nodePublicPath));
 
 app.use(bodyParser.json())
 

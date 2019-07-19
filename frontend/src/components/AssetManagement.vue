@@ -246,7 +246,7 @@ export default {
                 this.pagination.descending = false
             }
         },
-        showAdd (item) {
+        showAdd () {
             this.selectedAsset = {
                 id: '',
                 category: '',
