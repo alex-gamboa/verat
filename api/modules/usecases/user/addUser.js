@@ -1,12 +1,8 @@
 const assetRepo = require('../../db/assetRepo')
 
-async function execute(userName){
+async function execute(user){
 
-    const user = {
-        fullName: userName
-    }
-    let result = await assetRepo
-        .insertUser(user);
+    let result = await assetRepo.insertUser(user);
 
     return result
 }

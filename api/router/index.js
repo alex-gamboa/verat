@@ -10,5 +10,6 @@ router.use('/assets', require('./assets'));
 router.use('/users', require('./users'));
 router.use('/tickets', require('./tickets'));
 router.use('/consumables', require('./consumables'));
+router.use('/contract', require('./contracts'));
 
 module.exports = router;
