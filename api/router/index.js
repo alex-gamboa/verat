@@ -10,6 +10,9 @@ router.use('/assets', require('./assets'));
 router.use('/users', require('./users'));
 router.use('/tickets', require('./tickets'));
 router.use('/consumables', require('./consumables'));
-router.use('/contract', require('./contracts'));
+router.use('/contracts', require('./contracts'));
+router.use('/configurations', require('./configurations'));
+router.use('/documents', require('./documents'));
+router.use('/scheduledTasks', require('./scheduledTasks'));
 
 module.exports = router;

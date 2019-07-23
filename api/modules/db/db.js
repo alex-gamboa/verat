@@ -161,12 +161,45 @@ const contractSchema =
         renovation:String,
     }, { collection: 'Contract'})
 
+const documentSchema =
+    new mongoose.Schema({
+        name: String,
+        description: String,
+        tags: String,
+        filePath: String,
+        date: { type: Date, default: Date.now}
+    }, { collection: 'Document'})
+
+
+const scheduledTaskSchema =
+    new mongoose.Schema({
+        name: String,
+        description: String,
+        frequency: String, //dia,semana,mes,trimestre,semestre,año
+        day:Number,
+        done:Boolean
+    }, { collection: 'ScheduledTask'})
+
 const spartPartSchema =
     new mongoose.Schema({
         name: String,
         cost: Number,
-        quantity: Number
-    })
+        quantity: Number,
+        ticket: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Ticket'
+        }
+    }, { collection: 'SparePart'})
+
+const configurationSchema =
+    new mongoose.Schema({
+        name: String,
+        description: String,
+        accessRoute: String,
+        credentials: String,
+        manual: String,
+        comments: String
+    }, { collection: 'Configuration'})
 
 const ticketSchema =
     new mongoose.Schema({
@@ -199,6 +232,7 @@ const ticketSchema =
 
 ticketSchema.plugin(autoIncrement.plugin, {model: 'Ticket', field: 'ticketNumber'})
 
+const SparePartModel = mongoose.model('SparePart', spartPartSchema)
 const TicketModel = mongoose.model('Ticket', ticketSchema)
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)
 const AssetModel = mongoose.model('Asset', assetSchema)
@@ -215,6 +249,19 @@ const ConsumableHistoryModel = mongoose.model('ConsumableHistory', consumableHis
 const ContractModel = mongoose.model('Contract', contractSchema)
 const ContractContactModel = mongoose.model('ContractContact', contractContactSchema)
 
+const ConfigurationModel = mongoose.model('Configuration', configurationSchema)
+
+const DocumentModel = mongoose.model('Document', documentSchema)
+
+const scheduledTaskModel = mongoose.model('ScheduledTask', scheduledTaskSchema)
+
+function getSparePartInstance(obj) { return new SparePartModel(obj) }
+
+function getScheduledTaskInstance(obj) { return new scheduledTaskModel(obj) }
+
+function getDocumentInstance(obj) { return new DocumentModel(obj) }
+
+function getConfigurationInstance(obj) { return new ConfigurationModel(obj) }
 
 function getContractInstance(obj) { return new ContractModel(obj) }
 
@@ -254,6 +301,12 @@ module.exports = {
     getAssetLogInstance: getAssetLogInstance,
     getConsumableInstance: getConsumableInstance,
     getConsumableHistoryInstance:getConsumableHistoryInstance,
+    getContractInstance: getContractInstance,
+    getContractContactInstance: getContractContactInstance,
+    getConfigurationInstance: getConfigurationInstance,
+    getDocumentInstance: getDocumentInstance,
+    getScheduledTaskInstance: getScheduledTaskInstance,
+    getSparePartInstance: getSparePartInstance,
     TicketModel: TicketModel,
     AssetCategoryModel:AssetCategoryModel,
     AssetModel: AssetModel,
@@ -265,6 +318,10 @@ module.exports = {
     AssetLogModel: AssetLogModel,
     ConsumableHistoryModel: ConsumableHistoryModel,
     UserDocumentModel: UserDocumentModel,
-    getContractInstance: getContractInstance,
-    getContractContactInstance: getContractContactInstance
+    ContractModel: ContractModel,
+    ContractContactModel: ContractContactModel,
+    ConfigurationModel: ConfigurationModel,
+    DocumentModel: DocumentModel,
+    scheduledTaskModel: scheduledTaskModel,
+    SparePartModel: SparePartModel
 }

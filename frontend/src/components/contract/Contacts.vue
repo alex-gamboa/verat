@@ -1,31 +1,38 @@
 <template>
     <v-card class="mx-auto" max-width="100%">
         <v-card-title>
-            <v-icon large left>folder</v-icon>
-            <span class="title font-weight-light">{{ `${user.fullName}` }}</span>
+            <v-icon large left>assignment_ind</v-icon>
+            <span class="title font-weight-light">{{ `${contract.name}` }}</span>
         </v-card-title>
 
         <v-card-text class="headline font-weight-bold">
             <v-container grid-list-xl>
                 <v-layout row wrap>
                     <v-flex xs12>
-                            <v-text-field
-                                v-model="selectedPath"
-                                label="archivo"
-                                @click="$refs.inputUpload.click()"
-                            ></v-text-field>
-                            <input v-show="false" ref="inputUpload" type="file" @change="onFilePicked" >
-                            <v-text-field
-                                v-model="description"
-                                label="Descripción"
-                            ></v-text-field>
+                        <v-text-field
+                            v-model="name"
+                            label="Nombre"
+                        ></v-text-field>
+                        <v-combobox
+                            v-model="type"
+                            :items="types"
+                            label="Tipo"
+                        ></v-combobox>
+                        <v-text-field
+                            v-model="phone"
+                            label="Telefono"
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="email"
+                            label="Correo"
+                        ></v-text-field>
                     </v-flex>
 
                     <v-flex xs12>
                         <v-data-table
                             v-model="selected"
                             :headers="headers"
-                            :items="documents"
+                            :items="contacts"
                             :loading="true"
                             :pagination.sync="pagination"
                             select-all
@@ -51,15 +58,16 @@
                             <template slot="items" slot-scope="props">
                                 <tr>
                                     <td>{{ props.item.name }}</td>
-                                    <td class="text-xs-left">{{ props.item.description }}</td>
-                                    <td class="text-xs-left">{{ props.item.date }}</td>
+                                    <td class="text-xs-left">{{ props.item.type }}</td>
+                                    <td class="text-xs-left">{{ props.item.phone }}</td>
+                                    <td class="text-xs-left">{{ props.item.email }}</td>
                                     <td class="justify-center">
                                         <v-icon
                                             small
                                             class="mr-2"
-                                            @click="showFile(props.item)"
+                                            @click="editContact(props.item)"
                                         >
-                                            visibility
+                                            edit
                                         </v-icon>
                                     </td>
                                 </tr>
@@ -87,16 +95,19 @@ let self
 
 export default {
     props: {
-        user: {}
+        contract: {}
     },
     data () {
         self = this
         return {
-            selectedPath: '',
             selected: [],
-            files: [],
-            documents: [],
-            description: '',
+            contacts: [],
+            name: '',
+            type: '',
+            phone: '',
+            email: '',
+            contactId: '',
+            editing: false,
             showProgress: false,
             pagination: {
                 sortBy: 'name',
@@ -108,92 +119,79 @@ export default {
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Fecha', value: 'date' },
+            { text: 'Tipo', value: 'type' },
+            { text: 'Telefono', value: 'phone' },
+            { text: 'Correo', value: 'email' },
             { text: 'Acciones', value: '', sortable: false },
             ],
+            types: ['Soporte', 'Asesor', 'Supervisor']
         }
     },
     watch: {
-        'user' : (value) => {
-            self.getDocuments()
+        'contract' : (value) => {
+            self.getContacts()
         }
     },
     methods: {
         cancel() {
             this.$emit('cancel')
         },
-        showFile(item) {
-            window.open(config.apiURL + '/' + item.filePath,'window');
-            return false
-        },
-        getDocuments(){
+        getContacts(){
 
-            if(this.user) {
+            if(this.contract) {
                 this.showProgress = true
 
                 axios
-                    .get('/api/users/documents/' + this.user._id)
+                    .get('/api/contracts/contact/' + this.contract._id)
                     .then(response => {
-                        this.documents = response.data
+                        this.contacts = response.data
                         this.showProgress = false
                     })
                     .catch(e => {
                         console.log(e);
                     });
             }
-
         },
         save() {
-            let file
+            let contact = {
+                name: this.name,
+                phone: this.phone,
+                email: this.email,
+                type: this.type,
+                contract: this.contract._id,
+                _id: this.editing ? this.contactId : null
+            }
 
-            const fr = new FileReader ()
-
-            fr.readAsDataURL(this.files[0])
-            fr.addEventListener('load', () => {
-                this.imageUrl = fr.result
-                file = this.files[0]
-
-                let formData = new FormData()
-                formData.append('file', file)
-
-                axios.post('api/users/documents/save', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                            }
-                    })
-                    .then(response => {
-                        axios.post('api/users/documents',{
-                            name: this.selectedPath,
-                            description: this.description,
-                            filePath: response.data.fileName,
-                            user: this.user._id
-                        })
-                        .then(r => {
-                            this.$emit('document-saved', r)
-                            this.getDocuments()
-                        })
-                        .catch(e => {
-                            console.log(e)
-                        })
-                    })
-                    .catch(function (error) {
-                        console.log(error)
-                    });
-            })
+            axios
+                .post('api/contracts/contact', contact)
+                .then(response => {
+                    this.getContacts()
+                    this.cleanInputs()
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
         },
-        onFilePicked(e) {
-            const files = e.target.files
-            this.files = files
-
-			if(files[0] !== undefined) {
-                this.selectedPath = files[0].name
-			}
+        editContact(item){
+            this.name = item.name
+            this.phone = item.phone
+            this.email = item.email
+            this.type = item.type
+            this.contactId = item._id
+            this.editing = true
+        },
+        cleanInputs(){
+            this.name = ''
+            this.phone = ''
+            this.email = ''
+            this.type = ''
+            this.editing = false
+            this.contactId = ''
         }
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.getDocuments()
+            this.getContacts()
         })
     }
 }
