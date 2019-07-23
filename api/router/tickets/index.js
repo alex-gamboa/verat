@@ -3,6 +3,9 @@ var router = require('express').Router();
 const createTicket = require('../../modules/usecases/ticket/createTicket')
 const getTickets = require('../../modules/usecases/ticket/getTickets')
 const updateTicket = require('../../modules/usecases/ticket/updateTicket')
+const createSparePart = require('../../modules/usecases/ticket/createSparePart')
+const getSpareParts = require('../../modules/usecases/ticket/getSpareParts')
+
 
 router.get('/', async (req, res) => {
     const error = null;
@@ -15,6 +18,36 @@ router.get('/', async (req, res) => {
 
     if (error) res.send(error)
     else res.send(result)
+})
+
+router.get('/spareparts/:id', async (req, res) => {
+    const error = null;
+
+    const result =
+       await
+            getSpareParts
+                .execute(req.params.id)
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.post('/spareparts', async (req, res) => {
+
+    const error = null
+    let result
+
+    result =
+        await
+            createSparePart
+            .execute(req.body)
+            .catch(e => error = e)
+
+
+    if (error) res.send(error)
+    else res.send(result)
+
 })
 
 router.post('/', async (req, res) => {
@@ -41,8 +74,6 @@ router.post('/', async (req, res) => {
                 .execute(ticket)
                 .catch(e => error = e)
     }
-
-
 
     if (error) res.send(error)
     else res.send(result)

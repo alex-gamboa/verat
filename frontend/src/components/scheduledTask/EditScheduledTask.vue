@@ -1,32 +1,33 @@
 <template>
     <v-card class="mx-auto" max-width="100%">
         <v-card-title>
-            <v-icon large left>supervisor_account</v-icon>
-            <span class="title font-weight-light">{{ `${user.fullName}` }}</span>
+            <v-icon large left>alarm</v-icon>
+            <span class="title font-weight-light">{{ `${task.name}` }}</span>
         </v-card-title>
 
         <v-card-text class="headline font-weight-bold">
             <v-container grid-list-xl>
                 <v-layout wrap justify-space-between>
                     <v-flex xs12 md12>
-                        <v-text-field
-                            v-model="user.fullName"
-                            label="Nombre Completo"
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="user.username"
-                            label="Username"
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="password"
-                            label="Password"
-                            type='password'
-                        ></v-text-field>
-                        <v-combobox
-                            v-model="user.type"
-                            :items="types"
-                            label="Tipo"
-                        ></v-combobox>
+                        <v-form ref="form">
+                            <v-text-field
+                                v-model="task.name"
+                                label="Nombre"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="task.description"
+                                label="Descripción"
+                            ></v-text-field>
+                            <v-combobox
+                                v-model="task.frequency"
+                                :items="frequencies"
+                                label="Frecuencia"
+                            ></v-combobox>
+                            <v-text-field
+                                v-model="task.day"
+                                label="Día"
+                            ></v-text-field>
+                        </v-form>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -48,25 +49,21 @@ let self
 
 export default {
     props: {
-        user: {}
+        task: {},
     },
     data () {
         self = this
         return {
-            types: ['Soporte','Usuario','Dato'],
-            password: '',
+            menu: false,
+            frequencies: ['Diario','Semanal','Mensual','Trimestral','Semestral','Anual']
         }
     },
     methods: {
         saveItem() {
-            this.user.password = this.password
 
-            console.log(this.user);
-
-
-            axios.post('api/users', this.user)
+            axios
+                .post('api/scheduledTasks', this.task)
                 .then(response => {
-                    this.password = ''
                     this.$emit('save', response)
                 })
                 .catch(function (error) {
@@ -74,13 +71,11 @@ export default {
                 });
         },
         cancel() {
-            this.password = ''
             this.$emit('cancel')
         },
     },
     mounted: function () {
         this.$nextTick(function () {
-            // this.getData()
         })
     }
 }

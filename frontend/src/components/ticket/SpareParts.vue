@@ -1,8 +1,8 @@
 <template>
     <v-card class="mx-auto" max-width="100%">
         <v-card-title>
-            <v-icon large left>folder</v-icon>
-            <span class="title font-weight-light">{{ `${user.fullName}` }}</span>
+            <v-icon large left>build</v-icon>
+            <span class="title font-weight-light">{{ `Refacciones de ticket: ${ticket.ticketNumber}` }}</span>
         </v-card-title>
 
         <v-card-text class="headline font-weight-bold">
@@ -10,14 +10,16 @@
                 <v-layout row wrap>
                     <v-flex xs12>
                             <v-text-field
-                                v-model="selectedPath"
-                                label="archivo"
-                                @click="$refs.inputUpload.click()"
+                                v-model="name"
+                                label="nombre"
                             ></v-text-field>
-                            <input v-show="false" ref="inputUpload" type="file" @change="onFilePicked" >
                             <v-text-field
-                                v-model="description"
-                                label="Descripción"
+                                v-model="cost"
+                                label="Costo"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="quantity"
+                                label="Cantidad"
                             ></v-text-field>
                     </v-flex>
 
@@ -25,7 +27,7 @@
                         <v-data-table
                             v-model="selected"
                             :headers="headers"
-                            :items="documents"
+                            :items="parts"
                             :loading="true"
                             :pagination.sync="pagination"
                             select-all
@@ -51,15 +53,15 @@
                             <template slot="items" slot-scope="props">
                                 <tr>
                                     <td>{{ props.item.name }}</td>
-                                    <td class="text-xs-left">{{ props.item.description }}</td>
-                                    <td class="text-xs-left">{{ props.item.date }}</td>
+                                    <td class="text-xs-left">{{ props.item.cost }}</td>
+                                    <td class="text-xs-left">{{ props.item.quantity }}</td>
                                     <td class="justify-center">
                                         <v-icon
                                             small
                                             class="mr-2"
                                             @click="showFile(props.item)"
                                         >
-                                            visibility
+                                            remove_circle
                                         </v-icon>
                                     </td>
                                 </tr>
@@ -87,16 +89,16 @@ let self
 
 export default {
     props: {
-        user: {}
+        ticket: {}
     },
     data () {
         self = this
         return {
-            selectedPath: '',
+            name: '',
             selected: [],
-            files: [],
-            documents: [],
-            description: '',
+            parts: [],
+            cost: 0,
+            quantity: 0,
             showProgress: false,
             pagination: {
                 sortBy: 'name',
@@ -108,34 +110,30 @@ export default {
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Fecha', value: 'date' },
+            { text: 'Costo', value: 'cost' },
+            { text: 'Cantidad', value: 'quantity' },
             { text: 'Acciones', value: '', sortable: false },
             ],
         }
     },
     watch: {
-        'user' : (value) => {
-            self.getDocuments()
+        'ticket' : (value) => {
+            self.getParts()
         }
     },
     methods: {
         cancel() {
             this.$emit('cancel')
         },
-        showFile(item) {
-            window.open(config.apiURL + '/' + item.filePath,'window');
-            return false
-        },
-        getDocuments(){
+        getParts(){
 
-            if(this.user) {
+            if(this.ticket) {
                 this.showProgress = true
 
                 axios
-                    .get('/api/users/documents/' + this.user._id)
+                    .get('/api/tickets/spareparts/' + this.ticket._id)
                     .then(response => {
-                        this.documents = response.data
+                        this.parts = response.data
                         this.showProgress = false
                     })
                     .catch(e => {
@@ -145,55 +143,25 @@ export default {
 
         },
         save() {
-            let file
-
-            const fr = new FileReader ()
-
-            fr.readAsDataURL(this.files[0])
-            fr.addEventListener('load', () => {
-                this.imageUrl = fr.result
-                file = this.files[0]
-
-                let formData = new FormData()
-                formData.append('file', file)
-
-                axios.post('api/users/documents/save', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                            }
-                    })
-                    .then(response => {
-                        axios.post('api/users/documents',{
-                            name: this.selectedPath,
-                            description: this.description,
-                            filePath: response.data.fileName,
-                            user: this.user._id
-                        })
-                        .then(r => {
-                            this.$emit('document-saved', r)
-                            this.getDocuments()
-                        })
-                        .catch(e => {
-                            console.log(e)
-                        })
-                    })
-                    .catch(function (error) {
-                        console.log(error)
-                    });
-            })
-        },
-        onFilePicked(e) {
-            const files = e.target.files
-            this.files = files
-
-			if(files[0] !== undefined) {
-                this.selectedPath = files[0].name
-			}
+            axios
+                .post('api/tickets/spareparts',{
+                            name: this.name,
+                            cost: this.cost,
+                            quantity: this.quantity,
+                            ticket: this.ticket._id
+                })
+                .then(r => {
+                    this.$emit('saved', r)
+                    this.getParts()
+                })
+                .catch(e => {
+                    console.log(e)
+                })
         }
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.getDocuments()
+            this.getParts()
         })
     }
 }

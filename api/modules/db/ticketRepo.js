@@ -9,6 +9,13 @@ async function getTickets() {
     return result
 }
 
+async function getSpareParts(ticketId) {
+
+    const result = await db.SparePartModel.find({ticket: {$eq: ticketId}})
+
+    return result
+}
+
 async function insertTicket(ticket) {
 
     let dbTicket = db.getTicketInstance(ticket)
@@ -17,6 +24,21 @@ async function insertTicket(ticket) {
         await dbTicket
             .validate()
             .then(_ => dbTicket.save())
+            .catch(e => {
+                console.log(e);
+            })
+
+    return result
+}
+
+async function insertSparePart(part) {
+
+    let dbPart = db.getSparePartInstance(part)
+
+    const result =
+        await dbPart
+            .validate()
+            .then(_ => dbPart.save())
             .catch(e => {
                 console.log(e);
             })
@@ -36,5 +58,7 @@ async function updateTicket(ticket) {
 module.exports = {
     getTickets: getTickets,
     insertTicket: insertTicket,
-    updateTicket: updateTicket
+    updateTicket: updateTicket,
+    getSpareParts: getSpareParts,
+    insertSparePart: insertSparePart
 }

@@ -5,6 +5,11 @@ import AssetManagement from './components/AssetManagement'
 import UserManagement from './components/user/UserManagement'
 import Tickets from './components/ticket/Tickets';
 import Consumables from './components/consumable/Consumables'
+import Contracts from './components/contract/Contracts'
+import Configurations from './components/configuration/Configurations'
+import Documents from './components/document/Documents'
+import ScheduledTasks from './components/scheduledTask/ScheduledTasks'
+
 import Home from './views/Home'
 
 Vue.use(Router)
@@ -16,6 +21,10 @@ export default new Router({
     { path: '/assetmgmt', component: AssetManagement },
     { path: '/users', component: UserManagement },
     { path: '/tickets', component: Tickets },
-    { path: '/consumables', component: Consumables }
+    { path: '/consumables', component: Consumables },
+    { path: '/contracts', component: Contracts },
+    { path: '/configurations', component: Configurations },
+    { path: '/documents', component: Documents },
+    { path: '/scheduledTasks', component: ScheduledTasks },
   ]
 })

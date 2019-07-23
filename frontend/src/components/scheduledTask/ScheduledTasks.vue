@@ -6,7 +6,7 @@
                     large
                     left
                 >
-                    bug_report
+                    alarm
                 </v-icon>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -20,7 +20,7 @@
             <v-data-table
                 v-model="selected"
                 :headers="headers"
-                :items="tickets"
+                :items="tasks"
                 :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
@@ -46,12 +46,10 @@
 
                 <template slot="items" slot-scope="props">
                     <tr>
-                        <td>{{ props.item.ticketNumber }}</td>
-                        <td class="text-xs-left">{{ props.item.type }}</td>
-                        <td class="text-xs-left">{{ props.item.status }}</td>
-                        <td class="text-xs-left">{{ props.item.userName }}</td>
-                        <td class="text-xs-left">{{ props.item.agent }}</td>
+                        <td>{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.description }}</td>
+                        <td class="text-xs-left">{{ props.item.frequency }}</td>
+                        <td class="text-xs-left">{{ props.item.day }}</td>
                         <td class="justify-center">
                             <v-icon
                                 small
@@ -63,8 +61,8 @@
                             <v-icon
                                 small
                                 class="mr-2"
-                                @click="showParts(props.item)">
-                                build
+                                @click="showDocument(props.item)">
+                                description
                             </v-icon>
                         </td>
                     </tr>
@@ -92,12 +90,8 @@
         </v-snackbar>
 
         <v-dialog v-model="editDialog" persistent max-width="900px">
-            <edit-ticket :editing="editing" :ticket="selectedTicket" @ticket-saved="onTicketSaved" @cancel="editDialog = false">
-            </edit-ticket>
-        </v-dialog>
-        <v-dialog v-model="partsDialog" persistent max-width="900px">
-            <spare-parts :ticket="selectedTicket" @saved="onPartSaved" @cancel="partsDialog = false">
-            </spare-parts>
+            <edit-task :task="selectedTask" @save="onSave" @cancel="editDialog = false">
+            </edit-task>
         </v-dialog>
     </div>
 </template>
@@ -108,8 +102,8 @@ import axios from 'axios'
 import moment from "moment";
 import bus from "../../bus";
 
-import EditTicket from './EditTicket'
-import SpareParts from './SpareParts'
+import config from '../../config'
+import EditTask from './EditScheduledTask'
 
 let self
 
@@ -118,49 +112,44 @@ export default {
         self = this
         return {
             pagination: {
-                sortBy: 'kind',
+                sortBy: 'name',
                 rowsPerPage: 10
             },
             search: '',
             headers: [
             {
-                text: 'Folio',
+                text: 'Nombre',
                 align: 'left',
-                value: 'tickerNumber'
+                value: 'name'
             },
-            { text: 'Tipo', value: 'type' },
-            { text: 'Estado', value: 'status' },
-            { text: 'usuario', value: 'user' },
-            { text: 'agente', value: 'agent' },
-            { text: 'descripción', value: 'description' },
+            { text: 'Descripción', value: 'description' },
+            { text: 'Frecuencia', value: 'frequency' },
+            { text: 'Día', value: 'day' },
             { text: 'Acciones', value: '', sortable: false },
             ],
-            tickets: [],
+            tasks: [],
             selected: [],
             showProgress:true,
             valid: false,
-            selectedTicket: {},
+            selectedTask: {},
             showTopMessage: false,
             topMessage: '',
             topMessageColor: 'info',
             editDialog: false,
-            partsDialog: false,
-            editing:false,
         }
     },
     components: {
-        EditTicket,
-        SpareParts
+        EditTask
     },
     methods: {
-        getTickets() {
+        getTasks() {
             this.editing = false
             this.showProgress = true
 
             axios
-                .get('/api/tickets')
+                .get('/api/scheduledTasks')
                 .then(response => {
-                    this.tickets = response.data
+                    this.tasks = response.data
                     this.showProgress = false
                 })
                 .catch(function (error) {
@@ -175,51 +164,33 @@ export default {
                 this.pagination.descending = false
             }
         },
-        showParts(item){
-            this.selectedTicket = Object.assign({}, item)
-            this.partsDialog = true
-        },
         showAdd() {
-            this.selectedTicket = {
+            this.selectedTask = {
                 id: '',
-                ticketNumber: '',
-                user: '',
-                agent: '',
+                name: '',
                 description: '',
-                solution: '',
-                asset: '',
-                service: '',
-                type: '',
-                hours: '',
-                spareParts: [],
-                status: ''
+                frequency: '',
+                day: 0
             }
 
             this.editDialog = true
-            this.editing = false
         },
         editItem (item) {
-            this.selectedTicket = Object.assign({}, item)
-            this.editDialog = true;
-            this.editing = true;
+            this.selectedTask = Object.assign({}, item)
+            this.editDialog = true
         },
-        onTicketSaved() {
+        onSave() {
             this.editDialog = false
             this.topMessageColor = 'success'
-            this.topMessage = "Los cambios al ticket fueron guardados."
+            this.topMessage = "Los cambios a la tarea fueron guardados."
             this.showTopMessage = true
 
-            this.getTickets()
+            this.getTasks()
         },
-        onPartSaved() {
-            this.topMessageColor = 'success'
-            this.topMessage = "Los cambios a las refacciones fueron guardados."
-            this.showTopMessage = true
-        }
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.getTickets()
+            this.getTasks()
         })
     }
   }
