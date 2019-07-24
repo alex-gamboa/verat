@@ -9,6 +9,7 @@ import Contracts from './components/contract/Contracts'
 import Configurations from './components/configuration/Configurations'
 import Documents from './components/document/Documents'
 import ScheduledTasks from './components/scheduledTask/ScheduledTasks'
+import Reports from './components/report/Reports'
 
 import Home from './views/Home'
 
@@ -26,5 +27,6 @@ export default new Router({
     { path: '/configurations', component: Configurations },
     { path: '/documents', component: Documents },
     { path: '/scheduledTasks', component: ScheduledTasks },
+    { path: '/reports', component: Reports },
   ]
 })

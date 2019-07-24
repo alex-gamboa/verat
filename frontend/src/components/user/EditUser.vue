@@ -61,9 +61,6 @@ export default {
         saveItem() {
             this.user.password = this.password
 
-            console.log(this.user);
-
-
             axios.post('api/users', this.user)
                 .then(response => {
                     this.password = ''

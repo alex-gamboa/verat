@@ -7,6 +7,13 @@ async function getUsers() {
     return result
 }
 
+async function getUserByUsername(username) {
+
+    const result = await db.UserModel.findOne({username: username})
+
+    return result
+}
+
 async function getUserDocuments(userId) {
 
     const result = await db.UserDocumentModel.find({user: {$eq: userId}})
@@ -42,5 +49,6 @@ module.exports = {
     getUsers: getUsers,
     getUserDocuments: getUserDocuments,
     insertDocument: insertDocument,
-    updateUser: updateUser
+    updateUser: updateUser,
+    getUserByUsername: getUserByUsername
 }
