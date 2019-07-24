@@ -89,6 +89,7 @@ export default {
           { title: 'Configuraciones', icon: 'memory', route: '/configurations' },
           { title: 'Tareas Programadas', icon: 'alarm', route: '/scheduledTasks' },
           { title: 'Documentos', icon: 'folder', route: '/documents' },
+          { title: 'Reportes', icon: 'insert_chart', route: '/reports' },
         //   { title: 'App Configuration', icon: 'settings', route: '/' },
         //   { title: 'Access Management', icon: 'fingerprint', route: '/accessmgmt' },
         //   { title: 'Generate Drill Plan', icon: 'play_circle_outline', route: '/' },

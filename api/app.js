@@ -22,7 +22,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api', require('./router'));
+app.use('/api', require('./routes'));
 
 const port = 4890
 app.listen(4890, () => console.log(`Listening on port ${port}`))

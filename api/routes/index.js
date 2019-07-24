@@ -14,5 +14,6 @@ router.use('/contracts', require('./contracts'));
 router.use('/configurations', require('./configurations'));
 router.use('/documents', require('./documents'));
 router.use('/scheduledTasks', require('./scheduledTasks'));
+router.use('/reports', require('./reports'));
 
 module.exports = router;

@@ -2,10 +2,13 @@ let router = require('express').Router();
 const config = require('../../config')
 const fs = require('fs')
 const formidable = require('formidable')
+const repo = require('../../modules/db/userRepo')
+const bcrypt = require('bcrypt')
 
 const addUser = require('../../modules/usecases/user/addUser')
 const updateUser = require('../../modules/usecases/user/updateUser')
 const getUsers = require('../../modules/usecases/user/getUsers')
+const getUserbyUsername = require('../../modules/usecases/user/getUsers')
 const getUserDocuments = require('../../modules/usecases/user/getUserDocuments')
 const addUserDocument = require('../../modules/usecases/user/addUserDocument')
 
@@ -92,6 +95,19 @@ router.post('/', async (req, res) => {
 
     if (error) res.send(error)
     else res.send(result)
+})
+
+router.post('/auth', async (req, res) => {
+
+    let user = repo.getUserByUsername(req.body.username)
+
+    if(!user) return res.status(400).send('El usuario no existe')
+
+    const valid = await bcrypt.compare(req.body.password, user.password)
+
+    if(!valid) return res.status(400).send('Invalid password')
+
+    res.send(true)
 })
 
 module.exports = router;
