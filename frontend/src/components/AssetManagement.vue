@@ -64,7 +64,7 @@
             <v-data-table
                 v-model="selected"
                 :headers="headers"
-                :items="assets"
+                :items="$store.getters.getAssets"
                 :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
@@ -98,7 +98,6 @@
                         <td class="text-xs-left">{{ props.item.userName }}</td>
                         <td class="text-xs-left">{{ props.item.area }}</td>
                         <td class="text-xs-left">{{ props.item.status }}</td>
-                        <td class="text-xs-left">{{ props.item.lastCount }}</td>
                         <td class="justify-center">
                             <v-icon
                                 small
@@ -191,7 +190,6 @@ export default {
             { text: 'Usuario', value: 'userName' },
             { text: 'Área', value: 'area' },
             { text: 'Status', value: 'status' },
-            { text: 'Ultimo Conteo', value: 'lastCount' },
             { text: 'Acciones', value: '', sortable: false },
             ],
             assets: [],
@@ -233,6 +231,7 @@ export default {
                         asset.lastCount = moment(asset.lastCount).format('YYYY-MM-DD hh:mm')
 
                     this.assets = response.data
+                    this.$store.commit('setAssets', response.data)
                 })
                 .catch(function (error) {
                     console.log(error);

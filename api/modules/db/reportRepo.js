@@ -34,7 +34,41 @@ async function getAssetsByStatus() {
     return result
 }
 
+async function getAssetsByKind() {
+
+    const result =
+        await
+            db.AssetModel.aggregate([
+                {
+                    "$group": {
+                        "_id": "$kind",
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+
+    return result
+}
+
+async function getAssetsByBrand() {
+
+    const result =
+        await
+            db.AssetModel.aggregate([
+                {
+                    "$group": {
+                        "_id": "$brand",
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+
+    return result
+}
+
 module.exports = {
-    getAssetsByCategory: getAssetsByCategory,
-    getAssetsByStatus: getAssetsByStatus
+    getAssetsByCategory,
+    getAssetsByStatus,
+    getAssetsByKind,
+    getAssetsByBrand
 }

@@ -5,10 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-	  user: {}
+		user: {},
+		assets: []
   },
 	getters:{
-		getUser: state => { return state.user }
+		getUser: state => { return state.user },
+		getAssets: state => { return state.assets }
 	},
 	mutations: {
 		initialiseStore(state) {
@@ -22,6 +24,9 @@ export default new Vuex.Store({
 		},
 		setUser: (state, user) => {
 			state.user = user
+		},
+		setAssets: (state, assets) => {
+			state.assets = assets
 		}
 	},
   actions: {

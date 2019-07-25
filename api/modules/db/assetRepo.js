@@ -39,6 +39,41 @@ async function getAssetsForKind(kindName) {
     return result
 }
 
+async function getAssetsForCategory(category) {
+
+    const result = await db.AssetModel.find().where('categoryName', category)
+
+    return result
+}
+
+async function getAssetsForBrand(brand) {
+
+    const result = await db.AssetModel.find().where('brand', brand)
+
+    return result
+}
+
+async function getAssetsForStatus(status) {
+
+    const result = await db.AssetModel.find().where('status', status)
+
+    return result
+}
+
+async function getAssetsForUser(userId) {
+
+    const result = await db.AssetModel.find().where('user', userId)
+
+    return result
+}
+
+async function getAssetsForArea(area) {
+
+    const result = await db.AssetModel.find().where('area', area)
+
+    return result
+}
+
 function getUsers() {
 
     const result = db.UserModel.find().sort('fullName')
@@ -169,24 +204,29 @@ async function updateAsset(asset) {
 }
 
 module.exports = {
-    getAssetAreas: getAssetAreas,
-    getAsset: getAsset,
-    getAssets: getAssets,
-    insertAsset: insertAsset,
-    deleteAsset: deleteAsset,
-    updateAsset: updateAsset,
-    getCategoryByName: getCategoryByName,
-    getCategories: getCategories,
-    getKinds: getKinds,
-    insertAssetCategory: insertAssetCategory,
-    getKindsForCategory: getKindsForCategory,
-    insertUser: insertUser,
-    getUser: getUser,
-    getUserByName: getUserByName,
-    getUsers: getUsers,
-    getCategoryById: getCategoryById,
-    getAssetBrands: getAssetBrands,
-    insertAssetLog: insertAssetLog,
-    getLogs: getLogs,
-    getAssetsForKind: getAssetsForKind
+    getAssetAreas,
+    getAsset,
+    getAssets,
+    insertAsset,
+    deleteAsset,
+    updateAsset,
+    getCategoryByName,
+    getCategories,
+    getKinds,
+    insertAssetCategory,
+    getKindsForCategory,
+    insertUser,
+    getUser,
+    getUserByName,
+    getUsers,
+    getCategoryById,
+    getAssetBrands,
+    insertAssetLog,
+    getLogs,
+    getAssetsForKind,
+    getAssetsForCategory,
+    getAssetsForBrand,
+    getAssetsForStatus,
+    getAssetsForUser,
+    getAssetsForArea
 }
