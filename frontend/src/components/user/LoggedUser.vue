@@ -17,7 +17,7 @@
             <v-list-item-action>
                 <v-btn
                     icon
-                    @click=""
+                    @click="logout"
                 >
                     <v-icon>power_settings_new</v-icon>
                 </v-btn>
@@ -31,6 +31,13 @@ export default {
     data() {
         return {
             userLogo: require('../../assets/user-lap.jpg'),
+        }
+    },
+    methods: {
+        logout() {
+            localStorage.removeItem('user')
+            localStorage.removeItem('jwt')
+            location.reload()
         }
     }
 }

@@ -22,6 +22,9 @@
             <v-toolbar
                 color="blue-grey"
                 dark
+                fixed
+                app
+                clipped-right
                 dense>
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
                 <v-toolbar-title></v-toolbar-title>
@@ -86,7 +89,7 @@
                 fixed
                 v-model="drawer"
                 app
-                clipper-right>
+                >
                 <v-toolbar flat class="transparent">
                     <logged-user></logged-user>
                 </v-toolbar>
@@ -147,7 +150,14 @@ export default {
                 { title: 'Configuraciones', icon: 'memory', route: '/configurations' },
                 { title: 'Tareas Programadas', icon: 'alarm', route: '/scheduledTasks' },
                 { title: 'Documentos', icon: 'folder', route: '/documents' },
-                { title: 'Reportes', icon: 'insert_chart', route: '/reports' },
+                {
+                    title: 'Reportes',
+                    icon: 'insert_chart',
+                    route: '/reports',
+                    items: [
+                        { title: 'Resumen Activos'}
+                    ]
+                },
             ],
             userMenuOptions: [
                 { title: 'Logout'},
