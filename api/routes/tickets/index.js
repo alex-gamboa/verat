@@ -55,9 +55,6 @@ router.post('/spareparts', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
 
-    console.log(req.user);
-
-
     if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
     else {
 
