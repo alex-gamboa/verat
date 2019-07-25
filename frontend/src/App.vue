@@ -34,7 +34,8 @@
                 fixed
                 v-model="drawer"
                 app>
-                <v-toolbar flat class="transparent" color="blue-grey" dark>
+                <v-toolbar flat class="transparent">
+                    <logged-user></logged-user>
                 </v-toolbar>
 
                 <v-list dense>
@@ -71,44 +72,43 @@
 </template>
 
 <script>
+let self
+
+import LoggedUser from "./components/user/LoggedUser";
 
 export default {
-  name: 'App',
-  data () {
-    return {
-      drawer: true,
-      drawerRight: false,
-      right: null,
-      left: null,
-      items: [
-          { title: 'Activos', icon: 'dvr', route: '/assetmgmt' },
-          { title: 'Usuarios', icon: 'supervisor_account', route: '/users' },
-          { title: 'Tickets', icon: 'bug_report', route: '/tickets' },
-          { title: 'Consumibles', icon: 'print', route: '/consumables' },
-          { title: 'Contratos', icon: 'description', route: '/contracts' },
-          { title: 'Configuraciones', icon: 'memory', route: '/configurations' },
-          { title: 'Tareas Programadas', icon: 'alarm', route: '/scheduledTasks' },
-          { title: 'Documentos', icon: 'folder', route: '/documents' },
-          { title: 'Reportes', icon: 'insert_chart', route: '/reports' },
-        //   { title: 'App Configuration', icon: 'settings', route: '/' },
-        //   { title: 'Access Management', icon: 'fingerprint', route: '/accessmgmt' },
-        //   { title: 'Generate Drill Plan', icon: 'play_circle_outline', route: '/' },
-        //   { title: 'Import Drill Data', icon: 'play_circle_outline', route: '/' },
-        //   { title: 'Interpolate', icon: 'play_circle_outline', route: '/' },
-        //   { title: 'Extract', icon: 'play_circle_outline', route: '/' },
-        //   { title: 'Generate Dig Plan', icon: 'play_circle_outline', route: '/' },
-        //   { title: 'Publish', icon: 'public', route: '/' },
-        //   { title: 'Production Report', icon: 'assessment', route: '/' },
-        ],
-    }
-  },
-  methods:{
+    name: 'App',
+    data () {
+        self = this
+        return {
+            drawer: true,
+            drawerRight: false,
+            right: null,
+            left: null,
+            items: [
+                { title: 'Activos', icon: 'dvr', route: '/assetmgmt' },
+                { title: 'Usuarios', icon: 'supervisor_account', route: '/users' },
+                { title: 'Tickets', icon: 'bug_report', route: '/tickets' },
+                { title: 'Consumibles', icon: 'print', route: '/consumables' },
+                { title: 'Contratos', icon: 'description', route: '/contracts' },
+                { title: 'Configuraciones', icon: 'memory', route: '/configurations' },
+                { title: 'Tareas Programadas', icon: 'alarm', route: '/scheduledTasks' },
+                { title: 'Documentos', icon: 'folder', route: '/documents' },
+                { title: 'Reportes', icon: 'insert_chart', route: '/reports' },
+            ],
+        }
+    },
+    components: {
+        LoggedUser
+    },
+    methods:{
         navigate(item){
             this.$router.push(item.route)
         }
-  },
-  props: {
-    source: String
-  }
+    },
+    props: {
+        source: String
+    }
+
 }
 </script>

@@ -3,5 +3,6 @@ module.exports = {
     mongoPort: process.env.MONGO_PORT,
     mongoDBName: process.env.DB_NAME,
     nodePublicPath: process.env.NODE_PUBLIC,
-    dev: process.env.DEVELOPMENT
+    dev: process.env.DEVELOPMENT,
+    jwtPrivate: process.env.JWT_PRIVATE
 }

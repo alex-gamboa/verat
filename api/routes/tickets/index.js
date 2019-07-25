@@ -1,4 +1,5 @@
 var router = require('express').Router();
+const auth = require('../../middleware/auth')
 
 const createTicket = require('../../modules/usecases/ticket/createTicket')
 const getTickets = require('../../modules/usecases/ticket/getTickets')
@@ -7,7 +8,7 @@ const createSparePart = require('../../modules/usecases/ticket/createSparePart')
 const getSpareParts = require('../../modules/usecases/ticket/getSpareParts')
 
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const error = null;
 
     const result =
@@ -20,7 +21,7 @@ router.get('/', async (req, res) => {
     else res.send(result)
 })
 
-router.get('/spareparts/:id', async (req, res) => {
+router.get('/spareparts/:id', auth, async (req, res) => {
     const error = null;
 
     const result =
@@ -33,7 +34,9 @@ router.get('/spareparts/:id', async (req, res) => {
     else res.send(result)
 })
 
-router.post('/spareparts', async (req, res) => {
+router.post('/spareparts', auth, async (req, res) => {
+
+    if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
 
     const error = null
     let result
@@ -50,33 +53,41 @@ router.post('/spareparts', async (req, res) => {
 
 })
 
-router.post('/', async (req, res) => {
-    const error = null
-    let result
+router.post('/', auth, async (req, res) => {
 
-    let ticket = req.body
+    console.log(req.user);
 
-    if(!ticket.status) ticket.status = 'Sin Atender'
-    ticket.assetId = ticket.asset._id
-    ticket.assetControlNumber = ticket.asset.controlNumber
 
-    if(ticket._id){
-        result =
-            await
-                updateTicket
-                .execute(ticket)
-                .catch(e => error = e)
-    }
+    if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
     else {
-        result =
-            await
-                createTicket
-                .execute(ticket)
-                .catch(e => error = e)
-    }
 
-    if (error) res.send(error)
-    else res.send(result)
+        const error = null
+        let result
+
+        let ticket = req.body
+
+        if(!ticket.status) ticket.status = 'Sin Atender'
+        ticket.assetId = ticket.asset._id
+        ticket.assetControlNumber = ticket.asset.controlNumber
+
+        if(ticket._id){
+            result =
+                await
+                    updateTicket
+                    .execute(ticket)
+                    .catch(e => error = e)
+        }
+        else {
+            result =
+                await
+                    createTicket
+                    .execute(ticket)
+                    .catch(e => error = e)
+        }
+
+        if (error) res.send(error)
+        else res.send(result)
+    }
 })
 
 module.exports = router;

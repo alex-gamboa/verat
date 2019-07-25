@@ -4,6 +4,7 @@ const fs = require('fs')
 const formidable = require('formidable')
 const repo = require('../../modules/db/userRepo')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const addUser = require('../../modules/usecases/user/addUser')
 const updateUser = require('../../modules/usecases/user/updateUser')
@@ -99,7 +100,7 @@ router.post('/', async (req, res) => {
 
 router.post('/auth', async (req, res) => {
 
-    let user = repo.getUserByUsername(req.body.username)
+    let user = await repo.getUserByUsername(req.body.username)
 
     if(!user) return res.status(400).send('El usuario no existe')
 
@@ -107,7 +108,23 @@ router.post('/auth', async (req, res) => {
 
     if(!valid) return res.status(400).send('Invalid password')
 
-    res.send(true)
+    const token =
+        jwt.sign({
+            _id: user._id,
+            type: user.type
+        }, config.jwtPrivate, { expiresIn: 86400 })
+
+    res
+        .status(200).
+        send({
+            auth: true,
+            token: token,
+            user: {
+                _id: user._id,
+                type: user.type,
+                name: user.fullName
+            }
+        })
 })
 
 module.exports = router;
