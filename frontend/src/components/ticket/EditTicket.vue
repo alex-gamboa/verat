@@ -66,6 +66,11 @@
                             :items="states"
                             label="Estado"
                         ></v-combobox>
+                        <v-combobox
+                            v-model="ticket.priority"
+                            :items="priorities"
+                            label="Prioridad"
+                        ></v-combobox>
                         <v-textarea
                                 v-model="ticket.description"
                                 outline
@@ -119,7 +124,8 @@ export default {
             states: ['Sin Atender','Atendido','Resuelto','Cerrado'],
             editing: false,
             showAssetSearch: false,
-            selectedUser: {}
+            selectedUser: {},
+            priorities: ['Baja','Normal','Alta']
         }
     },
     components: {

@@ -20,7 +20,7 @@
             <v-data-table
                 v-model="selected"
                 :headers="headers"
-                :items="tickets"
+                :items="$store.getters.getTickets"
                 :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
@@ -46,6 +46,15 @@
 
                 <template slot="items" slot-scope="props">
                     <tr>
+                        <td>
+                            <v-icon
+                                medium
+                                class="mr-2"
+                                :color="props.item.color"
+                            >
+                                {{props.item.icon}}
+                            </v-icon>
+                        </td>
                         <td>{{ props.item.ticketNumber }}</td>
                         <td class="text-xs-left">{{ props.item.type }}</td>
                         <td class="text-xs-left">{{ props.item.status }}</td>
@@ -123,17 +132,18 @@ export default {
             },
             search: '',
             headers: [
-            {
-                text: 'Folio',
-                align: 'left',
-                value: 'tickerNumber'
-            },
-            { text: 'Tipo', value: 'type' },
-            { text: 'Estado', value: 'status' },
-            { text: 'usuario', value: 'user' },
-            { text: 'agente', value: 'agent' },
-            { text: 'descripción', value: 'description' },
-            { text: 'Acciones', value: '', sortable: false },
+                { text: 'Prioridad', value: '' },
+                {
+                    text: 'Folio',
+                    align: 'left',
+                    value: 'tickerNumber'
+                },
+                { text: 'Tipo', value: 'type' },
+                { text: 'Estado', value: 'status' },
+                { text: 'usuario', value: 'user' },
+                { text: 'agente', value: 'agent' },
+                { text: 'descripción', value: 'description' },
+                { text: 'Acciones', value: '', sortable: false },
             ],
             tickets: [],
             selected: [],
@@ -160,7 +170,13 @@ export default {
             axios
                 .get('/api/tickets')
                 .then(response => {
+                    for (const ticket of response.data) {
+                        if(ticket.priority == 'Alta') {ticket.color = 'red'; ticket.icon = 'schedule'}
+                        else if(ticket.priority == 'Normal') {ticket.color = 'gray'; ticket.icon = 'schedule'}
+                        else {ticket.color = 'green'; ticket.icon = 'schedule'}
+                    }
                     this.tickets = response.data
+                    this.$store.commit('setTickets', response.data)
                     this.showProgress = false
                 })
                 .catch(function (error) {
@@ -192,7 +208,8 @@ export default {
                 type: '',
                 hours: '',
                 spareParts: [],
-                status: ''
+                status: '',
+                priority: ''
             }
 
             this.editDialog = true

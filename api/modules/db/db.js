@@ -225,7 +225,8 @@ const ticketSchema =
         type: String,
         hours: Number,
         spartParts: [spartPartSchema],
-        status: String
+        status: String,
+        priority: { type: String, default: 'Normal'}
     }, { collection: 'Ticket'})
 
 

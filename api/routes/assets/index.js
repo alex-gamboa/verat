@@ -5,6 +5,7 @@ const getAsset = require('../../modules/usecases/asset/getAsset')
 const updateAsset = require('../../modules/usecases/asset/updateAsset')
 const countAsset = require('../../modules/usecases/asset/countAsset')
 const getAssetsForKind = require('../../modules/usecases/asset/getAssetsForKind')
+const getFilteredAssets = require('../../modules/usecases/asset/getFilteredAssets')
 
 //GET
 
@@ -16,6 +17,21 @@ router.get('/kind/:kindName', async (req, res) => {
             getAssetsForKind
             .execute(req.params['kindName'])
             .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.get('/filter/:filter', async (req, res) => {
+    const error = null;
+
+    filter = JSON.parse(req.params.filter)
+
+    const result =
+       await
+            getFilteredAssets
+                .execute(filter)
+                .catch(e => error = e)
 
     if (error) res.send(error)
     else res.send(result)

@@ -10,6 +10,10 @@ import Configurations from './components/configuration/Configurations'
 import Documents from './components/document/Documents'
 import ScheduledTasks from './components/scheduledTask/ScheduledTasks'
 import Reports from './components/report/Reports'
+import AssetsByCategory from './components/report/AssetsByCategory'
+import AssetsByStatus from './components/report/AssetsByStatus'
+import AssetsByKind from './components/report/AssetsByKind'
+import AssetsByBrand from './components/report/AssetsByBrand'
 import Login from './components/login/Login'
 
 import Home from './views/Home'
@@ -30,7 +34,32 @@ let router =
 			{ path: '/documents', component: Documents, meta: { requiresAuth: true } },
 			{ path: '/scheduledTasks', component: ScheduledTasks, meta: { requiresAuth: true }},
 			{ path: '/login', name: 'login', component: Login, meta: { guest: true}},
-			{ path: '/reports',	name: 'reports', component: Reports, meta: { requiresAuth: true, is_admin : true }},
+            { path: '/reports',	name: 'reports', component: Reports, meta: { requiresAuth: true, is_admin : true }},
+            {
+                path: '/reports/assetsbycategory',
+                name: 'assetsbycategory',
+                component: AssetsByCategory,
+                meta: { requiresAuth: true }
+            },
+            {
+                path: '/reports/assetsbystatus',
+                name: 'assetsbystatus',
+                component: AssetsByStatus,
+                meta: { requiresAuth: true }
+            },
+            {
+                path: '/reports/assetsbykind',
+                name: 'assetsbykind',
+                component: AssetsByKind,
+                meta: { requiresAuth: true }
+            },
+            {
+                path: '/reports/assetsbybrand',
+                name: 'assetsbybrand',
+                component: AssetsByBrand,
+                meta: { requiresAuth: true }
+            },
+
 		]
 	})
 

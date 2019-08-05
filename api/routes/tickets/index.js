@@ -6,6 +6,7 @@ const getTickets = require('../../modules/usecases/ticket/getTickets')
 const updateTicket = require('../../modules/usecases/ticket/updateTicket')
 const createSparePart = require('../../modules/usecases/ticket/createSparePart')
 const getSpareParts = require('../../modules/usecases/ticket/getSpareParts')
+const getFilteredTickets = require('../../modules/usecases/ticket/getFilteredTickets')
 
 
 router.get('/', auth, async (req, res) => {
@@ -15,6 +16,21 @@ router.get('/', auth, async (req, res) => {
        await
             getTickets
                 .execute()
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.get('/filter/:filter', async (req, res) => {
+    const error = null;
+
+    filter = JSON.parse(req.params.filter)
+
+    const result =
+       await
+            getFilteredTickets
+                .execute(filter)
                 .catch(e => error = e)
 
     if (error) res.send(error)
