@@ -9,6 +9,32 @@ async function getTickets() {
     return result
 }
 
+async function getTicketsForStatus(status) {
+
+    const result = await db.TicketModel.find({status: {$eq: status}})
+
+    return result
+}
+
+async function getTicketsForAgent(agent) {
+
+    const result = await db.TicketModel.find().where('agent', agent)
+    return result
+}
+
+async function getTicketsForPriority(priority) {
+
+    const result = await db.TicketModel.find().where('priority', priority)
+    return result
+}
+
+async function getTicketsForUser(user) {
+
+    const result = await db.TicketModel.find().where('user', user)
+    return result
+}
+
+
 async function getSpareParts(ticketId) {
 
     const result = await db.SparePartModel.find({ticket: {$eq: ticketId}})
@@ -56,9 +82,13 @@ async function updateTicket(ticket) {
 }
 
 module.exports = {
-    getTickets: getTickets,
-    insertTicket: insertTicket,
-    updateTicket: updateTicket,
-    getSpareParts: getSpareParts,
-    insertSparePart: insertSparePart
+    getTickets,
+    insertTicket,
+    updateTicket,
+    getSpareParts,
+    insertSparePart,
+    getTicketsForStatus,
+    getTicketsForAgent,
+    getTicketsForPriority,
+    getTicketsForUser
 }

@@ -135,10 +135,9 @@ export default {
         'asset.status': (newValue, old) => {
             if (newValue === 'Reparación' || newValue === 'Scrap' || newValue === 'Baja') {
                 self.showReason = true
+                self.isStatusChanged = true;
             }
 
-            if(newValue !== old)
-                self.isStatusChanged = true;
         }
     },
     methods: {
@@ -148,10 +147,10 @@ export default {
                 this.asset.category = this.asset.categoryName._id
             if(typeof this.asset.categoryName === 'object')
                 this.asset.categoryName = this.asset.categoryName.name
-            if(typeof this.asset.user === 'object')
+            if(typeof this.asset.userName === 'object') {
                 this.asset.user = this.asset.userName._id
-            if(typeof this.asset.userName === 'object')
                 this.asset.userName = this.asset.userName.fullName
+            }
             if(typeof this.asset.area === 'object')
                 this.asset.area = this.asset.area.name
             if(typeof this.asset.kind === 'object')
@@ -161,7 +160,9 @@ export default {
 
             axios.post('/api/assets', this.asset)
             .then(response => {
-                if(this.isStatusChanged) this.saveLog()
+                this.asset._id = response.data._id
+
+                if(this.showReason) this.saveLog()
 
                 this.asset = {}
                 this.isStatusChanged = false

@@ -20,7 +20,7 @@
             <v-data-table
                 v-model="selected"
                 :headers="headers"
-                :items="tickets"
+                :items="$store.getters.getTickets"
                 :search="search"
                 :loading="true"
                 :pagination.sync="pagination"
@@ -176,6 +176,7 @@ export default {
                         else {ticket.color = 'green'; ticket.icon = 'schedule'}
                     }
                     this.tickets = response.data
+                    this.$store.commit('setTickets', response.data)
                     this.showProgress = false
                 })
                 .catch(function (error) {

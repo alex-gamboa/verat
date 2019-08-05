@@ -6,11 +6,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 		user: {},
-		assets: []
+		assets: [],
+		tickets: [],
   },
 	getters:{
 		getUser: state => { return state.user },
-		getAssets: state => { return state.assets }
+		getAssets: state => { return state.assets },
+		getTickets: state => { return state.tickets }
 	},
 	mutations: {
 		initialiseStore(state) {
@@ -27,6 +29,9 @@ export default new Vuex.Store({
 		},
 		setAssets: (state, assets) => {
 			state.assets = assets
+		},
+		setTickets: (state, tickets) => {
+			state.tickets = tickets
 		}
 	},
   actions: {

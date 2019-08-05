@@ -15,8 +15,6 @@ async function execute(filter){
     else if(filter.type === 'Usuario')
         assets = await repo.getAssetsForUser(filter.value)
     else if(filter.type === 'Área') {
-        console.log(filter.value);
-
         assets = await repo.getAssetsForArea(filter.value)
     }
 
