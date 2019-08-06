@@ -5,6 +5,7 @@ const getConsumables = require('../../modules/usecases/consumable/getConsumables
 const updateConsumable = require('../../modules/usecases/consumable/updateConsumable')
 const getConsumableModels = require('../../modules/usecases/consumable/getConsumableModels')
 const createConsumableHistory = require('../../modules/usecases/consumable/createConsumableHistory')
+const getConsumableHistory = require('../../modules/usecases/consumable/getConsumableHistory')
 
 router.get('/', async (req, res) => {
     const error = null;
@@ -27,6 +28,19 @@ router.get('/models', async (req, res) => {
             getConsumableModels
             .execute()
             .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.get('/history/:id', async (req, res) => {
+    const error = null;
+
+    const result =
+        await
+            getConsumableHistory
+                .execute(req.params.id)
+                .catch(e => error = e)
 
     if (error) res.send(error)
     else res.send(result)

@@ -6,6 +6,16 @@ async function execute(history){
 
     result = await consumableRepo.insertConsumableHistory(history)
 
+    let result2 = await consumableRepo.getConsumable(history.consumable)
+
+    let consumable = result2[0]
+
+    if(consumable) {
+        consumable.quantity -= 1
+
+        result2 = consumableRepo.updateConsumable(consumable)
+    }
+
     return result
 }
 

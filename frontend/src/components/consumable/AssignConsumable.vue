@@ -133,29 +133,38 @@ export default {
     methods: {
         save() {
 
-            let history = {
-                isAsset: true,
-                itemId: ''
+            if(this.selectedUser || this.selected.length > 0) {
+
+                let history = {
+                    consumable: this.consumable._id,
+                    isAsset: true,
+                    itemId: ''
+                }
+
+                if(this.selectedUser) {
+                    history.isAsset = false
+                    history.itemId = this.selectedUser._id
+                }
+
+                if(this.selected.length > 0) {
+                    history.isAsset = true;
+                    history.itemId = this.selected[0]._id
+                }
+
+                axios
+                    .post('api/consumables/history', history)
+                    .then(response => {
+                        this.selectedUser = null
+                        this.selectedKind = ''
+                        this.assets = []
+                        this.selected = []
+                        this.$emit('save', response)
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
             }
 
-            if(this.selectedUser) {
-                history.isAsset = false
-                history.itemId = this.selectedUser._id
-            }
-
-            if(this.selected.length > 0) {
-                history.isAsset = true;
-                history.itemId = this.selected[0]._id
-            }
-
-            axios.post('api/consumables/history', history)
-                .then(response => {
-                    this.consumable = {}
-                    this.$emit('save', response)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
         },
         getData() {
             axios.all([
