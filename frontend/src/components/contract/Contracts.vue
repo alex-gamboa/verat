@@ -75,7 +75,7 @@
             <v-icon large>add_circle</v-icon>
         </v-btn> -->
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark> {{$t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 
@@ -122,13 +122,13 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('contractMainHeaders[0]'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Renovación', value: 'renovation' },
-            { text: 'Costo', value: 'billAmount' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('contractMainHeaders[1]'), value: 'renovation' },
+            { text: this.$t('contractMainHeaders[2]'), value: 'billAmount' },
+            { text: this.$t('contractMainHeaders[3]'), value: '', sortable: false },
             ],
             contracts: [],
             selected: [],

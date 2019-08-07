@@ -38,6 +38,36 @@ const messages = {
             'Brand',
             'Kind',
             'User'
+        ],
+        userMainHeaders: [
+            'Name',
+            'Username',
+            'Profile',
+            'Actions'
+        ],
+        ticketMainHeaders: [
+            'Priority',
+            'Number',
+            'Type',
+            'Status',
+            'User',
+            'Agent',
+            'Description',
+            'Actions'
+        ],
+        consumableMainHeaders: [
+            'Kind',
+            'Brand',
+            'Model',
+            'Quantity',
+            'Comments',
+            'Actions'
+        ],
+        contractMainHeaders: [
+            'Name',
+            'Expiration',
+            'Cost',
+            'Actions'
         ]
     },
     'es': {
@@ -74,8 +104,37 @@ const messages = {
             'Marca',
             'Tipo',
             'Usuario'
+        ],
+        userMainHeaders: [
+            'Nombre',
+            'Usuario',
+            'Tipo',
+            'Acciones'
+        ],
+        ticketMainHeaders: [
+            'Prioridad',
+            'Folio',
+            'Tipo',
+            'Estado',
+            'Usuario',
+            'Agente',
+            'Descripción',
+            'Acciones'
+        ],
+        consumableMainHeaders: [
+            'Tipo',
+            'Marca',
+            'Modelo',
+            'Cantidad',
+            'Observaciones',
+            'Acciones'
+        ],
+        contractMainHeaders: [
+            'Nombre',
+            'Renovación',
+            'Costo',
+            'Acciones'
         ]
-
     }
 };
 

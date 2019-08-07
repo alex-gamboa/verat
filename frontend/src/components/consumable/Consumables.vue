@@ -84,7 +84,7 @@
             <v-icon large>add_circle</v-icon>
         </v-btn> -->
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark>{{ $t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 
@@ -134,12 +134,12 @@ export default {
             },
             search: '',
             headers: [
-                { text: 'Tipo', value: 'kind' },
-                { text: 'Marca', value: 'brand' },
-                { text: 'Modelo', value: 'model' },
-                { text: 'Cantidad', value: 'quantity' },
-                { text: 'Observaciones', value: 'comments' },
-                { text: 'Acciones', value: '', sortable: false },
+                { text: this.$t('consumableMainHeaders[0]'), value: 'kind' },
+                { text: this.$t('consumableMainHeaders[1]'), value: 'brand' },
+                { text: this.$t('consumableMainHeaders[2]'), value: 'model' },
+                { text: this.$t('consumableMainHeaders[3]'), value: 'quantity' },
+                { text: this.$t('consumableMainHeaders[4]'), value: 'comments' },
+                { text: this.$t('consumableMainHeaders[5]'), value: '', sortable: false },
             ],
             consumables: [],
             selected: [],
