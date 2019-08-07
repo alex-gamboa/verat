@@ -120,7 +120,7 @@
 
         <br>
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark>{{$t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 
@@ -162,6 +162,7 @@
 import axios from 'axios'
 import moment from "moment";
 import bus from "../bus";
+import i18n from '@/plugins/i18n'
 
 import EditAsset from './EditAsset'
 import AssetLog from './AssetLog'
@@ -179,18 +180,18 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Numero de Control',
+                text: this.$t('assetMainHeaders[0]'),
                 align: 'left',
                 value: 'controlNumber'
             },
-            { text: 'Categoria', value: 'categoryName' },
-            { text: 'Tipo', value: 'kind' },
-            { text: 'Marca', value: 'brand' },
-            { text: 'Modelo', value: 'model' },
-            { text: 'Usuario', value: 'userName' },
-            { text: 'Área', value: 'area' },
-            { text: 'Status', value: 'status' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('assetMainHeaders[1]'), value: 'categoryName' },
+            { text: this.$t('assetMainHeaders[2]'), value: 'kind' },
+            { text: this.$t('assetMainHeaders[3]'), value: 'brand' },
+            { text: this.$t('assetMainHeaders[4]'), value: 'model' },
+            { text: this.$t('assetMainHeaders[5]'), value: 'userName' },
+            { text: this.$t('assetMainHeaders[6]'), value: 'area' },
+            { text: this.$t('assetMainHeaders[7]'), value: 'status' },
+            { text: this.$t('assetMainHeaders[8]'), value: '', sortable: false },
             ],
             assets: [],
             selected: [],

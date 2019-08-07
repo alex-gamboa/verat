@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import App from './App.vue'
+
 import AssetManagement from './components/AssetManagement'
 import UserManagement from './components/user/UserManagement'
 import Tickets from './components/ticket/Tickets';
@@ -17,7 +18,6 @@ import AssetsByBrand from './components/report/AssetsByBrand'
 import Login from './components/login/Login'
 
 import Home from './views/Home'
-//
 
 Vue.use(Router)
 
