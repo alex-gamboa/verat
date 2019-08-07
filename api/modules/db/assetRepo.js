@@ -95,9 +95,9 @@ async function getUserByName(name) {
 
 async function getAsset(controlNumber) {
 
-    const result = await db.AssetModel.find().where('controlNumber', controlNumber);
+    let result = await db.AssetModel.find().where('controlNumber', controlNumber);
 
-    if (!result) result = await db.AssetModel.find().where('barcode', controlNumber)
+    if (!result || result.length == 0) result = await db.AssetModel.find().where('_id', controlNumber)
 
     return result
 }

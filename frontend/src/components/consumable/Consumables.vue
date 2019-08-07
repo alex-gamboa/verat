@@ -46,11 +46,12 @@
 
                 <template slot="items" slot-scope="props">
                     <tr>
-                        <td>{{ props.item._id }}</td>
+                        <!-- <td>{{ props.item._id }}</td> -->
                         <td class="text-xs-left">{{ props.item.kind }}</td>
                         <td class="text-xs-left">{{ props.item.brand }}</td>
                         <td class="text-xs-left">{{ props.item.model }}</td>
                         <td class="text-xs-left">{{ props.item.quantity }}</td>
+                        <td class="text-xs-left">{{ props.item.comments }}</td>
                         <td class="justify-center">
                             <v-icon
                                 small
@@ -64,6 +65,12 @@
                                 class="mr-2"
                                 @click="showAssign(props.item)">
                                 assignment_ind
+                            </v-icon>
+                            <v-icon
+                                small
+                                class="mr-2"
+                                @click="showHistory(props.item)">
+                                assignment
                             </v-icon>
                         </td>
                     </tr>
@@ -98,6 +105,10 @@
             <assign-consumable :consumable="selectedConsumable" @save="onAssigned" @cancel="assignDialog = false">
             </assign-consumable>
         </v-dialog>
+        <v-dialog v-model="historyDialog" persistent max-width="900px">
+            <consumable-history :consumable="selectedConsumable" @close="historyDialog = false">
+            </consumable-history>
+        </v-dialog>
     </div>
 </template>
 
@@ -109,6 +120,7 @@ import bus from "../../bus";
 
 import EditConsumable from './EditConsumable'
 import AssignConsumable from './AssignConsumable'
+import ConsumableHistory from './ConsumableHistory'
 
 let self
 
@@ -122,16 +134,12 @@ export default {
             },
             search: '',
             headers: [
-            {
-                text: 'ID',
-                align: 'left',
-                value: '_id'
-            },
-            { text: 'Tipo', value: 'kind' },
-            { text: 'Marca', value: 'brand' },
-            { text: 'Modelo', value: 'model' },
-            { text: 'Cantidad', value: 'quantity' },
-            { text: 'Acciones', value: '', sortable: false },
+                { text: 'Tipo', value: 'kind' },
+                { text: 'Marca', value: 'brand' },
+                { text: 'Modelo', value: 'model' },
+                { text: 'Cantidad', value: 'quantity' },
+                { text: 'Observaciones', value: 'comments' },
+                { text: 'Acciones', value: '', sortable: false },
             ],
             consumables: [],
             selected: [],
@@ -143,14 +151,16 @@ export default {
             topMessageColor: 'info',
             editDialog: false,
             assignDialog: false,
+            historyDialog: false,
             editing:false,
             adding:false,
             assetDialogKey: 0
         }
     },
     components: {
-        'EditConsumable': EditConsumable,
-        'AssignConsumable': AssignConsumable
+        EditConsumable,
+        AssignConsumable,
+        ConsumableHistory
     },
     watch: {
         consumables() {
@@ -202,6 +212,10 @@ export default {
             this.selectedConsumable = Object.assign({}, item)
             this.assignDialog = true
         },
+        showHistory(item){
+            this.selectedConsumable = Object.assign({}, item)
+            this.historyDialog = true
+        },
         showDeleteDialog(item) {
             this.assetToDelete = item.controlNumber
             this.dialog = true;
@@ -219,6 +233,8 @@ export default {
             this.topMessageColor = 'success'
             this.topMessage = "El consumible fue asignado."
             this.showTopMessage = true
+
+            this.getConsumables()
         }
     },
     mounted: function () {

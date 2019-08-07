@@ -8,9 +8,23 @@ async function getConsumables() {
     return result
 }
 
+async function getConsumable(id) {
+
+    const result = await db.ConsumableModel.find().where('_id', id)
+
+    return result
+}
+
 async function getConsumableModels() {
 
     const result = await db.ConsumableModel.find().select('model -_id')
+
+    return result
+}
+
+async function getConsumableHistory(consumableId) {
+
+    const result = await db.ConsumableHistoryModel.find().where('consumable', consumableId)
 
     return result
 }
@@ -55,9 +69,11 @@ async function updateConsumable(consumable) {
 }
 
 module.exports = {
-    getConsumables: getConsumables,
-    insertConsumable: insertConsumable,
-    updateConsumable: updateConsumable,
-    getConsumableModels: getConsumableModels,
-    insertConsumableHistory: insertConsumableHistory
+    getConsumables,
+    insertConsumable,
+    updateConsumable,
+    getConsumableModels,
+    insertConsumableHistory,
+    getConsumableHistory,
+    getConsumable
 }

@@ -17,6 +17,7 @@ import AssetsByBrand from './components/report/AssetsByBrand'
 import Login from './components/login/Login'
 
 import Home from './views/Home'
+//
 
 Vue.use(Router)
 
@@ -24,7 +25,14 @@ let router =
 	new Router({
 		mode: 'history',
 		routes: [
-			{ path: '/', name: 'home', component: Home },
+			{
+                path: '/',
+                name: 'home',
+                component: Home,
+                meta: {
+                    title: 'verat Home page'
+                }
+             },
 			{ path: '/assetmgmt', component: AssetManagement, meta: { requiresAuth: true } },
 			{ path: '/users', component: UserManagement, meta: { requiresAuth: true } },
 			{ path: '/tickets', component: Tickets, meta: { requiresAuth: true } },
@@ -64,6 +72,7 @@ let router =
 	})
 
 router.beforeEach((to, from, next) => {
+    document.title = 'Verat'
     if(to.matched.some(record => record.meta.requiresAuth)) {
         if (localStorage.getItem('jwt') == null) {
             next({
