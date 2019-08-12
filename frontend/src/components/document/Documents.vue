@@ -118,14 +118,14 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('documentMainHeaders[0]'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Etiquetas', value: 'tags' },
-            { text: 'Fecha', value: 'date' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('documentMainHeaders[1]'), value: 'description' },
+            { text: this.$t('documentMainHeaders[2]'), value: 'tags' },
+            { text: this.$t('documentMainHeaders[3]'), value: 'date' },
+            { text: this.$t('documentMainHeaders[4]'), value: '', sortable: false },
             ],
             documents: [],
             selected: [],

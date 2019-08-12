@@ -119,13 +119,13 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('configurationMainHeaders[0]'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Ruta de acceso', value: 'accessRoute' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('configurationMainHeaders[1]'), value: 'description' },
+            { text: this.$t('configurationMainHeaders[2]'), value: 'accessRoute' },
+            { text: this.$t('configurationMainHeaders[3]'), value: '', sortable: false },
             ],
             configurations: [],
             selected: [],

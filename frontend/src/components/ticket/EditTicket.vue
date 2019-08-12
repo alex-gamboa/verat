@@ -117,15 +117,15 @@ export default {
         self = this
         return {
             users:[],
-            agents: ['Ricardo','Alejandro'],
+            agents: this.$t('agents'),
             asset: '',
             services: ['Internet','Correo','ERP','CCTV','Telefonia','Dominio','Documentos compartidos','Impresión','Windows','Software'],
-            types: ['Incidente','Problema','Preventa','Capacitación','Solicitud'],
-            states: ['Sin Atender','Atendido','Resuelto','Cerrado'],
+            types: this.$t('ticketTypes'),
+            states: this.$t('states'),
             editing: false,
             showAssetSearch: false,
             selectedUser: {},
-            priorities: ['Baja','Normal','Alta']
+            priorities: this.$t('priorities'),
         }
     },
     components: {

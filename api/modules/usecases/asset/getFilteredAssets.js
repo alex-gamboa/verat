@@ -4,17 +4,17 @@ async function execute(filter){
 
     let assets
 
-    if (filter.type === 'Category')
+    if (filter.type === 'Categoria')
         assets = await repo.getAssetsForCategory(filter.value)
-    else if(filter.type === 'Kind')
+    else if(filter.type === 'Tipo')
         assets = await repo.getAssetsForKind(filter.value)
-    else if(filter.type === 'Brand')
+    else if(filter.type === 'Marca')
         assets = await repo.getAssetsForBrand(filter.value)
-    else if(filter.type === 'Status')
+    else if(filter.type === 'Estado')
         assets = await repo.getAssetsForStatus(filter.value)
-    else if(filter.type === 'User')
+    else if(filter.type === 'Usuario')
         assets = await repo.getAssetsForUser(filter.value)
-    else if(filter.type === 'Area') {
+    else if(filter.type === 'Área') {
         assets = await repo.getAssetsForArea(filter.value)
     }
 

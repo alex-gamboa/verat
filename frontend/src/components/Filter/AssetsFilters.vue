@@ -39,14 +39,15 @@ export default {
             filters: this.$t('assetFilters'),
             items: [],
             item: '',
+            //Map(i18n_message,api_expected_filter)
             apiFilters: new Map([
-                [this.$t('assetFilters[0]'), "Everything"],
-                [this.$t('assetFilters[1]'), "Area"],
-                [this.$t('assetFilters[2]'), "Category"],
-                [this.$t('assetFilters[3]'), "Status"],
-                [this.$t('assetFilters[4]'), "Brand"],
-                [this.$t('assetFilters[5]'), "Kind"],
-                [this.$t('assetFilters[6]'), "User"],
+                [this.$t('assetFilters[0]'), "Todo"],
+                [this.$t('assetFilters[1]'), "Área"],
+                [this.$t('assetFilters[2]'), "Categoria"],
+                [this.$t('assetFilters[3]'), "Estado"],
+                [this.$t('assetFilters[4]'), "Marca"],
+                [this.$t('assetFilters[5]'), "Tipo"],
+                [this.$t('assetFilters[6]'), "Usuario"],
             ])
         }
     },

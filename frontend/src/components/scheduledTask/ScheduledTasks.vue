@@ -118,14 +118,14 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('scheduledTaskMainHeaders[0]'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Frecuencia', value: 'frequency' },
-            { text: 'Día', value: 'day' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('scheduledTaskMainHeaders[1]'), value: 'description' },
+            { text: this.$t('scheduledTaskMainHeaders[2]'), value: 'frequency' },
+            { text: this.$t('scheduledTaskMainHeaders[3]'), value: 'day' },
+            { text: this.$t('scheduledTaskMainHeaders[4]'), value: '', sortable: false },
             ],
             tasks: [],
             selected: [],
