@@ -44,7 +44,7 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="close">Salir</v-btn>
+                <v-btn flat color="blue" @click="close">{{this.$t('btnClose')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>
@@ -70,12 +70,12 @@ export default {
             logs: [],
             headers: [
             {
-                text: 'Fecha',
+                text: this.$t('date'),
                 align: 'left',
                 value: 'date'
             },
-            { text: 'Usuario', value: 'user' },
-            { text: 'Activo', value: 'asset' }
+            { text: this.$t('user'), value: 'user' },
+            { text: this.$t('asset'), value: 'asset' }
             ],
             showProgress:true,
             description: ''

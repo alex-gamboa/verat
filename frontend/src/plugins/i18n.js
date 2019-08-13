@@ -5,7 +5,9 @@ Vue.use(VueI18n)
 
 const messages = {
     'en': {
+        access: 'Access',
         actions: 'Actions',
+        adminPortal: 'Admin web',
         area: 'Area',
         agent: 'Agent',
         asset: 'Asset',
@@ -39,6 +41,7 @@ const messages = {
             'New value',
             'Reason'
         ],
+        assetReports: ['By category', 'By kind', 'By Status', 'By brand'],
         barcode: 'Barcode',
         brand: 'Brand',
         btnNew: 'New',
@@ -69,7 +72,11 @@ const messages = {
             'Actions'
         ],
         cost: 'Cost',
+        credentials: 'Credentials',
+        date: 'Date',
+        day: 'Day',
         description: 'Description',
+        details: 'Details',
         documentMainHeaders: [
             'Name',
             'Description',
@@ -77,9 +84,12 @@ const messages = {
             'Date',
             'Actions'
         ],
+        email: 'Email',
         fullName: 'Full Name',
         filterBy: 'Filter by',
         file: 'File',
+        frequency: 'Frequency',
+        groupBy: 'Group By',
         hours: 'Hours',
         kind: 'Kind',
         mainMenu: [
@@ -93,13 +103,23 @@ const messages = {
             'Documents',
             'Reports'
         ],
+        manualDocument: 'Technical Document',
         model: 'Model',
         number: 'Number',
         name: 'Name',
         password: 'Password',
+        phone: 'Phone',
         priority: 'Priority',
         quantity: 'Quantity',
         reason: 'Reason',
+        reportAssetsByCategoryTitle: 'Assets by category',
+        reportAssetsByStatusTitle: 'Assets by status',
+        reportAssetsByBrandTitle: 'Assets by brand',
+        reportAssetsBykindTitle: 'Assets by kind',
+        reportCategories: ['Assets', 'Costs', 'Operations'],
+        renovation: 'Renovation',
+        search: 'Search',
+        selectCategory: 'Select Category',
         serialNumber: 'Serial Number',
         service: 'Service',
         scheduledTaskMainHeaders: [
@@ -111,6 +131,7 @@ const messages = {
         ],
         solution: 'Solution',
         status: 'Status',
+        tags: 'Tags',
         ticketCreationDate: 'Created',
         ticketMainHeaders: [
             'Priority',
@@ -151,7 +172,9 @@ const messages = {
         ],
     },
     'es': {
+        access: 'Acceso',
         actions: 'Acciones',
+        adminPortal: 'Portal de Administración',
         area: 'Área',
         agent: 'Agente',
         asset: 'Activo',
@@ -185,6 +208,7 @@ const messages = {
             'Nuevo Valor',
             'Motivo'
         ],
+        assetReports: ['Por Categoria', 'Por tipo', 'Por estado', 'Por marca'],
         barcode: 'Codigo de barras',
         brand: 'Marca',
         btnNew: 'Nuevo',
@@ -215,7 +239,11 @@ const messages = {
             'Acciones'
         ],
         cost: 'Costo',
+        credentials: 'Credenciales',
+        date: 'Fecha',
+        day: 'Día',
         description: 'Descripción',
+        details: 'Detalles',
         documentMainHeaders: [
             'Nombre',
             'Descripción',
@@ -223,9 +251,12 @@ const messages = {
             'Fecha',
             'Acciones'
         ],
+        email: 'Correo',
         file: 'Archivo',
         filterBy: 'Filtrar Por',
         fullName: 'Nombre Completo',
+        frequency: 'Frecuencia',
+        groupBy: 'Agrupar por',
         hours: 'Horas',
         kind: 'Tipo',
         mainMenu: [
@@ -239,13 +270,23 @@ const messages = {
             'Documentos',
             'Reportes'
         ],
+        manualDocument: 'Manual',
         model: 'Modelo',
         number: 'Folio',
         name: 'Nombre',
         password: 'Contraseña',
+        phone: 'Telefono',
         priority: 'Prioridad',
         quantity: 'Cantidad',
         reason: 'Motivo',
+        reportAssetsByCategoryTitle: 'Activos por categoria',
+        reportAssetsByStatusTitle: 'Activos por estado',
+        reportAssetsByBrandTitle: 'Activos por Marca',
+        reportAssetsBykindTitle: 'Activos por Tipo',
+        reportCategories: ['Activos', 'Costos', 'Operación'],
+        renovation: 'Renovación',
+        search: 'Buscar',
+        selectCategory: 'Selecione Categoria',
         service: 'Servicio',
         scheduledTaskMainHeaders: [
             'Nombre',
@@ -257,6 +298,7 @@ const messages = {
         serialNumber: 'Numero de Serie',
         solution: 'Solución',
         status: 'Estado',
+        tags: 'Etiquetas',
         ticketCreationDate: 'Creado',
         ticketFilters: [
             'Todo',

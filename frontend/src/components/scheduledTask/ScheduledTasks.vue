@@ -76,7 +76,7 @@
             <v-icon large>add_circle</v-icon>
         </v-btn> -->
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark>{{this.$t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 

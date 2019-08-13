@@ -12,11 +12,11 @@
                         <v-form ref="form">
                             <v-text-field
                                 v-model="contract.name"
-                                label="Nombre"
+                                :label="$t('name')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="contract.billAmount"
-                                label="Costo"
+                                :label="$t('cost')"
                             ></v-text-field>
                              <v-menu
                                 v-model="menu"
@@ -31,7 +31,7 @@
                                 <template v-slot:activator="{ on }">
                                 <v-text-field
                                     v-model="contract.renovation"
-                                    label="Renovación"
+                                    :label="$t('renovation')"
                                     readonly
                                     v-on="on"
                                 ></v-text-field>
@@ -40,16 +40,16 @@
                             </v-menu>
                             <v-text-field
                                 v-model="contract.portal"
-                                label="Portal de Administración"
+                                :label="$t('adminPortal')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="contract.portalCredentials"
-                                label="Credenciales"
+                                :label="$t('credentials')"
                             ></v-text-field>
                             <v-textarea
                                 v-model="contract.details"
                                 outline
-                                label="Detalles"
+                                :label="$t('details')"
                                 rows=10
                             ></v-textarea>
                         </v-form>
@@ -60,8 +60,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>

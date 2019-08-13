@@ -12,19 +12,19 @@
                         <v-form ref="form">
                             <v-text-field
                                 v-model="document.name"
-                                label="Nombre"
+                                :label="$t('name')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="document.description"
-                                label="Descripción"
+                                :label="$t('description')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="document.tags"
-                                label="Etiquetas"
+                                :label="$t('tags')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="selectedPath"
-                                label="Archivo"
+                                :label="$t('file')"
                                 @click="$refs.inputUpload.click()"
                             ></v-text-field>
                             <input v-show="false" ref="inputUpload" type="file" @change="onFilePicked" >
@@ -36,8 +36,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>
