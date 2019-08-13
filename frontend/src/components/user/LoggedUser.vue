@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import bus from "../../bus";
+
 export default {
     data() {
         return {
@@ -39,7 +41,7 @@ export default {
             localStorage.removeItem('jwt')
             location.reload()
         }
-    }
+    },
 }
 </script>
 

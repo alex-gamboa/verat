@@ -16,7 +16,7 @@
                 app
                 clipped-right
                 dense>
-                <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+                <v-toolbar-side-icon @click.stop="mini = !mini"></v-toolbar-side-icon>
                 <v-toolbar-title></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <!-- <v-menu offset-y v-model="menu"
@@ -78,6 +78,7 @@
             <v-navigation-drawer
                 fixed
                 v-model="drawer"
+                :mini-variant="mini"
                 app
                 >
                 <v-toolbar flat class="transparent">
@@ -120,6 +121,8 @@
 <script>
 let self
 
+import bus from "./bus";
+
 import LoggedUser from "./components/user/LoggedUser";
 import Filters from './components/Filter/Filters'
 
@@ -132,6 +135,7 @@ export default {
             drawerRight: false,
             right: null,
             left: null,
+            mini: false,
             items: [
                 { title: this.$t('mainMenu[0]'), icon: 'dvr', route: '/assetmgmt' },
                 { title: this.$t('mainMenu[1]'), icon: 'supervisor_account', route: '/users' },
@@ -158,7 +162,7 @@ export default {
     methods:{
         navigate(item){
             this.$router.push(item.route)
-        }
+        },
     },
     props: {
         source: String
