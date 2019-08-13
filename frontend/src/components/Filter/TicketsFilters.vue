@@ -19,7 +19,7 @@
 
         <br>
 
-        <v-btn @click="getFilteredTickets" color="primary" dark style="width:270px">Aplicar
+        <v-btn @click="getFilteredTickets" color="primary" dark style="width:270px">{{this.$t('btnApply')}}
             <v-icon dark right>done</v-icon>
         </v-btn>
 
@@ -31,7 +31,6 @@
 
 import axios from 'axios'
 import { formatPriorities } from './ticketHelper'
-import data from './data'
 
 export default {
 
@@ -53,13 +52,28 @@ export default {
     methods: {
         getItems() {
             if(this.filter === this.$t('ticketFilters[2]')){
-                this.items = this.$t('states')
+                axios
+                    .get('api/tickets/states')
+                    .then(res => {
+                        this.items =
+                            res.data.map((state) => state.name)
+                    })
             }
             else if(this.filter === this.$t('ticketFilters[1]')){
-                this.items = this.$t('agents')
+                axios
+                    .get('api/users/agents')
+                    .then(res => {
+                        this.items =
+                            res.data.map((agent) => agent.fullName)
+                    })
             }
             else if(this.filter === this.$t('ticketFilters[3]')){
-                this.items = this.$t('priorities')
+                axios
+                    .get('api/tickets/priorities')
+                    .then(res => {
+                        this.items =
+                            res.data.map((priority) => priority.name)
+                    })
             }
             else if(this.filter === this.$t('ticketFilters[4]')){
                 axios

@@ -24,6 +24,17 @@ router.get('/', async (req, res) => {
     else res.send(result)
 })
 
+router.get('/agents', async (req, res) => {
+    const error = null;
+
+    const result = await repo
+                .getAgents()
+                .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
 router.get('/documents/:id', async (req, res) => {
     const error = null;
 

@@ -116,6 +116,7 @@
 import axios from 'axios'
 import moment from "moment";
 import bus from "../../bus";
+import { formatPriorities } from '../Filter/ticketHelper'
 
 import EditTicket from './EditTicket'
 import SpareParts from './SpareParts'
@@ -170,15 +171,8 @@ export default {
             axios
                 .get('api/tickets')
                 .then(response => {
-                    // for (const ticket of response.data) {
-                    //     if(ticket.priority == 'Alta') {ticket.color = 'red'; ticket.icon = 'schedule'}
-                    //     else if(ticket.priority == 'Normal') {ticket.color = 'gray'; ticket.icon = 'schedule'}
-                    //     else {ticket.color = 'green'; ticket.icon = 'schedule'}
-                    // }
-                    // this.tickets = response.data
                     this.showProgress = false
                     this.$store.commit('setTickets', formatPriorities(response.data))
-
                 })
                 .catch(function (error) {
                     console.log(error);

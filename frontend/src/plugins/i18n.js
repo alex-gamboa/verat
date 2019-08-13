@@ -5,23 +5,10 @@ Vue.use(VueI18n)
 
 const messages = {
     'en': {
-        btnNew: 'New',
-        btnApply: 'Apply',
-        btnSave: 'Save',
-        btnCancel: 'Cancel',
-        btnClose: 'Close',
-        filterBy: 'Filter by',
-        mainMenu: [
-            'Assets',
-            'Users',
-            'Tickets',
-            'Consumables',
-            'Contracts',
-            'Configurations',
-            'Scheduled Tasks',
-            'Documents',
-            'Reports'
-        ],
+        actions: 'Actions',
+        area: 'Area',
+        agent: 'Agent',
+        asset: 'Asset',
         assetMainHeaders: [
             'Control Number',
             'Category',
@@ -52,39 +39,15 @@ const messages = {
             'New value',
             'Reason'
         ],
-        category: 'Category',
-        kind: 'Kind',
-        brand: 'Brand',
-        model: 'Model',
-        serialNumber: 'Serial Number',
-        comments: 'Comments',
-        user: 'User',
-        userTypes: [
-            'Support',
-            'User',
-            'Data'
-        ],
-        status: 'Status',
-        area: 'Area',
         barcode: 'Barcode',
-        quantity: 'Quantity',
-        reason: 'Reason',
-        userMainHeaders: [
-            'Name',
-            'Username',
-            'Profile',
-            'Actions'
-        ],
-        ticketMainHeaders: [
-            'Priority',
-            'Number',
-            'Type',
-            'Status',
-            'User',
-            'Agent',
-            'Description',
-            'Actions'
-        ],
+        brand: 'Brand',
+        btnNew: 'New',
+        btnApply: 'Apply',
+        btnSave: 'Save',
+        btnCancel: 'Cancel',
+        btnClose: 'Close',
+        category: 'Category',
+        comments: 'Comments',
         consumableMainHeaders: [
             'Kind',
             'Brand',
@@ -105,13 +68,8 @@ const messages = {
             'Access',
             'Actions'
         ],
-        scheduledTaskMainHeaders: [
-            'Name',
-            'Description',
-            'Frequency',
-            'Day',
-            'Actions'
-        ],
+        cost: 'Cost',
+        description: 'Description',
         documentMainHeaders: [
             'Name',
             'Description',
@@ -120,17 +78,50 @@ const messages = {
             'Actions'
         ],
         fullName: 'Full Name',
-        username: 'Username',
+        filterBy: 'Filter by',
+        file: 'File',
+        hours: 'Hours',
+        kind: 'Kind',
+        mainMenu: [
+            'Assets',
+            'Users',
+            'Tickets',
+            'Consumables',
+            'Contracts',
+            'Configurations',
+            'Scheduled Tasks',
+            'Documents',
+            'Reports'
+        ],
+        model: 'Model',
+        number: 'Number',
+        name: 'Name',
         password: 'Password',
-        type: 'Type',
-        userDocumentHeaders: [
+        priority: 'Priority',
+        quantity: 'Quantity',
+        reason: 'Reason',
+        serialNumber: 'Serial Number',
+        service: 'Service',
+        scheduledTaskMainHeaders: [
             'Name',
             'Description',
-            'Date',
+            'Frequency',
+            'Day',
             'Actions'
         ],
-        description: 'Description',
-        file: 'File',
+        solution: 'Solution',
+        status: 'Status',
+        ticketCreationDate: 'Created',
+        ticketMainHeaders: [
+            'Priority',
+            'Number',
+            'Type',
+            'Status',
+            'User',
+            'Agent',
+            'Description',
+            'Actions'
+        ],
         ticketFilters: [
             'Everything',
             'Agent',
@@ -138,29 +129,32 @@ const messages = {
             'Priority',
             'User'
         ],
-        agents: ['Ricardo','Alejandro'],
-        states: ['Waiting','Attended','Resolved','Closed'],
-        priorities: ['Low','Normal','High'],
-        ticketTypes: ['Incident','Problem','Presale','Training','Request'],
+        type: 'Type',
+        user: 'User',
+        userTypes: [
+            'Support',
+            'User',
+            'Data'
+        ],
+        userMainHeaders: [
+            'Name',
+            'Username',
+            'Profile',
+            'Actions'
+        ],
+        username: 'Username',
+        userDocumentHeaders: [
+            'Name',
+            'Description',
+            'Date',
+            'Actions'
+        ],
     },
     'es': {
-        btnNew: 'Nuevo',
-        btnApply: 'Aplicar',
-        btnSave: 'Guardar',
-        btnCancel: 'Cancelar',
-        btnClose: 'Salir',
-        filterBy: 'Filtrar Por',
-        mainMenu: [
-            'Activos',
-            'Usuarios',
-            'Tickets',
-            'Consumibles',
-            'Contratos',
-            'Configuraciones',
-            'Tareas Programadas',
-            'Documentos',
-            'Reportes'
-        ],
+        actions: 'Acciones',
+        area: 'Área',
+        agent: 'Agente',
+        asset: 'Activo',
         assetMainHeaders: [
             'Numero de control',
             'Categoria',
@@ -191,39 +185,15 @@ const messages = {
             'Nuevo Valor',
             'Motivo'
         ],
-        category: 'Categoria',
-        kind: 'Tipo',
-        brand: 'Marca',
-        model: 'Modelo',
-        serialNumber: 'Numero de Serie',
-        comments: 'Comentarios',
-        user: 'Usuario',
-        userTypes: [
-            'Soporte',
-            'Usuario',
-            'Dato'
-        ],
-        status: 'Estado',
-        area: 'Área',
         barcode: 'Codigo de barras',
-        quantity: 'Cantidad',
-        reason: 'Motivo',
-        userMainHeaders: [
-            'Nombre',
-            'Usuario',
-            'Tipo',
-            'Acciones'
-        ],
-        ticketMainHeaders: [
-            'Prioridad',
-            'Folio',
-            'Tipo',
-            'Estado',
-            'Usuario',
-            'Agente',
-            'Descripción',
-            'Acciones'
-        ],
+        brand: 'Marca',
+        btnNew: 'Nuevo',
+        btnApply: 'Aplicar',
+        btnSave: 'Guardar',
+        btnCancel: 'Cancelar',
+        btnClose: 'Salir',
+        category: 'Categoria',
+        comments: 'Comentarios',
         consumableMainHeaders: [
             'Tipo',
             'Marca',
@@ -244,13 +214,8 @@ const messages = {
             'Ruta de acceso',
             'Acciones'
         ],
-        scheduledTaskMainHeaders: [
-            'Nombre',
-            'Descripción',
-            'Frecuencia',
-            'Día',
-            'Acciones'
-        ],
+        cost: 'Costo',
+        description: 'Descripción',
         documentMainHeaders: [
             'Nombre',
             'Descripción',
@@ -258,18 +223,41 @@ const messages = {
             'Fecha',
             'Acciones'
         ],
+        file: 'Archivo',
+        filterBy: 'Filtrar Por',
         fullName: 'Nombre Completo',
-        username: 'Username',
+        hours: 'Horas',
+        kind: 'Tipo',
+        mainMenu: [
+            'Activos',
+            'Usuarios',
+            'Tickets',
+            'Consumibles',
+            'Contratos',
+            'Configuraciones',
+            'Tareas Programadas',
+            'Documentos',
+            'Reportes'
+        ],
+        model: 'Modelo',
+        number: 'Folio',
+        name: 'Nombre',
         password: 'Contraseña',
-        type: 'Tipo',
-        userDocumentHeaders: [
+        priority: 'Prioridad',
+        quantity: 'Cantidad',
+        reason: 'Motivo',
+        service: 'Servicio',
+        scheduledTaskMainHeaders: [
             'Nombre',
             'Descripción',
-            'Fecha',
+            'Frecuencia',
+            'Día',
             'Acciones'
         ],
-        description: 'Descripción',
-        file: 'Archivo',
+        serialNumber: 'Numero de Serie',
+        solution: 'Solución',
+        status: 'Estado',
+        ticketCreationDate: 'Creado',
         ticketFilters: [
             'Todo',
             'Agente',
@@ -277,10 +265,37 @@ const messages = {
             'Prioridad',
             'Usuario'
         ],
-        agents: ['Ricardo','Alejandro'],
-        states: ['Sin Atender','Atendido','Resuelto','Cerrado'],
-        priorities: ['Baja','Normal','Alta'],
-        ticketTypes: ['Incidente','Problema','Preventa','Capacitación','Solicitud'],
+        ticketMainHeaders: [
+            'Prioridad',
+            'Folio',
+            'Tipo',
+            'Estado',
+            'Usuario',
+            'Agente',
+            'Descripción',
+            'Acciones'
+        ],
+        type: 'Tipo',
+        user: 'Usuario',
+        userTypes: [
+            'Soporte',
+            'Usuario',
+            'Dato'
+        ],
+        userMainHeaders: [
+            'Nombre',
+            'Usuario',
+            'Tipo',
+            'Acciones'
+        ],
+        username: 'Username',
+        userDocumentHeaders: [
+            'Nombre',
+            'Descripción',
+            'Fecha',
+            'Acciones'
+        ],
+
     }
 };
 

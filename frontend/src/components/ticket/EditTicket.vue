@@ -12,12 +12,12 @@
                         <v-form ref="form">
                             <v-text-field
                                 v-model="ticket.ticketNumber"
-                                label="Folio"
+                                :label="$t('number')"
                                 :readonly="true"
                             ></v-text-field>
                             <v-text-field
                                 v-model="ticket.date"
-                                label="Creado"
+                                :label="$t('ticketCreationDate')"
                                 :readonly="true"
                             ></v-text-field>
                             <v-combobox
@@ -25,18 +25,18 @@
                                 :items="users"
                                 item-text="fullName"
                                 item-value="_id"
-                                label="Usuario"
+                                :label="$t('user')"
                             ></v-combobox>
                             <v-combobox
                                 v-model="ticket.agent"
                                 :items="agents"
-                                item-text="name"
-                                item-value="name"
-                                label="Agente"
+                                item-text="fullName"
+                                item-value="_id"
+                                :label="$t('agent')"
                             ></v-combobox>
                             <v-text-field
                                 v-model="asset.controlNumber"
-                                label="Activo"
+                                :label="$t('asset')"
                                 @click="showAssetSearch = true"
                             ></v-text-field>
                             <v-combobox
@@ -44,18 +44,18 @@
                                 :items="services"
                                 item-text="name"
                                 item-value="id"
-                                label="Servicio"
+                                :label="$t('service')"
                             ></v-combobox>
                             <v-combobox
                                 v-model="ticket.type"
                                 :items="types"
                                 item-text="name"
                                 item-value="id"
-                                label="Tipo"
+                                :label="$t('type')"
                             ></v-combobox>
                             <v-text-field
                                 v-model="ticket.hours"
-                                label="Horas"
+                                :label="$t('hours')"
                             ></v-text-field>
                         </v-form>
                     </v-flex>
@@ -64,23 +64,27 @@
                         <v-combobox
                             v-model="ticket.status"
                             :items="states"
-                            label="Estado"
+                            item-text="name"
+                            item-value="id"
+                            :label="$t('status')"
                         ></v-combobox>
                         <v-combobox
                             v-model="ticket.priority"
                             :items="priorities"
-                            label="Prioridad"
+                            item-text="name"
+                            item-value="id"
+                            :label="$t('priority')"
                         ></v-combobox>
                         <v-textarea
                                 v-model="ticket.description"
                                 outline
-                                label="Descripción"
+                                :label="$t('description')"
                                 rows=5
                         ></v-textarea>
                         <v-textarea
                             v-model="ticket.solution"
                             outline
-                            label="Solución"
+                            :label="$t('solution')"
                             rows=15
                         ></v-textarea>
                     </v-flex>
@@ -90,8 +94,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
 
@@ -117,15 +121,15 @@ export default {
         self = this
         return {
             users:[],
-            agents: this.$t('agents'),
+            agents: [],
             asset: '',
-            services: ['Internet','Correo','ERP','CCTV','Telefonia','Dominio','Documentos compartidos','Impresión','Windows','Software'],
-            types: this.$t('ticketTypes'),
-            states: this.$t('states'),
+            services: [],
+            types: [],
+            states: [],
             editing: false,
             showAssetSearch: false,
-            selectedUser: {},
-            priorities: this.$t('priorities'),
+            selectedUser: '',
+            priorities: [],
         }
     },
     components: {
@@ -146,6 +150,11 @@ export default {
             this.ticket.asset = this.asset
             this.ticket.user = this.selectedUser._id
             this.ticket.userName = this.selectedUser.fullName
+            this.ticket.agent = this.ticket.agent.fullName
+            this.ticket.service = this.ticket.service.name
+            this.ticket.type = this.ticket.type.name
+            this.ticket.status = this.ticket.status.name
+            this.ticket.priority = this.ticket.priority.name
 
             axios.post('api/tickets', this.ticket)
             .then(response => {
@@ -162,10 +171,20 @@ export default {
         },
         getData() {
             axios.all([
-                axios.get('api/users')
+                axios.get('api/users'),
+                axios.get('api/tickets/states'),
+                axios.get('api/tickets/priorities'),
+                axios.get('api/tickets/types'),
+                axios.get('api/tickets/services'),
+                axios.get('api/users/agents'),
             ])
-            .then(axios.spread((users) => {
+            .then(axios.spread((users, states, priorities, types, services, agents) => {
                 this.users = users.data
+                this.states = states.data
+                this.priorities = priorities.data
+                this.types = types.data
+                this.services = services.data
+                this.agents = agents.data
             }));
         },
         cancel() {

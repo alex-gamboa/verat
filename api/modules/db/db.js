@@ -201,6 +201,26 @@ const configurationSchema =
         comments: String
     }, { collection: 'Configuration'})
 
+const ticketPrioritySchema =
+    new mongoose.Schema({
+        name: String
+    }, {collection: 'TicketPriority'})
+
+const ticketStateSchema =
+    new mongoose.Schema({
+        name: String
+    }, {collection: 'TicketState'})
+
+const ticketTypeSchema =
+    new mongoose.Schema({
+        name: String
+    }, {collection: 'TicketType'})
+
+const ticketServiceSchema =
+    new mongoose.Schema({
+        name: String
+    }, {collection: 'TicketService'})
+
 const ticketSchema =
     new mongoose.Schema({
         date: { type: Date, default: Date.now},
@@ -229,20 +249,24 @@ const ticketSchema =
         priority: { type: String, default: 'Normal'}
     }, { collection: 'Ticket'})
 
-
-
 ticketSchema.plugin(autoIncrement.plugin, {model: 'Ticket', field: 'ticketNumber'})
 
-const SparePartModel = mongoose.model('SparePart', spartPartSchema)
 const TicketModel = mongoose.model('Ticket', ticketSchema)
+const TicketPriorityModel = mongoose.model('TicketPriority', ticketPrioritySchema)
+const TicketStateModel = mongoose.model('TicketState', ticketStateSchema)
+const TicketTypeModel = mongoose.model('TicketType', ticketTypeSchema)
+const TicketServiceModel = mongoose.model('TicketService', ticketServiceSchema)
+const SparePartModel = mongoose.model('SparePart', spartPartSchema)
+
 const AssetCategoryModel = mongoose.model('AssetCategory', assetCategorySchema)
 const AssetModel = mongoose.model('Asset', assetSchema)
-const UserModel = mongoose.model('User', userSchema)
-const UserDocumentModel = mongoose.model('UserDocument',userDocumentSchema)
 const AssetAreaModel = mongoose.model('AssetArea', assetAreaSchema)
 const AssetBrandModel = mongoose.model('AssetBrand', assetBrandSchema)
 const AssetKindModel = mongoose.model('AssetKind', assetKindSchema)
 const AssetLogModel = mongoose.model('AssetLog', assetLogSchema)
+
+const UserModel = mongoose.model('User', userSchema)
+const UserDocumentModel = mongoose.model('UserDocument',userDocumentSchema)
 
 const ConsumableModel = mongoose.model('Consumable', consumableSchema)
 const ConsumableHistoryModel = mongoose.model('ConsumableHistory', consumableHistorySchema)
@@ -255,6 +279,14 @@ const ConfigurationModel = mongoose.model('Configuration', configurationSchema)
 const DocumentModel = mongoose.model('Document', documentSchema)
 
 const scheduledTaskModel = mongoose.model('ScheduledTask', scheduledTaskSchema)
+
+function getTicketPriorityInstance(obj) { return new TicketPriorityModel(obj) }
+
+function getTicketStateInstance(obj) { return new TicketStateModel(obj) }
+
+function getTicketServiceInstance(obj) { return new TicketServiceModel(obj) }
+
+function getTicketTypeInstance(obj) { return new TicketTypeModel(obj) }
 
 function getSparePartInstance(obj) { return new SparePartModel(obj) }
 
@@ -291,38 +323,46 @@ function getConsumableInstance(obj) { return new ConsumableModel(obj) }
 function getConsumableHistoryInstance(obj) { return new ConsumableHistoryModel(obj) }
 
 module.exports = {
-    getTicketInstance: getTicketInstance,
-    getAssetCategoryInstance: getAssetCategoryInstance,
-    getAssetInstance: getAssetInstance,
-    getAssetAreaInstance: getAssetAreaInstance,
-    getAssetBrandInstance: getAssetBrandInstance,
-    getAssetKindInstance: getAssetKindInstance,
-    getUserInstance: getUserInstance,
-    getUserDocumentInstance: getUserDocumentInstance,
-    getAssetLogInstance: getAssetLogInstance,
-    getConsumableInstance: getConsumableInstance,
-    getConsumableHistoryInstance:getConsumableHistoryInstance,
-    getContractInstance: getContractInstance,
-    getContractContactInstance: getContractContactInstance,
-    getConfigurationInstance: getConfigurationInstance,
-    getDocumentInstance: getDocumentInstance,
-    getScheduledTaskInstance: getScheduledTaskInstance,
-    getSparePartInstance: getSparePartInstance,
-    TicketModel: TicketModel,
-    AssetCategoryModel:AssetCategoryModel,
-    AssetModel: AssetModel,
-    ConsumableModel: ConsumableModel,
-    AssetAreaModel: AssetAreaModel,
-    AssetBrandModel: AssetBrandModel,
-    AssetKindModel: AssetKindModel,
-    UserModel: UserModel,
-    AssetLogModel: AssetLogModel,
-    ConsumableHistoryModel: ConsumableHistoryModel,
-    UserDocumentModel: UserDocumentModel,
-    ContractModel: ContractModel,
-    ContractContactModel: ContractContactModel,
-    ConfigurationModel: ConfigurationModel,
-    DocumentModel: DocumentModel,
-    scheduledTaskModel: scheduledTaskModel,
-    SparePartModel: SparePartModel
+    getTicketInstance,
+    getTicketPriorityInstance,
+    getTicketServiceInstance,
+    getTicketStateInstance,
+    getTicketTypeInstance,
+    getAssetCategoryInstance,
+    getAssetInstance,
+    getAssetAreaInstance,
+    getAssetBrandInstance,
+    getAssetKindInstance,
+    getUserInstance,
+    getUserDocumentInstance,
+    getAssetLogInstance,
+    getConsumableInstance,
+    getConsumableHistoryInstance,
+    getContractInstance,
+    getContractContactInstance,
+    getConfigurationInstance,
+    getDocumentInstance,
+    getScheduledTaskInstance,
+    getSparePartInstance,
+    TicketModel,
+    AssetCategoryModel,
+    AssetModel,
+    ConsumableModel,
+    AssetAreaModel,
+    AssetBrandModel,
+    AssetKindModel,
+    UserModel,
+    AssetLogModel,
+    ConsumableHistoryModel,
+    UserDocumentModel,
+    ContractModel,
+    ContractContactModel,
+    ConfigurationModel,
+    DocumentModel,
+    scheduledTaskModel,
+    SparePartModel,
+    TicketTypeModel,
+    TicketStateModel,
+    TicketServiceModel,
+    TicketPriorityModel
 }
