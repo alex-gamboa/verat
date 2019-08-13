@@ -15,7 +15,7 @@
                                 :items="users"
                                 item-text="fullName"
                                 item-value="fullName"
-                                label="Usuario"
+                                :label="$t('user')"
                                 @change="clearAssetSelection"
                             ></v-combobox>
                             <br>
@@ -25,14 +25,14 @@
                                 :items="kinds"
                                 item-text="name"
                                 item-value="name"
-                                label="Activo"
+                                :label="$t('asset')"
                                 @change="getAssets"
                             ></v-combobox>
                             <v-spacer></v-spacer>
                             <v-text-field
                                 v-model="search"
                                 append-icon="search"
-                                label="Search"
+                                :label="$t('search')"
                                 single-line
                                 hide-details
                             ></v-text-field>
@@ -88,8 +88,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="save">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="save">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>
@@ -118,11 +118,11 @@ export default {
             showProgress:false,
             headers: [
                 { text: '', value: '' },
-                { text: 'Numero de Control', value: 'controlNumber' },
-                { text: 'Marca', value: 'brand' },
-                { text: 'Modelo', value: 'model' },
-                { text: 'Area', value: 'area' },
-                { text: 'Usuario', value: 'userName' },
+                { text: this.$t('assetControlNumber'), value: 'controlNumber' },
+                { text: this.$t('brand'), value: 'brand' },
+                { text: this.$t('model'), value: 'model' },
+                { text: this.$t('area'), value: 'area' },
+                { text: this.$t('user'), value: 'userName' },
             ],
             pagination: {
                 sortBy: 'brand'

@@ -1,5 +1,6 @@
 var router = require('express').Router();
 const auth = require('../../middleware/auth')
+const ticketRepo = require('../../modules/db/ticketRepo')
 
 const createTicket = require('../../modules/usecases/ticket/createTicket')
 const getTickets = require('../../modules/usecases/ticket/getTickets')
@@ -50,6 +51,58 @@ router.get('/spareparts/:id', auth, async (req, res) => {
     else res.send(result)
 })
 
+router.get('/states', auth, async (req, res) => {
+    const error = null;
+
+    const result =
+        await
+            ticketRepo
+            .getTicketStates()
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.get('/priorities', auth, async (req, res) => {
+    const error = null;
+
+    const result =
+        await
+            ticketRepo
+            .getTicketPriorities()
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.get('/types', auth, async (req, res) => {
+    const error = null;
+
+    const result =
+       await
+        ticketRepo
+        .getTicketTypes()
+        .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
+router.get('/services', auth, async (req, res) => {
+    const error = null;
+
+    const result =
+       await
+        ticketRepo
+        .getTicketServices()
+        .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+})
+
 router.post('/spareparts', auth, async (req, res) => {
 
     if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
@@ -79,7 +132,9 @@ router.post('/', auth, async (req, res) => {
 
         let ticket = req.body
 
-        if(!ticket.status) ticket.status = 'Sin Atender'
+        console.log(ticket);
+
+
         ticket.assetId = ticket.asset._id
         ticket.assetControlNumber = ticket.asset.controlNumber
 

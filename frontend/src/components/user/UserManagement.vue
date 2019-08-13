@@ -71,7 +71,7 @@
 
         <br>
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark>{{ $t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 
@@ -118,13 +118,13 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('userMainHeaders[0]'),
                 align: 'left',
                 value: 'fullName'
             },
-            { text: 'Usuario', value: 'username' },
-            { text: 'Tipo', value: 'status' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('userMainHeaders[1]'), value: 'username' },
+            { text: this.$t('userMainHeaders[2]'), value: 'status' },
+            { text: this.$t('userMainHeaders[3]'), value: '', sortable: false },
             ],
             users: [],
             selected: [],

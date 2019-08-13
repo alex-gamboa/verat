@@ -4,7 +4,7 @@
         <v-combobox
             v-model="filter"
             :items="filters"
-            label="Filtrar Por"
+            :label="$t('filterBy')"
             prepend-icon="ballot"
             @change="getItems"
         ></v-combobox>
@@ -19,7 +19,7 @@
 
         <br>
 
-        <v-btn @click="getFilteredTickets" color="primary" dark style="width:270px">Aplicar
+        <v-btn @click="getFilteredTickets" color="primary" dark style="width:270px">{{this.$t('btnApply')}}
             <v-icon dark right>done</v-icon>
         </v-btn>
 
@@ -31,36 +31,51 @@
 
 import axios from 'axios'
 import { formatPriorities } from './ticketHelper'
-import data from './data'
 
 export default {
 
     data() {
         return {
             filter: '',
-            filters: [
-                'Todo',
-                'Agente',
-                'Estado',
-                'Prioridad',
-                'Usuario',
-            ],
+            filters: this.$t('ticketFilters'),
             items: [],
-            item: ''
+            item: '',
+            apiFilters: new Map([
+                [this.$t('ticketFilters[0]'), "Todo"],
+                [this.$t('ticketFilters[1]'), "Agente"],
+                [this.$t('ticketFilters[2]'), "Estado"],
+                [this.$t('ticketFilters[3]'), "Prioridad"],
+                [this.$t('ticketFilters[4]'), "Usuario"],
+            ])
         }
     },
     methods: {
         getItems() {
-            if(this.filter === 'Estado'){
-                this.items = data.states
+            if(this.filter === this.$t('ticketFilters[2]')){
+                axios
+                    .get('api/tickets/states')
+                    .then(res => {
+                        this.items =
+                            res.data.map((state) => state.name)
+                    })
             }
-            else if(this.filter === 'Agente'){
-                this.items = data.agents
+            else if(this.filter === this.$t('ticketFilters[1]')){
+                axios
+                    .get('api/users/agents')
+                    .then(res => {
+                        this.items =
+                            res.data.map((agent) => agent.fullName)
+                    })
             }
-            else if(this.filter === 'Prioridad'){
-                this.items = data.priorities
+            else if(this.filter === this.$t('ticketFilters[3]')){
+                axios
+                    .get('api/tickets/priorities')
+                    .then(res => {
+                        this.items =
+                            res.data.map((priority) => priority.name)
+                    })
             }
-            else if(this.filter === 'Usuario'){
+            else if(this.filter === this.$t('ticketFilters[4]')){
                 axios
                 .get('api/users')
                 .then( response => {
@@ -72,17 +87,17 @@ export default {
                     })
                 })
             }
-            else if(this.filter === 'Todo'){
+            else if(this.filter === this.$t('ticketFilters[0]')){
                 this.items = []
                 this.item = ''
             }
         },
         getFilteredTickets() {
 
-            if(this.filter != 'Todo') {
+            if(this.filter != this.$t('ticketFilters[0]')) {
 
                 const filter = {
-                    type: this.filter,
+                    type: this.apiFilters.get(this.filter),
                     value: (typeof this.item === 'object') ? this.item._id : this.item
                 }
 

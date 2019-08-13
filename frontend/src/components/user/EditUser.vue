@@ -11,21 +11,21 @@
                     <v-flex xs12 md12>
                         <v-text-field
                             v-model="user.fullName"
-                            label="Nombre Completo"
+                            :label="$t('fullName')"
                         ></v-text-field>
                         <v-text-field
                             v-model="user.username"
-                            label="Username"
+                            :label="$t('username')"
                         ></v-text-field>
                         <v-text-field
                             v-model="password"
-                            label="Password"
+                            :label="$t('password')"
                             type='password'
                         ></v-text-field>
                         <v-combobox
                             v-model="user.type"
                             :items="types"
-                            label="Tipo"
+                            :label="$t('type')"
                         ></v-combobox>
                     </v-flex>
                 </v-layout>
@@ -34,8 +34,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>

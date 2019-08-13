@@ -7,6 +7,13 @@ async function getUsers() {
     return result
 }
 
+async function getAgents() {
+
+    const result = await db.UserModel.find({type: 'Soporte'})
+
+    return result
+}
+
 async function getUserByUsername(username) {
 
     const result = await db.UserModel.findOne({username: username})
@@ -46,9 +53,10 @@ async function updateUser(user) {
 }
 
 module.exports = {
-    getUsers: getUsers,
-    getUserDocuments: getUserDocuments,
-    insertDocument: insertDocument,
-    updateUser: updateUser,
-    getUserByUsername: getUserByUsername
+    getUsers,
+    getUserDocuments,
+    insertDocument,
+    updateUser,
+    getUserByUsername,
+    getAgents
 }

@@ -3,25 +3,24 @@
         <br>
         <v-combobox
             v-model="selectedReport"
-            :items="reports"
-            label="Seleccione un reporte"
+            :items="$t('reportCategories')"
+            :label="$t('selectCategory')"
             prepend-icon="insert_chart"
         ></v-combobox>
 
         <v-divider></v-divider>
         <br>
 
-        <div v-if="selectedReport == 'Activos'">
-
+        <div v-if="selectedReport == $t('reportCategories[0]')">
             <v-combobox
                 v-model="selectedType"
-                :items="assetReportTypes"
-                label="Agrupar Por"
+                :items="$t('assetReports')"
+                :label="$t('groupBy')"
                 prepend-icon="ballot"
             ></v-combobox>
         </div>
 
-        <v-btn @click="showAssets" color="primary" dark style="width:270px">Aplicar
+        <v-btn @click="showAssets" color="primary" dark style="width:270px">{{this.$t('btnApply')}}
             <v-icon dark right>done</v-icon>
         </v-btn>
 
@@ -36,25 +35,14 @@ export default {
         return {
             selectedReport: '',
             selectedType: '',
-            reports: [
-                'Activos',
-                'Costos',
-                'Operación',
-            ],
-            assetReportTypes: [
-                'Categoria',
-                'Tipo',
-                'Estado',
-                'Marca'
-            ],
         }
     },
     methods: {
         showAssets() {
-            if(this.selectedType == 'Categoria') this.$router.push('/reports/assetsbycategory')
-            else if(this.selectedType == 'Estado') this.$router.push('/reports/assetsbystatus')
-            else if(this.selectedType == 'Tipo') this.$router.push('/reports/assetsbykind')
-            else if(this.selectedType == 'Marca') this.$router.push('/reports/assetsbybrand')
+            if(this.selectedType == this.$t('assetReports[0]')) this.$router.push('/reports/assetsbycategory')
+            else if(this.selectedType == this.$t('assetReports[1]')) this.$router.push('/reports/assetsbykind')
+            else if(this.selectedType == this.$t('assetReports[2]')) this.$router.push('/reports/assetsbystatus')
+            else if(this.selectedType == this.$t('assetReports[3]')) this.$router.push('/reports/assetsbybrand')
         }
     }
 

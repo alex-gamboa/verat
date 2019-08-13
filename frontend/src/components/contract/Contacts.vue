@@ -11,20 +11,20 @@
                     <v-flex xs12>
                         <v-text-field
                             v-model="name"
-                            label="Nombre"
+                            :label="$t('name')"
                         ></v-text-field>
                         <v-combobox
                             v-model="type"
                             :items="types"
-                            label="Tipo"
+                            :label="$t('type')"
                         ></v-combobox>
                         <v-text-field
                             v-model="phone"
-                            label="Telefono"
+                            :label="$t('phone')"
                         ></v-text-field>
                         <v-text-field
                             v-model="email"
-                            label="Correo"
+                            :label="$t('email')"
                         ></v-text-field>
                     </v-flex>
 
@@ -80,8 +80,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="save">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Salir</v-btn>
+                <v-btn flat color="blue" @click="save">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnClose')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>
@@ -115,14 +115,14 @@ export default {
             },
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('name'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Tipo', value: 'type' },
-            { text: 'Telefono', value: 'phone' },
-            { text: 'Correo', value: 'email' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('type'), value: 'type' },
+            { text: this.$t('phone'), value: 'phone' },
+            { text: this.$t('email'), value: 'email' },
+            { text: this.$t('actions'), value: '', sortable: false },
             ],
             types: ['Soporte', 'Asesor', 'Supervisor']
         }

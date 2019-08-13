@@ -5,7 +5,7 @@
                 <v-card style="height:100%">
                     <v-card-title>
                         <v-icon large left>insert_chart</v-icon>
-                        <span class="title font-weight-light">Activos por marca</span>
+                        <span class="title font-weight-light">{{this.$t('reportAssetsByBrandTitle')}}</span>
                     </v-card-title>
                         <div class="chart" ref="chartdiv"></div>
                 </v-card>
@@ -54,10 +54,11 @@ export default {
             var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
             categoryAxis.dataFields.category = "_id";
             categoryAxis.renderer.grid.template.location = 0;
-            categoryAxis.renderer.minGridDistance = 30;
+            categoryAxis.renderer.minGridDistance = 10;
             categoryAxis.renderer.labels.template.horizontalCenter = "right";
             categoryAxis.renderer.labels.template.verticalCenter = "middle";
             categoryAxis.renderer.labels.template.rotation = 270;
+            categoryAxis.renderer.labels.template.fontSize = 12;
             categoryAxis.tooltip.disabled = true;
             categoryAxis.renderer.minHeight = 110;
 

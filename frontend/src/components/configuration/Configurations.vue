@@ -12,7 +12,7 @@
                 <v-text-field
                     v-model="search"
                     append-icon="search"
-                    label="Search"
+                    :label="$t('search')"
                     single-line
                     hide-details
                 ></v-text-field>
@@ -75,7 +75,7 @@
             <v-icon large>add_circle</v-icon>
         </v-btn> -->
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark>{{this.$t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 
@@ -119,13 +119,13 @@ export default {
             search: '',
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('configurationMainHeaders[0]'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Ruta de acceso', value: 'accessRoute' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('configurationMainHeaders[1]'), value: 'description' },
+            { text: this.$t('configurationMainHeaders[2]'), value: 'accessRoute' },
+            { text: this.$t('configurationMainHeaders[3]'), value: '', sortable: false },
             ],
             configurations: [],
             selected: [],

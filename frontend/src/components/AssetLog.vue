@@ -72,16 +72,16 @@ export default {
             logs: [],
             headers: [
             {
-                text: 'Fecha',
+                text: this.$t('assetLogHeaders[0]'),
                 align: 'left',
                 value: 'date'
             },
-            { text: 'Usuario', value: 'user' },
-            { text: 'Activo', value: 'assetControlNumber' },
-            { text: 'Evento', value: 'event' },
-            { text: 'Document', value: 'documentId' },
-            { text: 'Valor', value: 'newValue' },
-            { text: 'Motivo', value: 'reason' }
+            { text: this.$t('assetLogHeaders[1]'), value: 'user' },
+            { text: this.$t('assetLogHeaders[2]'), value: 'assetControlNumber' },
+            { text: this.$t('assetLogHeaders[3]'), value: 'event' },
+            { text: this.$t('assetLogHeaders[4]'), value: 'documentId' },
+            { text: this.$t('assetLogHeaders[5]'), value: 'newValue' },
+            { text: this.$t('assetLogHeaders[6]'), value: 'reason' }
             ],
             showProgress:true,
             assetId: '',

@@ -18,8 +18,6 @@ async function execute(filter){
         assets = await repo.getAssetsForArea(filter.value)
     }
 
-
-
     return assets
 }
 

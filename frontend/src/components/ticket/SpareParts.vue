@@ -11,15 +11,15 @@
                     <v-flex xs12>
                             <v-text-field
                                 v-model="name"
-                                label="nombre"
+                                :label="$t('name')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="cost"
-                                label="Costo"
+                                :label="$t('cost')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="quantity"
-                                label="Cantidad"
+                                :label="$t('quantity')"
                             ></v-text-field>
                     </v-flex>
 
@@ -106,13 +106,13 @@ export default {
             },
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('name'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Costo', value: 'cost' },
-            { text: 'Cantidad', value: 'quantity' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('cost'), value: 'cost' },
+            { text: this.$t('quantity'), value: 'quantity' },
+            { text: this.$t('actions'), value: '', sortable: false },
             ],
         }
     },

@@ -12,7 +12,7 @@
                         <v-form ref="form">
                             <v-text-field
                                 v-model="asset.controlNumber"
-                                label="Numero de control"
+                                :label="$t('assetControlNumber')"
                                 :readonly="blockControlNumber"
                             ></v-text-field>
                             <v-combobox
@@ -20,34 +20,34 @@
                                 :items="categories"
                                 item-text="name"
                                 item-value="name"
-                                label="Categoria"
+                                :label="$t('category')"
                             ></v-combobox>
                             <v-combobox
                                 v-model="asset.kind"
                                 :items="kinds"
                                 item-text="name"
                                 item-value="name"
-                                label="Tipo"
+                                :label="$t('kind')"
                             ></v-combobox>
                             <v-combobox
                                 v-model="asset.brand"
                                 :items="brands"
                                 item-text="name"
                                 item-value="id"
-                                label="Marca"
+                                :label="$t('brand')"
                             ></v-combobox>
                             <v-text-field
                                 v-model="asset.model"
-                                label="Modelo"
+                                :label="$t('model')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="asset.serialNumber"
-                                label="Numero de serie"
+                                :label="$t('serialNumber')"
                             ></v-text-field>
                             <v-textarea
                                 v-model="asset.comments"
                                 outline
-                                label="Observaciones"
+                                :label="$t('comments')"
                             ></v-textarea>
                         </v-form>
                     </v-flex>
@@ -58,38 +58,34 @@
                             :items="users"
                             item-text="fullName"
                             item-value="fullName"
-                            label="Usuario"
+                            :label="$t('user')"
                         ></v-combobox>
                         <v-combobox
                             v-model="asset.status"
                             :items="states"
                             item-text="name"
                             item-value="name"
-                            label="Estado"
+                            :label="$t('status')"
                         ></v-combobox>
                         <v-combobox
                             v-model="asset.area"
                             :items="areas"
                             item-text="name"
                             item-value="name"
-                            label="Área"
+                            :label="$t('area')"
                         ></v-combobox>
                         <v-text-field
                             v-model="asset.barcode"
-                            label="Codigo de barras"
+                            :label="$t('barcode')"
                         ></v-text-field>
                         <v-text-field
                             v-model="asset.quantity"
-                            label="Cantidad"
+                            :label="$t('quantity')"
                         ></v-text-field>
-                        <v-checkbox
-                            v-model="asset.isWithoutControlNumber"
-                            label="Sin UID"
-                        ></v-checkbox>
                         <v-textarea
                             v-model="reason"
                             outline
-                            label="Motivo"
+                            :label="$t('reason')"
                             v-show="showReason"
                         ></v-textarea>
                     </v-flex>
@@ -99,8 +95,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>

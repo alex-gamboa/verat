@@ -15,31 +15,31 @@
                                 :items="kinds"
                                 item-text="name"
                                 item-value="name"
-                                label="Tipo"
+                                :label="$t('kind')"
                             ></v-combobox>
                             <v-combobox
                                 v-model="consumable.brand"
                                 :items="brands"
                                 item-text="name"
                                 item-value="name"
-                                label="Marca"
+                                :label="$t('brand')"
                             ></v-combobox>
                             <v-text-field
                                 v-model="consumable.model"
-                                label="Modelo"
+                                :label="$t('model')"
                             ></v-text-field>
                             <v-text-field
                             v-model="consumable.barcode"
-                            label="Codigo de barras"
+                            :label="$t('barcode')"
                         ></v-text-field>
                         <v-text-field
                             v-model="consumable.quantity"
-                            label="Cantidad"
+                            :label="$t('quantity')"
                         ></v-text-field>
                             <v-textarea
                                 v-model="consumable.comments"
                                 outline
-                                label="Observaciones"
+                                :label="$t('comments')"
                             ></v-textarea>
                         </v-form>
                     </v-flex>
@@ -49,8 +49,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>

@@ -5,7 +5,7 @@
                 <v-card style="height:100%">
                     <v-card-title>
                         <v-icon large left>insert_chart</v-icon>
-                        <span class="title font-weight-light">Activos por categoria</span>
+                        <span class="title font-weight-light">{{this.$t('reportAssetsByCategoryTitle')}}</span>
                     </v-card-title>
                         <div class="chart" ref="chartdiv"></div>
                 </v-card>
@@ -14,7 +14,7 @@
                 <v-card style="height:100%">
                     <v-card-title>
                         <v-icon large left>pie_chart</v-icon>
-                        <span class="title font-weight-light">Activos por estado</span>
+                        <span class="title font-weight-light">{{this.$t('reportAssetsByStatusTitle')}}</span>
                     </v-card-title>
                         <div class="chart" ref="chart2div"></div>
                 </v-card>

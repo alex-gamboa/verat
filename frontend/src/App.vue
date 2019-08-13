@@ -133,26 +133,19 @@ export default {
             right: null,
             left: null,
             items: [
-                { title: 'Activos', icon: 'dvr', route: '/assetmgmt' },
-                { title: 'Usuarios', icon: 'supervisor_account', route: '/users' },
-                { title: 'Tickets', icon: 'bug_report', route: '/tickets' },
-                { title: 'Consumibles', icon: 'print', route: '/consumables' },
-                { title: 'Contratos', icon: 'description', route: '/contracts' },
-                { title: 'Configuraciones', icon: 'memory', route: '/configurations' },
-                { title: 'Tareas Programadas', icon: 'alarm', route: '/scheduledTasks' },
-                { title: 'Documentos', icon: 'folder', route: '/documents' },
+                { title: this.$t('mainMenu[0]'), icon: 'dvr', route: '/assetmgmt' },
+                { title: this.$t('mainMenu[1]'), icon: 'supervisor_account', route: '/users' },
+                { title: this.$t('mainMenu[2]'), icon: 'bug_report', route: '/tickets' },
+                { title: this.$t('mainMenu[3]'), icon: 'print', route: '/consumables' },
+                { title: this.$t('mainMenu[4]'), icon: 'description', route: '/contracts' },
+                { title: this.$t('mainMenu[5]'), icon: 'memory', route: '/configurations' },
+                { title: this.$t('mainMenu[6]'), icon: 'alarm', route: '/scheduledTasks' },
+                { title: this.$t('mainMenu[7]'), icon: 'folder', route: '/documents' },
                 {
-                    title: 'Reportes',
+                    title: this.$t('mainMenu[8]'),
                     icon: 'insert_chart',
                     route: '/reports',
-                    items: [
-                        { title: 'Resumen Activos'}
-                    ]
                 },
-            ],
-            userMenuOptions: [
-                { title: 'Logout'},
-                { title: 'Profile'}
             ],
             menu: false,
             userLogo: require('./assets/user-lap.jpg'),

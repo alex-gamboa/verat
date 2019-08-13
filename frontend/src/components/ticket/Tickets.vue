@@ -87,7 +87,7 @@
             <v-icon large>add_circle</v-icon>
         </v-btn> -->
 
-        <v-btn @click="showAdd" color="primary" dark>Nuevo
+        <v-btn @click="showAdd" color="primary" dark> {{ $t('btnNew')}}
             <v-icon dark right>add_circle</v-icon>
         </v-btn>
 
@@ -116,6 +116,7 @@
 import axios from 'axios'
 import moment from "moment";
 import bus from "../../bus";
+import { formatPriorities } from '../Filter/ticketHelper'
 
 import EditTicket from './EditTicket'
 import SpareParts from './SpareParts'
@@ -132,18 +133,18 @@ export default {
             },
             search: '',
             headers: [
-                { text: 'Prioridad', value: '' },
+                { text: this.$t('ticketMainHeaders[0]'), value: '' },
                 {
-                    text: 'Folio',
+                    text: this.$t('ticketMainHeaders[1]'),
                     align: 'left',
                     value: 'tickerNumber'
                 },
-                { text: 'Tipo', value: 'type' },
-                { text: 'Estado', value: 'status' },
-                { text: 'usuario', value: 'user' },
-                { text: 'agente', value: 'agent' },
-                { text: 'descripción', value: 'description' },
-                { text: 'Acciones', value: '', sortable: false },
+                { text: this.$t('ticketMainHeaders[2]'), value: 'type' },
+                { text: this.$t('ticketMainHeaders[3]'), value: 'status' },
+                { text: this.$t('ticketMainHeaders[4]'), value: 'user' },
+                { text: this.$t('ticketMainHeaders[5]'), value: 'agent' },
+                { text: this.$t('ticketMainHeaders[6]'), value: 'description' },
+                { text: this.$t('ticketMainHeaders[7]'), value: '', sortable: false },
             ],
             tickets: [],
             selected: [],
@@ -168,16 +169,10 @@ export default {
             this.showProgress = true
 
             axios
-                .get('/api/tickets')
+                .get('api/tickets')
                 .then(response => {
-                    for (const ticket of response.data) {
-                        if(ticket.priority == 'Alta') {ticket.color = 'red'; ticket.icon = 'schedule'}
-                        else if(ticket.priority == 'Normal') {ticket.color = 'gray'; ticket.icon = 'schedule'}
-                        else {ticket.color = 'green'; ticket.icon = 'schedule'}
-                    }
-                    this.tickets = response.data
-                    this.$store.commit('setTickets', response.data)
                     this.showProgress = false
+                    this.$store.commit('setTickets', formatPriorities(response.data))
                 })
                 .catch(function (error) {
                     console.log(error);

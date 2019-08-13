@@ -4,7 +4,7 @@
         <v-combobox
             v-model="filter"
             :items="filters"
-            label="Filtrar Por"
+            :label="$t('filterBy')"
             prepend-icon="ballot"
             @change="getItems"
         ></v-combobox>
@@ -19,7 +19,7 @@
 
         <br>
 
-        <v-btn @click="getFilteredAssets" color="primary" dark style="width:270px">Aplicar
+        <v-btn @click="getFilteredAssets" color="primary" dark style="width:270px">{{ $t('btnApply')}}
             <v-icon dark right>done</v-icon>
         </v-btn>
 
@@ -36,50 +36,52 @@ export default {
     data() {
         return {
             filter: '',
-            filters: [
-                'Todo',
-                'Área',
-                'Categoria',
-                'Estado',
-                'Marca',
-                'Tipo',
-                'Usuario',
-            ],
+            filters: this.$t('assetFilters'),
             items: [],
-            item: ''
+            item: '',
+            //Map(i18n_message,api_expected_filter)
+            apiFilters: new Map([
+                [this.$t('assetFilters[0]'), "Todo"],
+                [this.$t('assetFilters[1]'), "Área"],
+                [this.$t('assetFilters[2]'), "Categoria"],
+                [this.$t('assetFilters[3]'), "Estado"],
+                [this.$t('assetFilters[4]'), "Marca"],
+                [this.$t('assetFilters[5]'), "Tipo"],
+                [this.$t('assetFilters[6]'), "Usuario"],
+            ])
         }
     },
     methods: {
         getItems() {
-            if(this.filter === 'Categoria'){
+            if(this.filter === this.$t('assetFilters[2]')){
                 axios
                 .get('api/assets/category')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
             }
-            else if(this.filter === 'Tipo'){
+            else if(this.filter === this.$t('assetFilters[5]')){
                 axios
                 .get('api/assets/kind')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
             }
-            else if(this.filter === 'Marca'){
+            else if(this.filter === this.$t('assetFilters[4]')){
                 axios
                 .get('api/assets/brand')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
             }
-            else if(this.filter === 'Estado'){
+            else if(this.filter === this.$t('assetFilters[3]')){
                 axios
                 .get('api/assets/state')
                 .then( response => {
                     this.items = response.data
                 })
             }
-            else if(this.filter === 'Usuario'){
+            else if(this.filter === this.$t('assetFilters[6]')){
                 axios
                 .get('api/users')
                 .then( response => {
@@ -91,24 +93,24 @@ export default {
                     })
                 })
             }
-            else if(this.filter === 'Área'){
+            else if(this.filter === this.$t('assetFilters[1]')){
                 axios
                 .get('api/assets/area')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
             }
-            else if(this.filter === 'Todo'){
+            else if(this.filter === this.$t('assetFilters[0]')){
                 this.items = []
                 this.item = ''
             }
         },
         getFilteredAssets() {
 
-            if(this.filter != 'Todo') {
+            if(this.filter != this.$t('assetFilters[0]')) {
 
                 const filter = {
-                    type: this.filter,
+                    type: this.apiFilters.get(this.filter),
                     value: (typeof this.item === 'object') ? this.item._id : this.item
                 }
 

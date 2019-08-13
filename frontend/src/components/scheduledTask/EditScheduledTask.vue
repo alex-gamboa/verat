@@ -12,20 +12,20 @@
                         <v-form ref="form">
                             <v-text-field
                                 v-model="task.name"
-                                label="Nombre"
+                                :label="$t('name')"
                             ></v-text-field>
                             <v-text-field
                                 v-model="task.description"
-                                label="Descripción"
+                                :label="$t('description')"
                             ></v-text-field>
                             <v-combobox
                                 v-model="task.frequency"
                                 :items="frequencies"
-                                label="Frecuencia"
+                                :label="$t('frequency')"
                             ></v-combobox>
                             <v-text-field
                                 v-model="task.day"
-                                label="Día"
+                                :label="$t('day')"
                             ></v-text-field>
                         </v-form>
                     </v-flex>
@@ -35,8 +35,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="saveItem">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Cancelar</v-btn>
+                <v-btn flat color="blue" @click="saveItem">{{this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{this.$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>

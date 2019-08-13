@@ -11,13 +11,13 @@
                     <v-flex xs12>
                             <v-text-field
                                 v-model="selectedPath"
-                                label="archivo"
+                                :label="$t('file')"
                                 @click="$refs.inputUpload.click()"
                             ></v-text-field>
                             <input v-show="false" ref="inputUpload" type="file" @change="onFilePicked" >
                             <v-text-field
                                 v-model="description"
-                                label="Descripción"
+                                :label="$t('description')"
                             ></v-text-field>
                     </v-flex>
 
@@ -72,8 +72,8 @@
 
         <v-card-actions>
             <v-card-actions>
-                <v-btn flat color="blue" @click="save">Guardar</v-btn>
-                <v-btn flat color="blue" @click="cancel">Salir</v-btn>
+                <v-btn flat color="blue" @click="save">{{ this.$t('btnSave')}}</v-btn>
+                <v-btn flat color="blue" @click="cancel">{{ this.$t('btnClose')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
     </v-card>
@@ -104,13 +104,13 @@ export default {
             },
             headers: [
             {
-                text: 'Nombre',
+                text: this.$t('userDocumentHeaders[0]'),
                 align: 'left',
                 value: 'name'
             },
-            { text: 'Descripción', value: 'description' },
-            { text: 'Fecha', value: 'date' },
-            { text: 'Acciones', value: '', sortable: false },
+            { text: this.$t('userDocumentHeaders[1]'), value: 'description' },
+            { text: this.$t('userDocumentHeaders[2]'), value: 'date' },
+            { text: this.$t('userDocumentHeaders[3]'), value: '', sortable: false },
             ],
         }
     },
