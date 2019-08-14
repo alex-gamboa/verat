@@ -115,14 +115,17 @@ router.post('/auth', async (req, res) => {
 
     if(!user) return res.status(400).send('El usuario no existe')
 
-    const valid = await bcrypt.compare(req.body.password, user.password)
+    if(!user.password) user.password = ''
+
+    let valid = await bcrypt.compare(req.body.password, user.password)
 
     if(!valid) return res.status(400).send('Invalid password')
 
     const token =
         jwt.sign({
             _id: user._id,
-            type: user.type
+            type: user.type,
+            lang: (user.language) ? user.language : ''
         }, config.jwtPrivate, { expiresIn: 86400 })
 
     res
@@ -133,7 +136,8 @@ router.post('/auth', async (req, res) => {
             user: {
                 _id: user._id,
                 type: user.type,
-                name: user.fullName
+                name: user.fullName,
+                lang: (user.language) ? user.language : ''
             }
         })
 })
