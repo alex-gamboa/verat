@@ -55,21 +55,21 @@ export default {
         getItems() {
             if(this.filter === this.$t('assetFilters[2]')){
                 axios
-                .get('api/assets/category')
+                .get('api/assets/categories')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
             }
             else if(this.filter === this.$t('assetFilters[5]')){
                 axios
-                .get('api/assets/kind')
+                .get('api/assets/kinds')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
             }
             else if(this.filter === this.$t('assetFilters[4]')){
                 axios
-                .get('api/assets/brand')
+                .get('api/assets/brands')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
@@ -95,7 +95,7 @@ export default {
             }
             else if(this.filter === this.$t('assetFilters[1]')){
                 axios
-                .get('api/assets/area')
+                .get('api/assets/areas')
                 .then( response => {
                     this.items = Array.from(response.data, x => x.name)
                 })
