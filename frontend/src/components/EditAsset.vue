@@ -21,6 +21,8 @@
                                 item-text="name"
                                 item-value="name"
                                 :label="$t('category')"
+                                append-outer-icon="add_circle"
+                                @click:append-outer="showAddCategory"
                             ></v-combobox>
                             <v-combobox
                                 v-model="asset.kind"
@@ -28,6 +30,8 @@
                                 item-text="name"
                                 item-value="name"
                                 :label="$t('kind')"
+                                append-outer-icon="add_circle"
+                                @click:append-outer="showAddKind"
                             ></v-combobox>
                             <v-combobox
                                 v-model="asset.brand"
@@ -35,6 +39,8 @@
                                 item-text="name"
                                 item-value="id"
                                 :label="$t('brand')"
+                                append-outer-icon="add_circle"
+                                @click:append-outer="showAddBrand"
                             ></v-combobox>
                             <v-text-field
                                 v-model="asset.model"
@@ -73,6 +79,8 @@
                             item-text="name"
                             item-value="name"
                             :label="$t('area')"
+                            append-outer-icon="add_circle"
+                            @click:append-outer="showAddArea"
                         ></v-combobox>
                         <v-text-field
                             v-model="asset.barcode"
@@ -99,11 +107,18 @@
                 <v-btn flat color="blue" @click="cancel">{{$t('btnCancel')}}</v-btn>
             </v-card-actions>
         </v-card-actions>
+
+        <v-dialog v-model="showAddView" persistent max-width="400px">
+            <add-view :title="addViewTitle" @save="onAddSave" @cancel="showAddView = false">
+            </add-view>
+        </v-dialog>
     </v-card>
 </template>
 
 <script>
 import axios from 'axios'
+
+import AddView from './shared/AddSingleValue'
 
 let self
 
@@ -125,7 +140,13 @@ export default {
             showReason: false,
             editing: false,
             isStatusChanged: false,
+            addViewTitle: '',
+            showAddView: false,
+            addType: ''
         }
+    },
+    components: {
+        AddView
     },
     watch: {
         'asset.status': (newValue, old) => {
@@ -170,12 +191,12 @@ export default {
         },
         getData() {
             axios.all([
-                axios.get('/api/assets/category'),
-                axios.get('/api/assets/brand'),
-                axios.get('/api/assets/area'),
+                axios.get('/api/assets/categories'),
+                axios.get('/api/assets/brands'),
+                axios.get('/api/assets/areas'),
                 axios.get('/api/users'),
                 axios.get('/api/assets/state'),
-                axios.get('/api/assets/kind'),
+                axios.get('/api/assets/kinds'),
             ])
             .then(axios.spread((categories, brands, areas, users, states, kinds) => {
                 this.categories = categories.data
@@ -185,9 +206,6 @@ export default {
                 this.states = states.data
                 this.kinds = kinds.data
             }));
-        },
-        getKinds() {
-
         },
         cancel() {
             this.asset = {}
@@ -210,7 +228,109 @@ export default {
             .catch(function (error) {
                 console.log(error)
             });
-        }
+        },
+        showAddCategory(){
+            this.addViewTitle = this.$t('addNewCategory')
+            this.addType = 'category'
+            this.showAddView = true
+        },
+        showAddKind(){
+            this.addViewTitle = this.$t('addNewKind')
+            this.addType = 'kind'
+            this.showAddView = true
+        },
+        showAddBrand(){
+            this.addViewTitle = this.$t('addNewBrand')
+            this.addType = 'brand'
+            this.showAddView = true
+        },
+        showAddArea(){
+            this.addViewTitle = this.$t('addNewArea')
+            this.addType = 'area'
+            this.showAddView = true
+        },
+        onAddSave(value) {
+            if(this.addType === 'category') this.saveCategory(value)
+            if(this.addType === 'kind') this.saveKind(value)
+            if(this.addType === 'brand') this.saveBrand(value)
+            if(this.addType === 'area') this.saveArea(value)
+        },
+        saveCategory(category) {
+            axios
+                .post('/api/assets/categories', {
+                    name: category
+                })
+                .then(response => {
+                    axios
+                        .get('/api/assets/categories')
+                        .then(resp => {
+                            this.categories = resp.data
+                            this.asset.category = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
+        saveKind(kind) {
+            axios
+                .post('/api/assets/kinds', {
+                    name: kind
+                })
+                .then(response => {
+                    axios
+                        .get('/api/assets/kinds')
+                        .then(resp => {
+                            this.kinds = resp.data
+                            this.asset.kind = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
+        saveBrand(brand) {
+            axios
+                .post('/api/assets/brands', {
+                    name: brand
+                })
+                .then(response => {
+                    axios
+                        .get('/api/assets/brands')
+                        .then(resp => {
+                            this.brands = resp.data
+                            this.asset.brand = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
+        saveArea(area) {
+            axios
+                .post('/api/assets/areas', {
+                    name: area
+                })
+                .then(response => {
+                    axios
+                        .get('/api/assets/areas')
+                        .then(resp => {
+                            this.areas = resp.data
+                            this.asset.area = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
     },
     mounted: function () {
         this.$nextTick(function () {
