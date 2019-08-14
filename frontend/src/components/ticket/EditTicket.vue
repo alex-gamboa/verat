@@ -45,6 +45,8 @@
                                 item-text="name"
                                 item-value="id"
                                 :label="$t('service')"
+                                append-outer-icon="add_circle"
+                                @click:append-outer="showAddService"
                             ></v-combobox>
                             <v-combobox
                                 v-model="ticket.type"
@@ -52,6 +54,8 @@
                                 item-text="name"
                                 item-value="id"
                                 :label="$t('type')"
+                                append-outer-icon="add_circle"
+                                @click:append-outer="showAddType"
                             ></v-combobox>
                             <v-text-field
                                 v-model="ticket.hours"
@@ -67,6 +71,8 @@
                             item-text="name"
                             item-value="id"
                             :label="$t('status')"
+                            append-outer-icon="add_circle"
+                            @click:append-outer="showAddStatus"
                         ></v-combobox>
                         <v-combobox
                             v-model="ticket.priority"
@@ -74,6 +80,8 @@
                             item-text="name"
                             item-value="id"
                             :label="$t('priority')"
+                            append-outer-icon="add_circle"
+                            @click:append-outer="showAddPriority"
                         ></v-combobox>
                         <v-textarea
                                 v-model="ticket.description"
@@ -104,12 +112,18 @@
             </asset-search>
         </v-dialog>
 
+        <v-dialog v-model="showAddView" persistent max-width="400px">
+            <add-view :title="addViewTitle" @save="onAddSave" @cancel="showAddView = false">
+            </add-view>
+        </v-dialog>
+
     </v-card>
 </template>
 
 <script>
 import axios from 'axios'
 import AssetSearch from "../shared/AssetSearch";
+import AddView from '../shared/AddSingleValue'
 
 let self
 
@@ -128,12 +142,16 @@ export default {
             states: [],
             editing: false,
             showAssetSearch: false,
+            showAddView: false,
             selectedUser: '',
             priorities: [],
+            addType: '',
+            addViewTitle: ''
         }
     },
     components: {
-        'AssetSearch': AssetSearch,
+        AssetSearch,
+        AddView
     },
     watch: {
         ticket() {
@@ -146,7 +164,6 @@ export default {
     },
     methods: {
         saveItem() {
-
             this.ticket.asset = this.asset
             this.ticket.user = this.selectedUser._id
             this.ticket.userName = this.selectedUser.fullName
@@ -164,6 +181,26 @@ export default {
             .catch(function (error) {
                 console.log(error)
             });
+        },
+        showAddService(){
+            this.addViewTitle = this.$t('addNewService')
+            this.addType = 'service'
+            this.showAddView = true
+        },
+        showAddType(){
+            this.addViewTitle = this.$t('addNewType')
+            this.addType = 'type'
+            this.showAddView = true
+        },
+        showAddStatus(){
+            this.addViewTitle = this.$t('addNewStatus')
+            this.addType = 'status'
+            this.showAddView = true
+        },
+        showAddPriority(){
+            this.addViewTitle = this.$t('addNewPriority')
+            this.addType = 'priority'
+            this.showAddView = true
         },
         onAssetSelected(asset){
             this.asset = asset
@@ -186,6 +223,92 @@ export default {
                 this.services = services.data
                 this.agents = agents.data
             }));
+        },
+        onAddSave(value) {
+            if(this.addType === 'service') this.saveService(value)
+            if(this.addType === 'type') this.saveType(value)
+            if(this.addType === 'status') this.saveStatus(value)
+            if(this.addType === 'priority') this.savePriority(value)
+        },
+        saveService(service) {
+            axios
+                .post('api/tickets/services', {
+                    name: service
+                })
+                .then(response => {
+                    axios
+                        .get('api/tickets/services')
+                        .then(resp => {
+                            this.services = resp.data
+                            this.ticket.service = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
+        saveType(type) {
+            axios
+                .post('api/tickets/types', {
+                    name: type
+                })
+                .then(response => {
+                    axios
+                        .get('api/tickets/types')
+                        .then(resp => {
+                            this.types = resp.data
+                            this.ticket.type = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
+        saveStatus(status) {
+            axios
+                .post('api/tickets/states', {
+                    name: status
+                })
+                .then(response => {
+                    axios
+                        .get('api/tickets/states')
+                        .then(resp => {
+                            this.states = resp.data
+                            this.ticket.status = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+        },
+        savePriority(priority) {
+            axios
+                .post('api/tickets/priorities', {
+                    name: priority
+                })
+                .then(response => {
+                    axios
+                        .get('api/tickets/priorities')
+                        .then(resp => {
+                            this.priorities = resp.data
+                            this.ticket.priority = ''
+                            this.showAddView = false
+                            this.addType = ''
+                        })
+
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
         },
         cancel() {
             this.asset = {}

@@ -185,6 +185,51 @@ async function insertAssetCategory(category) {
     return result
 }
 
+async function insertKind(kind) {
+    let dbInstance = db.getAssetKindInstance(kind)
+
+    const result =
+        await
+            dbInstance
+            .validate()
+            .then(_ => dbInstance.save())
+            .catch(e => {
+                console.log(e);
+            })
+
+    return result
+}
+
+async function insertBrand(brand) {
+    let dbInstance = db.getAssetBrandInstance(brand)
+
+    const result =
+        await
+            dbInstance
+            .validate()
+            .then(_ => dbInstance.save())
+            .catch(e => {
+                console.log(e);
+            })
+
+    return result
+}
+
+async function insertArea(area) {
+    let dbInstance = db.getAssetAreaInstance(area)
+
+    const result =
+        await
+            dbInstance
+            .validate()
+            .then(_ => dbInstance.save())
+            .catch(e => {
+                console.log(e);
+            })
+
+    return result
+}
+
 async function deleteAsset(id) {
 
     const result =
@@ -207,26 +252,29 @@ module.exports = {
     getAssetAreas,
     getAsset,
     getAssets,
-    insertAsset,
-    deleteAsset,
-    updateAsset,
     getCategoryByName,
     getCategories,
     getKinds,
-    insertAssetCategory,
-    getKindsForCategory,
-    insertUser,
     getUser,
     getUserByName,
     getUsers,
     getCategoryById,
     getAssetBrands,
-    insertAssetLog,
     getLogs,
     getAssetsForKind,
     getAssetsForCategory,
     getAssetsForBrand,
     getAssetsForStatus,
     getAssetsForUser,
-    getAssetsForArea
+    getAssetsForArea,
+    getKindsForCategory,
+    insertAsset,
+    insertAssetCategory,
+    insertUser,
+    insertAssetLog,
+    insertArea,
+    insertBrand,
+    insertKind,
+    updateAsset,
+    deleteAsset,
 }

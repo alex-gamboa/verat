@@ -103,6 +103,74 @@ router.get('/services', auth, async (req, res) => {
     else res.send(result)
 })
 
+router.post('/states', auth, async (req, res) => {
+
+    if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
+
+    const error = null
+    let result
+
+    result =
+        await
+            ticketRepo.insertTicketState(req.body)
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+
+})
+
+router.post('/priorities', auth, async (req, res) => {
+
+    if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
+
+    const error = null
+    let result
+
+    result =
+        await
+            ticketRepo.insertTicketPriority(req.body)
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+
+})
+
+router.post('/types', auth, async (req, res) => {
+
+    if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
+
+    const error = null
+    let result
+
+    result =
+        await
+            ticketRepo.insertTicketType(req.body)
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+
+})
+
+router.post('/services', auth, async (req, res) => {
+
+    if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
+
+    const error = null
+    let result
+
+    result =
+        await
+            ticketRepo.insertTicketService(req.body)
+            .catch(e => error = e)
+
+    if (error) res.send(error)
+    else res.send(result)
+
+})
+
 router.post('/spareparts', auth, async (req, res) => {
 
     if(req.user.type != 'Soporte') res.status(400).send('No tiene privilegios para esta acción')
