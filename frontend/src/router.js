@@ -33,39 +33,39 @@ let router =
                     title: 'verat Home page'
                 }
              },
-			{ path: '/assetmgmt', component: AssetManagement, meta: { requiresAuth: true } },
-			{ path: '/users', component: UserManagement, meta: { requiresAuth: true } },
-			{ path: '/tickets', component: Tickets, meta: { requiresAuth: true } },
-			{ path: '/consumables', component: Consumables, meta: { requiresAuth: true } },
-			{ path: '/contracts', component: Contracts, meta: { requiresAuth: true } },
-			{ path: '/configurations', component: Configurations, meta: { requiresAuth: true } },
-			{ path: '/documents', component: Documents, meta: { requiresAuth: true } },
-			{ path: '/scheduledTasks', component: ScheduledTasks, meta: { requiresAuth: true }},
+			{ path: '/assetmgmt', component: AssetManagement, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/users', component: UserManagement, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/tickets', component: Tickets, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/consumables', component: Consumables, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/contracts', component: Contracts, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/configurations', component: Configurations, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/documents', component: Documents, meta: { requiresAuth: true, is_admin : true } },
+			{ path: '/scheduledTasks', component: ScheduledTasks, meta: { requiresAuth: true, is_admin : true }},
 			{ path: '/login', name: 'login', component: Login, meta: { guest: true}},
             { path: '/reports',	name: 'reports', component: Reports, meta: { requiresAuth: true, is_admin : true }},
             {
                 path: '/reports/assetsbycategory',
                 name: 'assetsbycategory',
                 component: AssetsByCategory,
-                meta: { requiresAuth: true }
+                meta: { requiresAuth: true, is_admin : true }
             },
             {
                 path: '/reports/assetsbystatus',
                 name: 'assetsbystatus',
                 component: AssetsByStatus,
-                meta: { requiresAuth: true }
+                meta: { requiresAuth: true, is_admin : true }
             },
             {
                 path: '/reports/assetsbykind',
                 name: 'assetsbykind',
                 component: AssetsByKind,
-                meta: { requiresAuth: true }
+                meta: { requiresAuth: true, is_admin : true }
             },
             {
                 path: '/reports/assetsbybrand',
                 name: 'assetsbybrand',
                 component: AssetsByBrand,
-                meta: { requiresAuth: true }
+                meta: { requiresAuth: true, is_admin : true }
             },
 
 		]

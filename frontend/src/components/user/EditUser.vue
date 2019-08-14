@@ -27,6 +27,11 @@
                             :items="types"
                             :label="$t('type')"
                         ></v-combobox>
+                        <v-combobox
+                            v-model="user.language"
+                            :items="languages"
+                            :label="$t('language')"
+                        ></v-combobox>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -55,6 +60,7 @@ export default {
         return {
             types: ['Soporte','Usuario','Dato'],
             password: '',
+            languages: ['en', 'es'],
         }
     },
     methods: {

@@ -72,6 +72,8 @@ export default {
                     localStorage.setItem('user',JSON.stringify(response.data.user))
                     localStorage.setItem('jwt',response.data.token)
 
+                    this.$i18n.locale = (response.data.user.lang) ? response.data.user.lang : 'en'
+
                     if (localStorage.getItem('jwt') != null){
                         // this.$emit('loggedIn')
                         this.$store.commit('setUser', response.data.user)
@@ -81,12 +83,18 @@ export default {
                             this.$router.push(this.$route.params.nextUrl)
                         }
                         else {
+
+
                             if(is_admin == 1){
-                                this.$router.push('home')
+                                // location.href = '/'
+                                // this.$router.push('home')
                             }
                             else {
-                                this.$router.push('home')
+                                // location.href = '/'
+                                // this.$router.push('home')
                             }
+
+                            location.href = '/'
                         }
                     }
                 })

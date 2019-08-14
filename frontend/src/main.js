@@ -19,7 +19,8 @@ new Vue({
   router,
   store,
   beforeCreate() {
-		this.$store.commit('initialiseStore');
+    this.$store.commit('initialiseStore');
+    i18n.locale = (this.$store.getters.getUser.lang) ? this.$store.getters.getUser.lang : 'en'
   },
   i18n,
   render: h => h(App)
