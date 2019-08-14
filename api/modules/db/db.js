@@ -19,7 +19,8 @@ const userSchema =
         password: String,
         fullName: String,
         canLogin: Boolean,
-        type: String
+        type: String,
+        language: String,
     }, { collection: 'User'})
 
 const userDocumentSchema =
