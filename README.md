@@ -1,3 +1,4 @@
 # verat
 
-FOSS IT Management System
+FOSS IT Service Management Software
+
